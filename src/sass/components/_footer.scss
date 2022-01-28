@@ -1,0 +1,71 @@
+.footer-bg {
+  background-color: var(--secondary-bg-color);
+}
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  @media screen and (min-width: 768px) {
+    display: flex;
+    // flex-direction: row;
+  }
+  @media screen and (min-width: 1024px) {
+  }
+}
+
+.footer_text {
+  color: var(--black-text-color);
+  //   display: flex;
+
+  font-family: Roboto;
+  font-size: 14px;
+  line-height: 1.14;
+  // background-image: url(./);
+
+  @media screen and (min-width: 768px) {
+    padding-top: 30px;
+    padding-bottom: 30px;
+
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.18;
+    text-align: center;
+  }
+
+  @media screen and (min-width: 1024px) {
+  }
+}
+.adds {
+  padding-top: 28.71px;
+  padding-bottom: 9.9px;
+  //   display: flex;
+}
+.second-part-adds {
+}
+.icon {
+  width: 14px;
+  height: 13px;
+  //   padding-bottom: 29px;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-bottom: 29px;
+  @media screen and (min-width: 768px) {
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+
+  @media screen and (min-width: 1024px) {
+  }
+}
+.goit {
+  padding-left: 5px;
+}
+.by {
+  @media screen and (min-width: 768px) {
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+
+  @media screen and (min-width: 1024px) {
+  }
+}
