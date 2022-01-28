@@ -128,23 +128,16 @@ button {
           justify-content: center;
 }
 
-@media screen and (min-width: 768px) {
-  .footer {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-  }
-}
-
-.footer_text {
-  color: var(--black-text-color);
+.footer-text_firt {
   font-family: Roboto;
   font-size: 14px;
   line-height: 1.14;
+  padding-top: 30px;
+  padding-bottom: 9.9px;
 }
 
 @media screen and (min-width: 768px) {
-  .footer_text {
+  .footer-text_firt {
     padding-top: 30px;
     padding-bottom: 30px;
     font-weight: 400;
@@ -154,34 +147,26 @@ button {
   }
 }
 
-.adds {
-  padding-top: 28.71px;
-  padding-bottom: 9.9px;
+.footer-text_second {
+  padding-bottom: 29.7px;
 }
 
-.icon {
+@media screen and (min-width: 768px) {
+  .footer-text_second {
+    padding-top: 30px;
+    padding-bottom: 30px;
+  }
+}
+
+.footer-text_link {
+  padding-left: 5px;
+  color: var(--black-text-color);
+}
+
+.footer_icon {
   width: 14px;
   height: 13px;
   margin-left: 10px;
   margin-right: 10px;
-  margin-bottom: 29px;
-}
-
-@media screen and (min-width: 768px) {
-  .icon {
-    margin-top: 30px;
-    margin-bottom: 30px;
-  }
-}
-
-.goit {
-  padding-left: 5px;
-}
-
-@media screen and (min-width: 768px) {
-  .by {
-    margin-top: 30px;
-    margin-bottom: 30px;
-  }
 }
 /*# sourceMappingURL=main.css.map */
