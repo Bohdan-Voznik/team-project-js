@@ -1,14 +1,10 @@
-/*
- * Главный файл стилей.
- * Все паршалы подключаются сюда.
- */
-
-// // Стили для файла с примером HTML-фрагмента
 @import './utils/hiden';
 @import './utils/reset';
 @import './utils/variables';
-
 @import './components/container';
+
 @import './components/film-list';
+@import './components/pagination';
+@import './components/footer';
 
 @import './components/modal-film-info';
