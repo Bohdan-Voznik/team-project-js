@@ -4,18 +4,16 @@
   list-style: none;
 }
 
-.pagination-box__digit {
-  margin-right: 10px;
-}
-.pagination-box__arrow {
+.arrow {
   border-radius: 20%;
   background-color: #f7f7f7;
 }
 
-.pagination-box__arrow:not(:last-child) {
+.arrow:not(:last-child) {
   margin-right: 10px;
 }
 .pagination-box__link {
+  margin-right: 10px;
   width: 40px;
   height: 40px;
   font-family: Roboto;
