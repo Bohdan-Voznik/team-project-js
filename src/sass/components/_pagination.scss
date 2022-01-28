@@ -1,0 +1,43 @@
+.pagination-box {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+}
+
+.arrow {
+  border-radius: 20%;
+  background-color: #f7f7f7;
+}
+
+.arrow:not(:last-child) {
+  margin-right: 10px;
+}
+.pagination-box__link {
+  margin-right: 10px;
+  width: 40px;
+  height: 40px;
+  font-family: Roboto;
+  font-style: bold;
+  font-weight: 900;
+  font-size: 12px;
+  line-height: 1.33;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* radius: 5px; */
+  border-radius: 20%;
+
+  color: #000000;
+  text-decoration: none;
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.pagination-box__link:hover,
+.pagination-box__link:focus {
+  background-color: #ff6b08;
+  color: #fff;
+}
+
+.pagination-box__icon {
+  fill: currentColor;
+}
