@@ -1,0 +1,172 @@
+@charset "UTF-8";
+/*
+ * Главный файл стилей.
+ * Все паршалы подключаются сюда.
+ */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  clip: rect(0 0 0 0);
+}
+
+.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+*,
+*::before,
+*::after {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+}
+
+body {
+  margin: 0;
+  font-family: DM Sans;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+button {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.link {
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+}
+
+.list {
+  padding: 0px;
+  margin: 0px;
+  list-style-type: none;
+}
+
+:root {
+  --white-text-color: #ffffff;
+  --black-text-color: #000000;
+  --orange-text-color: #ff6b08;
+  --footer-text-color: #545454;
+  --secondary-title-color: #ffa5ba;
+  --bg-color: #ffffff;
+  --secondary-bg-color: #f7f7f7;
+  --accent-color: #ff6b08;
+  --button-accent-color: #ff6b01;
+  --button-text-color: #ffffff;
+}
+
+.container {
+  margin-left: auto;
+  margin-right: auto;
+  width: 320px;
+  padding-left: 20px;
+  padding-right: 20px;
+  outline: 1px solid red;
+}
+
+@media screen and (min-width: 768px) {
+  .container {
+    width: 768px;
+    padding-left: 76px;
+    padding-right: 76px;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .container {
+    width: 1024px;
+  }
+}
+
+.films {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+@media screen and (min-width: 768px) {
+  .films {
+    padding-top: 60px;
+    padding-bottom: 50px;
+  }
+}
+
+.footer-bg {
+  background-color: var(--secondary-bg-color);
+}
+
+.footer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.footer-text_firt {
+  font-family: Roboto;
+  font-size: 14px;
+  line-height: 1.14;
+  padding-top: 30px;
+  padding-bottom: 9.9px;
+}
+
+@media screen and (min-width: 768px) {
+  .footer-text_firt {
+    padding-top: 30px;
+    padding-bottom: 30px;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.18;
+    text-align: center;
+  }
+}
+
+.footer-text_second {
+  padding-bottom: 29.7px;
+}
+
+@media screen and (min-width: 768px) {
+  .footer-text_second {
+    padding-top: 30px;
+    padding-bottom: 30px;
+  }
+}
+
+.footer-text_link {
+  padding-left: 5px;
+  color: var(--black-text-color);
+}
+
+.footer_icon {
+  width: 14px;
+  height: 13px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+/*# sourceMappingURL=main.css.map */
