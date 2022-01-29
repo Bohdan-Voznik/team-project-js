@@ -3,8 +3,17 @@
 @import './utils/variables';
 @import './components/container';
 
+<<<<<<< Updated upstream
 @import './components/film-list';
 @import './components/pagination';
 @import './components/footer';
 
 @import './components/modal-film-info';
+=======
+@import './components/header';
+@import './components/header-main';
+@import './components/header-lib';
+@import './components/modal-film-info';
+@import './components/pagination';
+@import './components/footer';
+>>>>>>> Stashed changes
