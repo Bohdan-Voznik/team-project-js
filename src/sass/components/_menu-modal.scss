@@ -1,0 +1,228 @@
+.backdrop-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.2);
+
+  opacity: 1;
+  transition: opasity 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.backdrop-menu.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.backdrop-menu.is-hidden .modal {
+  transform: translate(-10%, -30%) scale(0.6);
+}
+
+.modal-menu {
+  position: absolute;
+  top: 30%;
+  right: 5%;
+  transform: translate(-10%, -30%) scale(1);
+  width: 300px;
+  height: 300px;
+  border-radius: 4px;
+  background-image: linear-gradient(rgba(45, 46, 51, 0.644), rgba(52, 52, 56, 0.733)),
+    url(../img/modal-menu-min.jpg);
+  background-size: cover;
+
+  transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.modal-menu__button {
+  position: absolute;
+  display: flex;
+  width: 15px;
+  height: 15px;
+  top: 8px;
+  right: 8px;
+  background-color: transparent;
+
+  box-sizing: border-box;
+  border-radius: 20%;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-button__icon {
+  fill: rgb(255, 255, 255);
+}
+.modal-button__icon:focus,
+.modal-button__icon:active,
+.modal-button__icon:hover {
+  fill: #ff6b08;
+}
+.list-link {
+  display: inline-flex;
+  align-items: center;
+  color: #fff;
+  text-decoration: none;
+  font-size: 10px;
+}
+
+.categoty__options {
+  display: flex;
+  align-items: center;
+  color: #fff;
+  text-decoration: none;
+  text-align: center;
+  font-size: 13px;
+  height: 15px;
+  width: 100px;
+  background-color: #ff6b089f;
+  border-radius: 4px;
+  margin-top: 7px;
+}
+
+.options-wrapper {
+  position: absolute;
+  padding-top: 20px;
+  padding-left: 20px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.lang-wrapper {
+  //   position: absolute;
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+}
+.theme-wrapper {
+  //   position: absolute;
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+}
+
+.btn-lang {
+  font-family: Robato;
+  background-color: transparent;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  font-size: 10px;
+
+  outline: none;
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+.switch {
+  position: relative;
+  display: flex;
+  width: 35px;
+  height: 20px;
+  margin-bottom: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider-theme {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgb(163, 154, 154);
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider-theme:before {
+  position: absolute;
+  content: '';
+  height: 16px;
+  width: 16px;
+  left: 4px;
+  bottom: 2px;
+  background-color: rgb(255, 255, 255);
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.checkbox-theme:checked + .slider-theme {
+  background-color: #000000;
+}
+
+.checkbox-theme:focus + .slider-theme {
+  box-shadow: 0 0 1px #ffffff;
+}
+
+.checkbox-theme:checked + .slider-theme:before {
+  -webkit-transform: translateX(12px);
+  -ms-transform: translateX(12px);
+  transform: translateX(12px);
+}
+
+/* Rounded sliders */
+.slider-theme.round {
+  border-radius: 34px;
+}
+
+.slider-theme.round:before {
+  border-radius: 50%;
+}
+
+.slider-lang {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ff6b08;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider-lang:before {
+  position: absolute;
+  content: '';
+  height: 16px;
+  width: 16px;
+  left: 4px;
+  bottom: 2px;
+  background-color: rgb(255, 255, 255);
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.checkbox-lang:checked + .slider-lang {
+  background-color: rgb(163, 154, 154);
+}
+
+.checkbox-lang:focus + .slider-lang {
+  box-shadow: 0 0 1px #ff6b08;
+}
+
+.checkbox-lang:checked + .slider-lang:before {
+  -webkit-transform: translateX(12px);
+  -ms-transform: translateX(12px);
+  transform: translateX(12px);
+}
+
+/* Rounded sliders */
+.slider-lang.round {
+  border-radius: 34px;
+}
+
+.slider-lang.round:before {
+  border-radius: 50%;
+}
