@@ -7,9 +7,7 @@ html {
 }
 
 .logo {
-  position: absolute;
   top: 52px;
-
   @media screen and (min-width: 768px) {
     display: flex;
     align-items: baseline;
