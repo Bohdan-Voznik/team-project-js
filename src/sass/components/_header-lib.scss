@@ -107,3 +107,6 @@
 .side-nav--lib {
   margin-bottom: 51px;
 }
+.darkmode--activated #my-element-with-background {
+  filter: invert(0);
+}
