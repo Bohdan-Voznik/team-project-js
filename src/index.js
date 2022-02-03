@@ -139,8 +139,6 @@ function addToQueue() {
 function closeInfoModal() {
   document.body.style.overflow = 'auto'; //Разрешаем прокрутку body, пока модалка закрыта
   refs.modalInfo.classList.toggle('is-hidden'); //скрываем модалку, вешая класс
-  // if (modalFilm.objFilm.watched || modalFilm.objFilm.queue)
-  dataBaseAPI.resetLiberuStatus(modalFilm.objFilm); //проверка, чтобы хотяб один статус true, чтобы не отправлять лишнее на БД
 }
 
 //==================
