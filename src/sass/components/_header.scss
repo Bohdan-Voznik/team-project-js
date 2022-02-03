@@ -54,10 +54,8 @@ html {
   color: var(--white-text-color);
 }
 
-.side-nav__item {
-  &:first-child {
-    margin-right: 39px;
-  }
+.side-nav__item:not(:last-child) {
+  margin-right: 25px;
 }
 
 .side-nav__link {
