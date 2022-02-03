@@ -29,11 +29,13 @@
 
   color: #000000;
   text-decoration: none;
-  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  // transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  
 }
 
 .pagination-box__link:hover,
 .pagination-box__link:focus {
+  filter: invert(0);
   background-color: #ff6b08;
   color: #fff;
 }
