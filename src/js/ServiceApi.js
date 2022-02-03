@@ -151,7 +151,8 @@ export default class ServiceApi {
       console.log('no film');
       return 'Error';
     }
-    return this.arrayForFilms[filmIndex];
+    console.log(filmIndex.indexOf(+id));
+    return this.arrayForFilms[filmIndex.indexOf(+id)];
   }
   get pageNumber() {
     return this.page;

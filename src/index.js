@@ -5,18 +5,31 @@ import DataBaseAPI from './js/dataBaseAPI';
 import ServiceApi from './js/ServiceApi';
 import * as filmsMarcup from './js/film-list';
 import Darkmode from 'darkmode-js';
-
+import ModalFilm from './js/modal-film-info';
 
 const dataBaseAPI = new DataBaseAPI();
 const serviceApi = new ServiceApi();
+const modalFilm = new ModalFilm();
 new Darkmode().showWidget();
 
 const refs = {
   ulItem: document.querySelector('.film__list'),
   serchForm: document.querySelector('.search-form'),
+  filmList: document.querySelector('.film__list'),
+  modalInfo: document.querySelector('.background'),
+  modalInfoCloseBtn: document.querySelector('.modal__close-btn'),
+  modalContent: document.querySelector('.modal__content'),
 };
 
+let filmId = null;
+let btnWatched = null;
+let btnQueue = null;
+
 refs.serchForm.addEventListener('submit', onFormSerchSubmit);
+refs.filmList.addEventListener('click', openInfoModal);
+refs.modalInfoCloseBtn.addEventListener('click', closeInfoModal);
+
+//====LOGIN
 logIn();
 
 // dataBaseAPI.logOut();
@@ -50,27 +63,84 @@ async function onFormSerchSubmit(e) {
   refs.ulItem.innerHTML = data;
 }
 
-
-const options = {
-  bottom: '64px', // default: '32px'
-  right: 'unset', // default: '32px'
-  left: '32px', // default: 'unset'
-  time: '0.5s', // default: '0.3s'
-  mixColor: '#fff', // default: '#fff'
-  backgroundColor: '#fff',  // default: '#fff'
-  buttonColorDark: '#100f2c',  // default: '#100f2c'
-  buttonColorLight: '#fff', // default: '#fff'
-  saveInCookies: false, // default: true,
-  label: '🌖', // default: ''
-  autoMatchOsTheme: true // default: true
-  
-}
 const switchCheckbox = document.querySelector('.switch__checkbox');
 const switchToggle = document.querySelector('.darkmode-toggle');
 console.log(switchToggle);
 
 switchToggle.addEventListener('click', onChangeBg);
 function onChangeBg() {
- if (switchCheckbox.checked) switchCheckbox.checked = false
-else switchCheckbox.checked = true;
- };
+  if (switchCheckbox.checked) switchCheckbox.checked = false;
+  else switchCheckbox.checked = true;
+}
+
+//============Pavel modal-film
+function checkButtonData() {
+  if (modalFilm.objFilm.watched) btnWatched.classList.add('selected');
+  else btnWatched.classList.remove('selected');
+
+  if (modalFilm.objFilm.queue) btnQueue.classList.add('selected');
+  else btnQueue.classList.remove('selected');
+}
+
+function openInfoModal(e) {
+  e.preventDefault();
+  const filmCard = e.target.closest('.film__item');
+  filmId = filmCard.dataset.id;
+
+  const serviceData = serviceApi.getFilmById(filmId);
+  const databaseData = dataBaseAPI.getLiberuStatus(filmId);
+
+  modalFilm.setFilm = Object.assign(serviceData, databaseData);
+
+  //dataBaseAPI.getFilmByid({ category: dataBaseAPI.user.watched, id: filmId });
+
+  document.body.style.overflow = 'hidden'; //Запрещаем прокрутку body, пока открыта модалка
+
+  refs.modalContent.innerHTML = modalFilm.createMarkup();
+
+  //Находим кнопки по data-att:
+  btnWatched = document.querySelector('button[data-watched]');
+  btnQueue = document.querySelector('button[data-queue]');
+  checkButtonData();
+
+  //Вешаем события по кликам на кнопки:
+  btnWatched.addEventListener('click', addToWatched);
+  btnQueue.addEventListener('click', addToQueue);
+
+  // modalContent.insertAdjacentHTML('beforeend', modalTpl(filmObj));
+
+  if (filmCard) refs.modalInfo.classList.toggle('is-hidden'); //открываем модалку, убирая класс
+}
+
+function addToWatched() {
+  if (modalFilm.objFilm.watched) {
+    btnWatched.classList.remove('selected');
+    modalFilm.objFilmWatched = false;
+    btnWatched.setAttribute('data-watched', modalFilm.objFilm.watched);
+  } else {
+    btnWatched.classList.add('selected');
+    modalFilm.objFilmWatched = true;
+    btnWatched.setAttribute('data-watched', modalFilm.objFilm.watched);
+  }
+}
+
+function addToQueue() {
+  if (modalFilm.objFilm.queue) {
+    btnQueue.classList.remove('selected');
+    modalFilm.objFilmQueue = false;
+    btnQueue.setAttribute('data-queue', modalFilm.objFilm.queue);
+  } else {
+    btnQueue.classList.add('selected');
+    modalFilm.objFilmQueue = true;
+    btnQueue.setAttribute('data-queue', modalFilm.objFilm.queue);
+  }
+}
+
+function closeInfoModal() {
+  document.body.style.overflow = 'auto'; //Разрешаем прокрутку body, пока модалка закрыта
+  refs.modalInfo.classList.toggle('is-hidden'); //скрываем модалку, вешая класс
+  // if (modalFilm.objFilm.watched || modalFilm.objFilm.queue)
+  dataBaseAPI.resetLiberuStatus(modalFilm.objFilm); //проверка, чтобы хотяб один статус true, чтобы не отправлять лишнее на БД
+}
+
+//==================
