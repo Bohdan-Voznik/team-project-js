@@ -150,3 +150,9 @@
   align-items: baseline;
   margin-bottom: 10px;
 }
+.darkmode--activated #my-element-with-background {
+  filter: invert(0);
+}
+#my-element-with-background {
+  filter: invert(0);
+}
