@@ -4,9 +4,12 @@ import { getDatabase, ref, get, update } from 'firebase/database';
 import DataBaseAPI from './js/dataBaseAPI';
 import ServiceApi from './js/ServiceApi';
 import * as filmsMarcup from './js/film-list';
+import Darkmode from 'darkmode-js';
+
 
 const dataBaseAPI = new DataBaseAPI();
 const serviceApi = new ServiceApi();
+new Darkmode().showWidget();
 
 const refs = {
   ulItem: document.querySelector('.film__list'),
@@ -46,3 +49,28 @@ async function onFormSerchSubmit(e) {
   const data = filmsMarcup.createMarkup(films.films);
   refs.ulItem.innerHTML = data;
 }
+
+
+const options = {
+  bottom: '64px', // default: '32px'
+  right: 'unset', // default: '32px'
+  left: '32px', // default: 'unset'
+  time: '0.5s', // default: '0.3s'
+  mixColor: '#fff', // default: '#fff'
+  backgroundColor: '#fff',  // default: '#fff'
+  buttonColorDark: '#100f2c',  // default: '#100f2c'
+  buttonColorLight: '#fff', // default: '#fff'
+  saveInCookies: false, // default: true,
+  label: '🌖', // default: ''
+  autoMatchOsTheme: true // default: true
+  
+}
+const switchCheckbox = document.querySelector('.switch__checkbox');
+const switchToggle = document.querySelector('.darkmode-toggle');
+console.log(switchToggle);
+
+switchToggle.addEventListener('click', onChangeBg);
+function onChangeBg() {
+ if (switchCheckbox.checked) switchCheckbox.checked = false
+else switchCheckbox.checked = true;
+ };
