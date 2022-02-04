@@ -12,6 +12,7 @@ const serviceApi = new ServiceApi();
 const modalFilm = new ModalFilm();
 new Darkmode().showWidget();
 
+
 const refs = {
   ulItem: document.querySelector('.film__list'),
   serchForm: document.querySelector('.search-form'),
@@ -31,7 +32,20 @@ refs.modalInfoCloseBtn.addEventListener('click', closeInfoModal);
 
 //====LOGIN
 logIn();
+<<<<<<< Updated upstream
 
+=======
+// --------------------Меняем язык ввода-----------
+function changeLanguage(){
+ language.select=refs.select;
+  language.changeDataSet();
+  language.changeLanguage(murcup);
+ 
+};
+function murcup (key,lang){
+  document.querySelector(`.lng-${key}`).innerHTML=language.tranclater[key][lang];}
+// --------------------Меняем язык ввода-----------
+>>>>>>> Stashed changes
 // dataBaseAPI.logOut();
 
 //-----------------Проверяем наичие логина и пароля в localStorage-----------------
@@ -47,11 +61,14 @@ function storageCheck() {
 }
 
 async function logIn() {
+  
   await dataBaseAPI.logIn({ email: 'lol@gmail.com', pasword: '11' });
   const films = await serviceApi.fetchTrending({ page: 1, period: 'week' });
   console.log(films.films);
-  const data = filmsMarcup.createMarkup(films.films);
+
+  const data = filmsMarcup.createMarkup(films.films, 'en');
   refs.ulItem.innerHTML = data;
+  
 }
 
 async function onFormSerchSubmit(e) {
@@ -59,7 +76,7 @@ async function onFormSerchSubmit(e) {
   const query = e.target.query.value;
   const films = await serviceApi.fetchMoviesBySearch({ query, page: 1 });
 
-  const data = filmsMarcup.createMarkup(films.films);
+  const data = filmsMarcup.createMarkup(films.films, 'ua');
   refs.ulItem.innerHTML = data;
 }
 
