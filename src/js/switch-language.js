@@ -22,6 +22,7 @@ export default class LanguageApi {
             en: "GoIT Students",
             ua:"GoIT Студентами",
         },
+        
     }
         
     }
