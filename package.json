@@ -28,6 +28,6 @@
   "dependencies": {
     "axios": "^0.25.0",
     "darkmode-js": "^1.5.7",
-    "firebase": "^9.6.5" 
+    "firebase": "^9.6.6"
   }
 }
