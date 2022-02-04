@@ -10,17 +10,21 @@ export default class LanguageApi {
        right :{
             
     en: "2020 | All Rights Reserved",
-    ua:"2020 | Все права защищены",
+    ua:"2020 | Усі права захищено",
         
             
         },
         developed: {
-            en: "Developed with",
-            ua:"Разработано с",
+            en: "| Developed with",
+            ua:"| Розроблено",
+        },
+        by:{
+            en: "by",
+            ua: " ",
         },
         goit: {
             en: "GoIT Students",
-            ua:"GoIT Студентами",
+            ua:"Студентами GoIT",
         },
     }
         
@@ -37,6 +41,7 @@ export default class LanguageApi {
         console.log(lang);
         Object.keys(this.tranclater).map(key=>{
             console.log((key));
+       
          fn(key,lang) 
             })
        
