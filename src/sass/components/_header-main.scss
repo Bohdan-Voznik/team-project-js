@@ -1,11 +1,5 @@
-.header-section {
-  padding-top: 58px;
-}
 // bg
 .header-bg {
-  margin-left: auto;
-  margin-right: auto;
-
   max-width: 320px;
   min-height: 230px;
 
@@ -16,6 +10,7 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  padding-top: 58px;
 
   @media screen and (max-width: 768px) and (min-device-pixel-ratio: 2),
     screen and (max-width: 768px) and (min-resolution: 192dpi),
@@ -26,7 +21,7 @@
 
   @media screen and (min-width: 768px) {
     max-width: 768px;
-
+    padding-top: 58px;
     background-image: linear-gradient(rgba(0, 0, 0, 0.56), rgba(0, 0, 0, 0.56)),
       url(../img/header-bg-main-tablet.jpg);
 
@@ -34,12 +29,13 @@
       screen and (max-width: 1024px) and (min-resolution: 192dpi),
       screen and (max-width: 1024px) and (min-resolution: 2dppx) {
       background-image: linear-gradient(rgba(0, 0, 0, 0.56), rgba(0, 0, 0, 0.56)),
-        url(../img/header-bg-main-tablet.jpg);
+        url(../img/header-bg-main-tablet@2x.jpg);
     }
   }
 
   @media screen and (min-width: 1024px) {
     max-width: 1024px;
+    padding-top: 50px;
     background-image: linear-gradient(rgba(0, 0, 0, 0.56), rgba(0, 0, 0, 0.56)),
       url(../img/header-bg-main-desktop.jpg);
 
@@ -118,35 +114,19 @@
     color: var(--accent-color);
   }
 }
-.navigation__filmoteka {
-  display: flex;
-}
-.header-authorization {
-  display: flex;
-  align-items: baseline;
-}
+.home:focus {
+  position: relative;
 
-.vector-icon {
-  text-decoration: none;
+  &::after {
+    content: '';
 
-  fill: #818181;
-  background-color: transparent;
-  border: transparent;
-  cursor: pointer;
-}
-.header-authorization__text {
-  font-family: $mainFont;
-  font-weight: 500;
-  font-size: 13.5px;
-  line-height: 1.17;
-  text-transform: uppercase;
-  margin-right: 10px;
-  color: var(--white-text-color);
-  text-decoration: none;
-}
-.navigation {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  margin-bottom: 10px;
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+
+    height: 3px;
+    width: 100%;
+
+    background-color: var(--accent-color);
+  }
 }

@@ -1,41 +1,53 @@
-
-  <header class="header-bg container">
-      <div class="header-section ">
-        <nav class="navigation">
-          <a class="navigation__logo logo">
+<header class="header-section">
+  <div class="container header-bg-lib header-bg" id="header">
+    <nav class="navigation">
+      <ul class="side-nav list">
+        <li class="side-nav__item">
+          <button type="button" class="navigation__logo logo" id="navigation-logo">
             <svg class="logo__icon" width="24" height="24">
               <use href="./img/sprite.svg#logo"></use>
             </svg>
-            <span class="logo__name">Filmoteka</span>
-          </a>
-
-          <ul class="side-nav list">
-            <li class="side-nav__item">
-              <a href=""class="side-nav__link side-nav__link--current-page">Home</a>
-            </li>
-            <li class="side-nav__item">
-              <a href="" class="side-nav__link">My library</a>
-            </li>
-            <li class="side-nav__item">
-              <a href="" class="side-nav__link">LOG IN</a>
-            </li>
-          </ul>
-        </nav>
-
-        <form class="search-form" id="search-form">
-          <input
-            type="text"
-            name="query"
-            autocomplete="off"
-            placeholder="Поиск фильмов"
-            class="search-field"
-          />
-          <button type="submit" class="search-btn">
-            <svg class="search-icon" width="12" height="12">
-              <use href="./img/sprite.svg#icon-search"></use>
-            </svg>
+            <span class="logo__name">Filmoteka</span> 
           </button>
-        </form>
+        </li>
+        <li class="side-nav__item">
+          <button type="button" class="side-nav__link  home">HOME</button>
+        </li>
+        <li class="side-nav__item">
+          <button type="button" class="side-nav__link  library">MY LIBRARY</button>
+        </li>
+        <li class="side-nav__item">
+          <button type="button" class="side-nav__link">LOG IN</button>
+        </li>
+      </ul>
+    </nav>
+
+    <form class="search-form" id="home-page">
+      <input required type="text" minlength="4" name="query" autocomplete="off" placeholder="Поиск фильмов" class="search-field" pattern="\D [^0-9]"/>
+      <button type="submit" class="search-btn">
+        <svg class="search-icon" width="12" height="12">
+          <use href="./img/sprite.svg#icon-search"></use>
+        </svg>
+      </button>
+    </form>
+    <form class="form-group is-hidden" id="library-page">
+      <div role="group">
+        <ul class="storage list">
+          <li class="storage__item">
+            <label class="storage__label">
+              <input type="radio" name="storage-btn" value="Watched" class="storage__input visually-hidden" checked />
+              <span class="storage__btn">Watched</span>
+            </label>
+          </li>
+          <li class="storage__item">
+            <label class="storage__label">
+              <input type="radio" name="storage-btn" value="Queue" class="storage__input visually-hidden" />
+              <span class="storage__btn">Queue</span>
+            </label>
+          </li>
+        </ul>
       </div>
+    </form>
+  </div>
 </header>
 
