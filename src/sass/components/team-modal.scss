@@ -1,5 +1,11 @@
+.no-scroll {
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  overflow: hidden;
+}
 .transitions {
-  transition-property: background-color, fill;
+  transition-property: background-color, fill, opacity;
   transition-duration: 250ms;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -54,7 +60,7 @@
 
   @media screen and (min-width: 1024px) {
     width: 880px;
-    min-height: 660px;
+    min-height: 680px;
     overflow-y: hidden;
   }
 
@@ -194,10 +200,6 @@
     align-items: center;
     padding-top: 5px;
     padding-bottom: 7px;
-  }
-
-  &__card-content--twoline {
-    padding-top: 5px;
   }
 
   &__name {
