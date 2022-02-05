@@ -1,16 +1,19 @@
 import './sass/main.scss';
 import { initializeApp } from 'firebase/app';
 import { getDatabase, ref, get, update } from 'firebase/database';
+import 'tui-pagination/dist/tui-pagination.css';
+import { async, contains } from '@firebase/util';
+import Darkmode from 'darkmode-js';
+
+import './js/my-header';
 import DataBaseAPI from './js/dataBaseAPI';
 import ServiceApi from './js/ServiceApi';
 import * as filmsMarcup from './js/film-list';
-import Darkmode from 'darkmode-js';
 import ModalFilm from './js/modal-film-info';
 import teamModal from './js/team-modal-open';
 import Language from './js/switch-language';
 import Pagination from 'tui-pagination';
-import 'tui-pagination/dist/tui-pagination.css';
-import { async, contains } from '@firebase/util';
+
 
 
 const dataBaseAPI = new DataBaseAPI();
