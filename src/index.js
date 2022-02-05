@@ -6,6 +6,7 @@ import ServiceApi from './js/ServiceApi';
 import * as filmsMarcup from './js/film-list';
 import Darkmode from 'darkmode-js';
 import ModalFilm from './js/modal-film-info';
+import teamModal from './js/team-modal-open';
 import Language from './js/switch-language';
 
 const dataBaseAPI = new DataBaseAPI();
@@ -153,3 +154,4 @@ function closeInfoModal() {
 }
 
 //==================
+
