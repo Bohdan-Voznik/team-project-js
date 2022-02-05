@@ -1,18 +1,28 @@
 .pagination-box {
   display: flex;
   justify-content: center;
+  // justify-content: space-between;
   list-style: none;
 }
 
-.arrow {
+.tui-prev {
   border-radius: 20%;
-  background-color: #f7f7f7;
+
+  background-image: url(../img/arrow-left2.svg);
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: 20px 20px;
+}
+.tui-next {
+  border-radius: 20%;
+
+  background-image: url(../img/arrow-right2.svg);
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: 20px 20px;
 }
 
-.arrow:not(:last-child) {
-  margin-right: 10px;
-}
-.pagination-box__link {
+.tui-page-btn {
   margin-right: 10px;
   width: 40px;
   height: 40px;
@@ -26,20 +36,74 @@
   justify-content: center;
   /* radius: 5px; */
   border-radius: 20%;
-
+  // margin: auto;
   color: #000000;
   text-decoration: none;
   // transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1);
-  
 }
 
-.pagination-box__link:hover,
-.pagination-box__link:focus {
+.tui-page-btn:hover,
+.tui-page-btn:focus {
   filter: invert(0);
   background-color: #ff6b08;
   color: #fff;
 }
 
+.tui-prev:hover,
+.tui-prev:focus {
+  border-radius: 20%;
+
+  background-image: url(../img/arrow-left.svg);
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: 20px 20px;
+}
+.tui-next:hover,
+.tui-next:focus {
+  border-radius: 20%;
+
+  background-image: url(../img/arrow-right.svg);
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: 20px 20px;
+}
+
 .pagination-box__icon {
   fill: currentColor;
+}
+
+.tui-is-selected {
+  filter: invert(0);
+  background-color: #ff6b08;
+  color: #fff;
+}
+
+.tui-pagination .tui-isselected,
+.tui-page-inputs .tui-page-current,
+.tui-pagination strong {
+  color: #fff;
+  background: #ff6b08;
+  border-radius: 20%;
+  cursor: default;
+}
+
+.tui-first,
+.custom-class-last {
+  display: none;
+}
+
+.tui-prev.tui-is-disabled {
+  background-color: rgb(184, 183, 183);
+}
+.tui-prev.tui-is-disabled:hover {
+  background-color: rgb(184, 183, 183);
+  background-image: url(../img/arrow-left2.svg);
+}
+
+.tui-next.tui-is-disabled {
+  background-color: rgb(184, 183, 183);
+}
+.tui-next.tui-is-disabled:hover {
+  background-color: rgb(184, 183, 183);
+  background-image: url(../img/arrow-right2.svg);
 }

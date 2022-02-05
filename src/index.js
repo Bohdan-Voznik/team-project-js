@@ -7,12 +7,49 @@ import * as filmsMarcup from './js/film-list';
 import Darkmode from 'darkmode-js';
 import ModalFilm from './js/modal-film-info';
 import Language from './js/switch-language';
+import Pagination from 'tui-pagination';
+import 'tui-pagination/dist/tui-pagination.css';
+import { async, contains } from '@firebase/util';
+
 
 const dataBaseAPI = new DataBaseAPI();
 const serviceApi = new ServiceApi();
 const modalFilm = new ModalFilm();
 new Darkmode().showWidget();
 const language = new Language();
+const options = {
+  totalItems: 0,
+  itemsPerPage: 20,
+  visiblePages: 5,
+  page: 1,
+  centerAlign: true,
+  firstItemClassName: 'tui-first-child',
+  lastItemClassName: 'tui-last-child',
+
+  template: {
+    page: '<a href="#" data-page="{{page}}" class="tui-page-btn">{{page}}</a>',
+    currentPage: '<strong class="tui-page-btn tui-is-selected">{{page}}</strong>',
+    moveButton:
+      '<a href="#" data-more="{{type}}" class="tui-page-btn tui-{{type}} custom-class-{{type}}">' +
+      '<span class="tui-ico-{{type}}"></span>' +
+      '</a>',
+    disabledMoveButton:
+      '<span class="tui-page-btn tui-is-disabled tui-{{type}} custom-class-{{type}}">' +
+      '<span class="tui-ico-{{type}}"></span>' +
+      '</span>',
+    moreButton:
+      '<a href="#" class="tui-page-btn tui-{{type}}-is-ellip custom-class-{{type}}">' +
+      '<span class="tui-ico-ellip">...</span>' +
+      '</a>'
+  
+  }
+};
+const pagination = new Pagination('pagination', options);
+
+
+
+
+
 
 const refs = {
   ulItem: document.querySelector('.film__list'),
@@ -22,6 +59,8 @@ const refs = {
   modalInfoCloseBtn: document.querySelector('.modal__close-btn'),
   modalContent: document.querySelector('.modal__content'),
   select: document.querySelector('.change-lang'),
+  pagination: document.getElementById('pagination'),
+
 };
 
 let filmId = null;
@@ -32,6 +71,27 @@ refs.serchForm.addEventListener('submit', onFormSerchSubmit);
 refs.filmList.addEventListener('click', openInfoModal);
 refs.modalInfoCloseBtn.addEventListener('click', closeInfoModal);
 refs.select.addEventListener('change', changeLanguage);
+refs.pagination.addEventListener('click', onPage);
+
+//====================PAGINATION===================//
+
+async function onPage(e) {
+  
+   if (e.currentTarget === e.target ) {
+    return;
+  }
+  const currentPage = pagination.getCurrentPage();
+  pagination.movePageTo(currentPage);
+     const films = await serviceApi.fetchTrending({ page: currentPage, period: 'week' });
+    window.scrollTo(0, 240) 
+      const data = filmsMarcup.createMarkup(films.films);
+  refs.ulItem.innerHTML = data;
+ 
+ 
+
+}
+ 
+
 //====LOGIN
 logIn();
 // --------------------Меняем язык ввода-----------
@@ -61,10 +121,16 @@ function storageCheck() {
 async function logIn() {
   await dataBaseAPI.logIn({ email: 'lol@gmail.com', pasword: '11' });
   const films = await serviceApi.fetchTrending({ page: 1, period: 'week' });
+ 
+  pagination.reset(serviceApi.totalPages);
+
+
   console.log(films.films);
   const data = filmsMarcup.createMarkup(films.films);
   refs.ulItem.innerHTML = data;
+  
 }
+
 
 async function onFormSerchSubmit(e) {
   e.preventDefault();
@@ -73,6 +139,7 @@ async function onFormSerchSubmit(e) {
 
   const data = filmsMarcup.createMarkup(films.films);
   refs.ulItem.innerHTML = data;
+  pagination.reset(serviceApi.totalPages);
 }
 
 const switchCheckbox = document.querySelector('.switch__checkbox');
@@ -152,4 +219,3 @@ function closeInfoModal() {
   refs.modalInfo.classList.toggle('is-hidden'); //скрываем модалку, вешая класс
 }
 
-//==================
