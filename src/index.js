@@ -6,12 +6,14 @@ import ServiceApi from './js/ServiceApi';
 import * as filmsMarcup from './js/film-list';
 import Darkmode from 'darkmode-js';
 import ModalFilm from './js/modal-film-info';
-import TeamModal from './js/team-modal-open';
+import teamModal from './js/team-modal-open';
+import Language from './js/switch-language';
 
 const dataBaseAPI = new DataBaseAPI();
 const serviceApi = new ServiceApi();
 const modalFilm = new ModalFilm();
 new Darkmode().showWidget();
+const language = new Language();
 
 const refs = {
   ulItem: document.querySelector('.film__list'),
@@ -20,6 +22,7 @@ const refs = {
   modalInfo: document.querySelector('.background'),
   modalInfoCloseBtn: document.querySelector('.modal__close-btn'),
   modalContent: document.querySelector('.modal__content'),
+  select: document.querySelector('.change-lang'),
 };
 
 let filmId = null;
@@ -29,10 +32,19 @@ let btnQueue = null;
 refs.serchForm.addEventListener('submit', onFormSerchSubmit);
 refs.filmList.addEventListener('click', openInfoModal);
 refs.modalInfoCloseBtn.addEventListener('click', closeInfoModal);
-
+refs.select.addEventListener('change', changeLanguage);
 //====LOGIN
 logIn();
-
+// --------------------Меняем язык ввода-----------
+function changeLanguage() {
+  language.select = refs.select;
+  language.changeDataSet();
+  language.changeLanguage(murcup);
+}
+function murcup(key, lang) {
+  document.querySelector(`.lng-${key}`).innerHTML = language.tranclater[key][lang];
+}
+// --------------------Меняем язык ввода-----------
 // dataBaseAPI.logOut();
 
 //-----------------Проверяем наичие логина и пароля в localStorage-----------------
@@ -85,6 +97,9 @@ function checkButtonData() {
 
 function openInfoModal(e) {
   e.preventDefault();
+
+  document.body.style.overflow = 'hidden'; //Запрещаем прокрутку body, пока открыта модалка
+
   const filmCard = e.target.closest('.film__item');
   filmId = filmCard.dataset.id;
 
@@ -95,9 +110,7 @@ function openInfoModal(e) {
 
   //dataBaseAPI.getFilmByid({ category: dataBaseAPI.user.watched, id: filmId });
 
-  document.body.style.overflow = 'hidden'; //Запрещаем прокрутку body, пока открыта модалка
-
-  refs.modalContent.innerHTML = modalFilm.createMarkup();
+  refs.modalContent.innerHTML = modalFilm.createMarkup(language.select);
 
   //Находим кнопки по data-att:
   btnWatched = document.querySelector('button[data-watched]');
@@ -107,8 +120,6 @@ function openInfoModal(e) {
   //Вешаем события по кликам на кнопки:
   btnWatched.addEventListener('click', addToWatched);
   btnQueue.addEventListener('click', addToQueue);
-
-  // modalContent.insertAdjacentHTML('beforeend', modalTpl(filmObj));
 
   if (filmCard) refs.modalInfo.classList.toggle('is-hidden'); //открываем модалку, убирая класс
 }
