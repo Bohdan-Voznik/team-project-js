@@ -20,7 +20,7 @@ export default class LanguageApi {
         },
         by:{
             en: "by",
-            ua: " ",
+            ua: "",
         },
         goit: {
             en: "GoIT Students",
