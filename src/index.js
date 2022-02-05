@@ -6,6 +6,7 @@ import ServiceApi from './js/ServiceApi';
 import * as filmsMarcup from './js/film-list';
 import Darkmode from 'darkmode-js';
 import ModalFilm from './js/modal-film-info';
+import teamModal from './js/team-modal-open';
 import Language from './js/switch-language';
 import Pagination from 'tui-pagination';
 import 'tui-pagination/dist/tui-pagination.css';
@@ -218,4 +219,5 @@ function closeInfoModal() {
   document.body.style.overflow = 'auto'; //Разрешаем прокрутку body, пока модалка закрыта
   refs.modalInfo.classList.toggle('is-hidden'); //скрываем модалку, вешая класс
 }
+
 
