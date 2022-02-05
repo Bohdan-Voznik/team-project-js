@@ -2,22 +2,30 @@ html {
   overflow-y: scroll;
 }
 
-.header-bg-color {
-  background-color: var(--black-text-color);
+.navigation__logo {
+  text-decoration: none;
+  color: inherit;
+  background-color: transparent;
+  border: transparent;
+  @media screen and (max-width: 768px) {
+    margin-right: 50px;
+  }
+  @media screen and (min-width: 768px) {
+    margin-right: 242px;
+  }
+  @media screen and (min-width: 1024px) {
+    margin-right: 498px;
+  }
+  cursor: pointer;
 }
-
 .logo {
   top: 52px;
   @media screen and (min-width: 768px) {
     display: flex;
     align-items: baseline;
   }
-
   text-decoration: none;
-
   color: #818181;
-
-  cursor: pointer;
 }
 
 .logo__icon {
@@ -30,19 +38,17 @@ html {
   @media screen and (max-width: 768px) {
     display: none;
   }
-
   font-family: $mainFont;
   font-weight: 500;
   font-size: 30px;
   line-height: 1.16;
-
   color: var(--white-text-color);
 }
 
 .side-nav {
   display: flex;
   justify-content: flex-end;
-
+  align-items: baseline;
   margin-bottom: 40px;
 
   font-family: $mainFont;
@@ -54,28 +60,35 @@ html {
   color: var(--white-text-color);
 }
 
-.side-nav__item:not(:last-child) {
+.side-nav__item:not(:last-child, :first-child) {
   margin-right: 25px;
 }
 
 .side-nav__link {
   text-decoration: none;
   color: inherit;
+  background-color: transparent;
+  border: transparent;
+  cursor: pointer;
 }
 
-.side-nav__link--current-page {
-  position: relative;
-
-  &::after {
-    content: '';
-
-    position: absolute;
-    bottom: -3px;
-    left: 0;
-
-    height: 3px;
-    width: 100%;
-
-    background-color: var(--accent-color);
+.warning-notification {
+  width: 380px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 14px;
+  line-height: 1.17;
+  font-weight: 400;
+  color: red;
+  @media screen and (max-width: 768px) {
+    margin-top: 22px;
+    width: 280px;
+  }
+  @media screen and (min-width: 768px) {
+  }
+  margin-top: 22px;
+  @media screen and (min-width: 1024px) {
+    margin-top: 22px;
   }
 }

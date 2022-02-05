@@ -8,6 +8,7 @@ import Darkmode from 'darkmode-js';
 import ModalFilm from './js/modal-film-info';
 import teamModal from './js/team-modal-open';
 import Language from './js/switch-language';
+import './js/my-header';
 
 const dataBaseAPI = new DataBaseAPI();
 const serviceApi = new ServiceApi();
