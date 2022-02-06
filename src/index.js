@@ -14,8 +14,6 @@ import teamModal from './js/team-modal-open';
 import Language from './js/switch-language';
 import Pagination from 'tui-pagination';
 
-
-
 const dataBaseAPI = new DataBaseAPI();
 const serviceApi = new ServiceApi();
 const modalFilm = new ModalFilm();
@@ -29,7 +27,6 @@ const options = {
   centerAlign: true,
   firstItemClassName: 'tui-first-child',
   lastItemClassName: 'tui-last-child',
-
   template: {
     page: '<a href="#" data-page="{{page}}" class="tui-page-btn">{{page}}</a>',
     currentPage: '<strong class="tui-page-btn tui-is-selected">{{page}}</strong>',
@@ -44,16 +41,10 @@ const options = {
     moreButton:
       '<a href="#" class="tui-page-btn tui-{{type}}-is-ellip custom-class-{{type}}">' +
       '<span class="tui-ico-ellip">...</span>' +
-      '</a>'
-  
-  }
+      '</a>',
+  },
 };
 const pagination = new Pagination('pagination', options);
-
-
-
-
-
 
 const refs = {
   ulItem: document.querySelector('.film__list'),
@@ -65,6 +56,19 @@ const refs = {
   select: document.querySelector('.change-lang'),
   pagination: document.getElementById('pagination'),
 
+  sideNav: document.querySelector('.side-nav'),
+  homeButton: document.querySelector('.home'),
+  libraryButton: document.querySelector('.library'),
+
+  loginButton: document.querySelector('.login'),
+  modalAuthorization: document.querySelector('.backdrop'),
+  modalAuthorizationClose: document.querySelector('.modal-avtoris .modal__icon-close'),
+  modalAuthorizationForm: document.querySelector('.form-authorization'),
+
+  modalRegistrationButton: document.querySelector('.modal-registration'),
+  modalRegistration: document.querySelector('.backdrop_registro'),
+  modalRegistrationClose: document.querySelector('.backdrop_registro .modal__icon'),
+  modalRegistrationForm: document.querySelector('.form-registration'),
 };
 
 let filmId = null;
@@ -77,26 +81,150 @@ refs.modalInfoCloseBtn.addEventListener('click', closeInfoModal);
 refs.select.addEventListener('change', changeLanguage);
 refs.pagination.addEventListener('click', onPage);
 
+refs.sideNav.addEventListener('click', onSideNavClick);
+refs.modalAuthorizationClose.addEventListener('click', onModalAuthorizationCloseClick);
+refs.modalAuthorizationForm.addEventListener('submit', onModalAuthorizationFormSubmit);
+
+refs.modalRegistrationButton.addEventListener('click', oModalRegistrationButtonClick);
+refs.modalRegistrationClose.addEventListener('click', onModalRegistrationCloseClick);
+refs.modalRegistrationForm.addEventListener('submit', onMmodalRegistrationFormSubmit);
+
 //====================PAGINATION===================//
 
 async function onPage(e) {
-  
-   if (e.currentTarget === e.target ) {
+  if (e.currentTarget === e.target) {
     return;
   }
   const currentPage = pagination.getCurrentPage();
   pagination.movePageTo(currentPage);
-     const films = await serviceApi.fetchTrending({ page: currentPage, period: 'week' });
-    window.scrollTo(0, 240) 
-      const data = filmsMarcup.createMarkup(films.films);
+  const films = await serviceApi.fetchTrending({ page: currentPage, period: 'week' });
+  window.scrollTo(0, 240);
+  const data = filmsMarcup.createMarkup(films.films);
   refs.ulItem.innerHTML = data;
- 
- 
-
 }
- 
+//============Registration============
 
-//====LOGIN
+async function onMmodalRegistrationFormSubmit(e) {
+  e.preventDefault();
+  const login = String(e.target.login.value);
+  const pasword = e.target.pasword.value;
+  const status = await dataBaseAPI.registration({ login: login, pasword: pasword });
+  switch (status) {
+    case 'User error':
+      console.log('User error');
+      const erorLogin = document.querySelector('.form-registration__error--login');
+      erorLogin.classList.remove('is-hidden');
+      e.target.login.classList.add('modal-form__placeholder--error');
+      setTimeout(() => {
+        erorLogin.classList.add('is-hidden');
+        e.target.login.classList.remove('modal-form__placeholder--error');
+      }, 3000);
+      break;
+
+    case 'server eror':
+      break;
+
+    default:
+      console.log('Reg - OK');
+      refs.loginButton.dataset.action = 'true';
+      resetLoginStatus();
+      onModalRegistrationCloseClick();
+      onModalAuthorizationCloseClick();
+      console.log(dataBaseAPI.user);
+      break;
+  }
+}
+
+function onModalRegistrationCloseClick() {
+  refs.modalRegistration.classList.add('is-hidden');
+}
+
+function oModalRegistrationButtonClick(e) {
+  refs.modalRegistration.classList.remove('is-hidden');
+}
+//============LOGIN============
+function resetLoginStatus() {
+  if (refs.loginButton.dataset.action === 'true') {
+    refs.loginButton.innerHTML = 'LOG OUT';
+    return;
+  }
+  refs.loginButton.innerHTML = 'LOG IN';
+}
+
+async function onModalAuthorizationFormSubmit(e) {
+  e.preventDefault();
+
+  const login = e.target.login.value;
+  const pasword = e.target.password.value;
+  // показать спинер
+  //запретить нажатие на кнопки
+  const status = await dataBaseAPI.logIn({ email: login, pasword: pasword });
+  // скрыть спинер
+  //Разренить нажатие на кнопки
+  switch (status) {
+    case 'login error':
+      const erorLogin = document.querySelector('.form-authorization__error--login');
+      erorLogin.classList.remove('is-hidden');
+      e.target.login.classList.add('modal-form__placeholder--error');
+      setTimeout(() => {
+        erorLogin.classList.add('is-hidden');
+        e.target.login.classList.remove('modal-form__placeholder--error');
+      }, 3000);
+      break;
+
+    case 'password error':
+      const erorPassword = document.querySelector('.form-authorization__error--password');
+      erorPassword.classList.remove('is-hidden');
+      e.target.password.classList.add('modal-form__placeholder--error');
+      setTimeout(() => {
+        erorPassword.classList.add('is-hidden');
+        e.target.password.classList.remove('modal-form__placeholder--error');
+      }, 3000);
+      break;
+
+    case 'server eror':
+
+    default:
+      console.log('logIn - OK');
+      refs.loginButton.dataset.action = 'true';
+      resetLoginStatus();
+      onModalAuthorizationCloseClick();
+      break;
+  }
+}
+
+function onModalAuthorizationCloseClick() {
+  refs.loginButton.classList.remove('side-nav__link--current');
+  refs.modalAuthorization.classList.add('is-hidden');
+}
+
+function onSideNavClick(e) {
+  if (e.currentTarget === e.target) {
+    return;
+  }
+
+  console.log(dataBaseAPI);
+  if (e.target.dataset.action === 'true') {
+    dataBaseAPI.logOut();
+    refs.loginButton.dataset.action = 'false';
+    resetLoginStatus();
+    return;
+  }
+
+  if (e.target.classList.contains('login')) {
+    refs.loginButton.classList.add('side-nav__link--current');
+    refs.modalAuthorization.classList.remove('is-hidden');
+    console.log('Нажли на login');
+  }
+
+  if (e.target.classList.contains('home')) {
+    console.log('Нажли на home');
+  }
+  if (e.target.classList.contains('library')) {
+    console.log('Нажли на library');
+  }
+}
+
 logIn();
 // --------------------Меняем язык ввода-----------
 function changeLanguage() {
@@ -123,18 +251,14 @@ function storageCheck() {
 }
 
 async function logIn() {
-  await dataBaseAPI.logIn({ email: 'lol@gmail.com', pasword: '11' });
   const films = await serviceApi.fetchTrending({ page: 1, period: 'week' });
- 
-  pagination.reset(serviceApi.totalPages);
 
+  pagination.reset(serviceApi.totalPages);
 
   console.log(films.films);
   const data = filmsMarcup.createMarkup(films.films);
   refs.ulItem.innerHTML = data;
-  
 }
-
 
 async function onFormSerchSubmit(e) {
   e.preventDefault();
@@ -222,5 +346,3 @@ function closeInfoModal() {
   document.body.style.overflow = 'auto'; //Разрешаем прокрутку body, пока модалка закрыта
   refs.modalInfo.classList.toggle('is-hidden'); //скрываем модалку, вешая класс
 }
-
-
