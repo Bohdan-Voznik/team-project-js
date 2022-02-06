@@ -264,6 +264,18 @@
     border: 1px solid var(--button-accent-color);
 }
 
+.modal__info-not-login-user {
+    margin-top: 10px;
+    color: red;
+     font-family: Roboto;
+     font-style: normal;
+     font-weight: 500;
+     font-size: 12px;
+     line-height: 1.33;
+     text-align: center
+
+}
+
 
 
 // @media screen and (max-width: 767px) {}

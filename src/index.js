@@ -74,6 +74,7 @@ const refs = {
 let filmId = null;
 let btnWatched = null;
 let btnQueue = null;
+let loginStatus = null;
 
 refs.serchForm.addEventListener('submit', onFormSerchSubmit);
 refs.filmList.addEventListener('click', openInfoModal);
@@ -289,60 +290,121 @@ function checkButtonData() {
   else btnQueue.classList.remove('selected');
 }
 
+function checkUserLog(serviceData) {
+  if (refs.loginButton.dataset.action == 'true') {
+    const databaseData = dataBaseAPI.getLiberuStatus(filmId);
+
+    modalFilm.setFilm = Object.assign(serviceData, databaseData);
+    loginStatus = true;
+    return;
+  }
+  if (refs.loginButton.dataset.action == 'false') {
+    const statusDefault = {
+      watched: false,
+      queue: false,
+    };
+    modalFilm.setFilm = Object.assign(serviceData, statusDefault);
+    loginStatus = false;
+    return;
+  }
+}
+
 function openInfoModal(e) {
   e.preventDefault();
 
   document.body.style.overflow = 'hidden'; //Запрещаем прокрутку body, пока открыта модалка
 
   const filmCard = e.target.closest('.film__item');
+
   filmId = filmCard.dataset.id;
 
   const serviceData = serviceApi.getFilmById(filmId);
-  const databaseData = dataBaseAPI.getLiberuStatus(filmId);
 
-  modalFilm.setFilm = Object.assign(serviceData, databaseData);
+  checkUserLog(serviceData);
 
   //dataBaseAPI.getFilmByid({ category: dataBaseAPI.user.watched, id: filmId });
+  modalFilm.joinGenre();
 
   refs.modalContent.innerHTML = modalFilm.createMarkup(language.select);
-
   //Находим кнопки по data-att:
   btnWatched = document.querySelector('button[data-watched]');
   btnQueue = document.querySelector('button[data-queue]');
-  checkButtonData();
 
-  //Вешаем события по кликам на кнопки:
-  btnWatched.addEventListener('click', addToWatched);
-  btnQueue.addEventListener('click', addToQueue);
+  const infoText = document.querySelector('.modal__info-not-login-user');
+
+  if (loginStatus) {
+    checkButtonData();
+    btnWatched.disabled = false;
+    btnQueue.disabled = false;
+
+    infoText.classList.add('is-hidden');
+
+    //Вешаем события по кликам на кнопки:
+    btnWatched.addEventListener('click', addToWatched);
+    btnQueue.addEventListener('click', addToQueue);
+  } else {
+    btnWatched.disabled = true;
+    btnQueue.disabled = true;
+
+    infoText.classList.remove('is-hidden');
+
+    btnWatched.style.opacity = '0.5';
+    btnWatched.style.backgroundColor = 'rgb(160, 160, 160)';
+
+    btnQueue.style.opacity = '0.5';
+    btnQueue.style.backgroundColor = 'rgb(160, 160, 160)';
+  }
 
   if (filmCard) refs.modalInfo.classList.toggle('is-hidden'); //открываем модалку, убирая класс
 }
 
-function addToWatched() {
+async function addToWatched() {
   if (modalFilm.objFilm.watched) {
-    btnWatched.classList.remove('selected');
     modalFilm.objFilmWatched = false;
     btnWatched.setAttribute('data-watched', modalFilm.objFilm.watched);
+    // спинер вкл + выкл кнопку
+    await sleep(sendObj);
+    // спинер выкл + вкл кнопку
+    btnWatched.classList.remove('selected');
   } else {
-    btnWatched.classList.add('selected');
     modalFilm.objFilmWatched = true;
     btnWatched.setAttribute('data-watched', modalFilm.objFilm.watched);
+    // спинер вкл + выкл кнопку
+    await sleep(sendObj);
+    // спинер выкл + вкл кнопку
+    btnWatched.classList.add('selected');
   }
 }
 
-function addToQueue() {
+async function addToQueue() {
   if (modalFilm.objFilm.queue) {
-    btnQueue.classList.remove('selected');
     modalFilm.objFilmQueue = false;
     btnQueue.setAttribute('data-queue', modalFilm.objFilm.queue);
+    // спинер вкл + выкл кнопку
+    await sleep(sendObj);
+    // спинер выкл + вкл кнопку
+    btnQueue.classList.remove('selected');
   } else {
-    btnQueue.classList.add('selected');
     modalFilm.objFilmQueue = true;
     btnQueue.setAttribute('data-queue', modalFilm.objFilm.queue);
+    // спинер вкл + выкл кнопку
+    await sleep(sendObj);
+    // спинер выкл + вкл кнопку
+    btnQueue.classList.add('selected');
   }
 }
 
 function closeInfoModal() {
   document.body.style.overflow = 'auto'; //Разрешаем прокрутку body, пока модалка закрыта
   refs.modalInfo.classList.toggle('is-hidden'); //скрываем модалку, вешая класс
+}
+
+function sendObj() {
+  console.log('отправка объекта'); // отправка
+}
+
+function sleep(fn) {
+  return new Promise(resolve => {
+    setTimeout(() => resolve(fn()), 1200);
+  });
 }
