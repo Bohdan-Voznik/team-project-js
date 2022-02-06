@@ -7,15 +7,16 @@ html {
   color: inherit;
   background-color: transparent;
   border: transparent;
-  @media screen and (max-width: 768px) {
-    margin-right: 50px;
-  }
-  @media screen and (min-width: 768px) {
-    margin-right: 242px;
-  }
-  @media screen and (min-width: 1024px) {
-    margin-right: 498px;
-  }
+
+  // @media screen and (max-width: 768px) {
+  //   margin-right: 50px;
+  // }
+  // @media screen and (min-width: 768px) {
+  //   margin-right: 242px;
+  // }
+  // @media screen and (min-width: 1024px) {
+  //   margin-right: 498px;
+  // }
   cursor: pointer;
 }
 .logo {
@@ -26,6 +27,11 @@ html {
   }
   text-decoration: none;
   color: #818181;
+}
+
+.side-nav__item--logo {
+  margin-left: 0;
+  margin-right: auto;
 }
 
 .logo__icon {
@@ -47,7 +53,7 @@ html {
 
 .side-nav {
   display: flex;
-  justify-content: flex-end;
+  // justify-content: space-between;
   align-items: baseline;
   margin-bottom: 40px;
 
@@ -69,7 +75,34 @@ html {
   color: inherit;
   background-color: transparent;
   border: transparent;
+  position: relative;
   cursor: pointer;
+  &--navigation:hover::after,
+  &--navigation:focus::after {
+    content: '';
+
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+
+    height: 3px;
+    width: 100%;
+
+    background-color: var(--accent-color);
+  }
+}
+
+.side-nav__link--current::after {
+  content: '';
+
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+
+  height: 3px;
+  width: 100%;
+
+  background-color: var(--accent-color);
 }
 
 .warning-notification {
