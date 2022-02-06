@@ -74,7 +74,7 @@ const refs = {
 let filmId = null;
 let btnWatched = null;
 let btnQueue = null;
-let loginStatus = null;
+let loginStatus = false;
 
 refs.serchForm.addEventListener('submit', onFormSerchSubmit);
 refs.filmList.addEventListener('click', openInfoModal);
@@ -128,6 +128,7 @@ async function onMmodalRegistrationFormSubmit(e) {
     default:
       console.log('Reg - OK');
       refs.loginButton.dataset.action = 'true';
+      loginStatus = true;
       resetLoginStatus();
       onModalRegistrationCloseClick();
       onModalAuthorizationCloseClick();
@@ -188,6 +189,7 @@ async function onModalAuthorizationFormSubmit(e) {
     default:
       console.log('logIn - OK');
       refs.loginButton.dataset.action = 'true';
+      loginStatus = true;
       resetLoginStatus();
       onModalAuthorizationCloseClick();
       break;
@@ -208,6 +210,7 @@ function onSideNavClick(e) {
   if (e.target.dataset.action === 'true') {
     dataBaseAPI.logOut();
     refs.loginButton.dataset.action = 'false';
+    loginStatus = false;
     resetLoginStatus();
     return;
   }
@@ -291,20 +294,17 @@ function checkButtonData() {
 }
 
 function checkUserLog(serviceData) {
-  if (refs.loginButton.dataset.action == 'true') {
+  if (loginStatus) {
     const databaseData = dataBaseAPI.getLiberuStatus(filmId);
-
     modalFilm.setFilm = Object.assign(serviceData, databaseData);
-    loginStatus = true;
     return;
   }
-  if (refs.loginButton.dataset.action == 'false') {
+  if (!loginStatus) {
     const statusDefault = {
       watched: false,
       queue: false,
     };
     modalFilm.setFilm = Object.assign(serviceData, statusDefault);
-    loginStatus = false;
     return;
   }
 }
