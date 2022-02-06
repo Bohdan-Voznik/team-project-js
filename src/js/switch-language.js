@@ -5,6 +5,7 @@
 
 export default class LanguageApi {
     constructor (){
+        this.language = "en";
         this.select=null;
         this.tranclater = {
        right :{
@@ -30,9 +31,10 @@ export default class LanguageApi {
         
     }
    changeDataSet(){
+       
         let lang = this.select.value;
         this.select.dataset.language =lang;
-        
+    
         console.log(lang)
     }
     changeLanguage(fn){
