@@ -9,13 +9,17 @@ export default class ModalFilm {
     };
   }
 
+  joinGenre() {
+    if (typeof this.objFilm.genreUk !== 'string')
+      this.objFilm.genreUk = this.objFilm.genreUk.join(', ');
+  }
+
   createMarkup(lang) {
     console.log(lang.dataset.language);
     console.log(this.objFilm);
 
-    if (lang.dataset.language === 'en') return modalTplEn(this.objFilm);
-    if (lang.dataset.language === 'ua') {
-      this.objFilm.genreUk = this.objFilm.genreUk.join(', ');
+    if (lang.dataset.language == 'en') return modalTplEn(this.objFilm);
+    if (lang.dataset.language == 'ua') {
       return modalTplUk(this.objFilm);
     }
   }
