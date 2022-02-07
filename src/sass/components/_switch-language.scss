@@ -1,15 +1,27 @@
 .change-lang {
-  border: 1px solid var(--accent-color);
+  position: fixed;
+ 
+  
+  padding-left: 11px;
+  // border: 1px solid var(--accent-color);
   font-family: DM Sans;
   font-size: 100%;
-  line-height: 1.15;
-  margin: 0;
-  //   color: var(--accent-color);
-  border-radius: 20px;
+  line-height: 2.15;
+  font-size: 20px;
+  font-weight: 800;
+  // margin: 0;
+  right: 32px;
+  bottom: 100px;
+    // color: var(--accent-color);
+  border-radius: 34px;
+  border-color: 4px solid black;
+  
+  width: 70px ;
+  height: 50px ;
 }
-.lang_text {
-  color: var(--accent-color);
-}
+// .lang_text {
+//   color: black;
+// }
 // .section {
 //   border-bottom: 1px solid var(--accent-color);
 // }

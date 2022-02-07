@@ -1,4 +1,4 @@
-<header class="header-section">
+<header class="header-section" id="my-element-with-background">
   <div class="container header-bg-lib header-bg" id="header">
     <nav class="navigation">
       <ul class="side-nav list">
@@ -7,13 +7,13 @@
             <svg class="logo__icon" width="24" height="24">
               <use href="./img/sprite.svg#logo"></use>
             </svg>
-            <span class="logo__name">Filmoteka</span>
+            <span class="logo__name lng-film">Filmoteka</span>
           </button>
         </li>
         <li class="side-nav__item">
           <button
             type="button"
-            class="side-nav__link side-nav__link--navigation home side-nav__link--current"
+            class="side-nav__link side-nav__link--navigation home side-nav__link--current lng-home"
             data-action="false"
           >
             HOME
@@ -22,7 +22,7 @@
         <li class="side-nav__item">
           <button
             type="button"
-            class="side-nav__link side-nav__link--navigation library"
+            class="side-nav__link side-nav__link--navigation library lng-lib"
             data-action="false"
           >
             MY LIBRARY
@@ -31,7 +31,7 @@
         <li class="side-nav__item">
           <button
             type="button"
-            class="side-nav__link side-nav__link--navigation login"
+            class="side-nav__link side-nav__link--navigation login lng-log"
             data-action="false"
           >
             LOG IN
@@ -41,12 +41,12 @@
     </nav>
 
     <form class="search-form" id="home-page">
-      <input
+      <input 
         required
         type="text"
         name="query"
         autocomplete="off"
-        placeholder="Поиск фильмов"
+        placeholder="Search movies"
         class="search-field"
       />
       <button type="submit" class="search-btn">
@@ -70,7 +70,7 @@
                 class="storage__input visually-hidden"
                 checked
               />
-              <span class="storage__btn">Watched</span>
+              <span class="storage__btn lng-watch">Watched</span>
             </label>
           </li>
           <li class="storage__item">
@@ -81,7 +81,7 @@
                 value="queue"
                 class="storage__input visually-hidden"
               />
-              <span class="storage__btn">Queue</span>
+              <span class="storage__btn lng-queue">Queue</span>
             </label>
           </li>
         </ul>

@@ -18,6 +18,8 @@ const dataBaseAPI = new DataBaseAPI();
 const serviceApi = new ServiceApi();
 const modalFilm = new ModalFilm();
 new Darkmode().showWidget();
+
+
 const language = new Language();
 const options = {
   totalItems: 0,

@@ -1,13 +1,12 @@
 .switch {
   position: fixed;
   display: inline-block;
-  width: 80px;
+  width: 70px;
   height: 50px;
 
   bottom: 31px;
-  //   left: 1000px;
   right: 32px;
-  //   left: 32px;
+  // bottom: 100px;
 }
 
 .switch input {
@@ -28,13 +27,15 @@
 
 .slider:before {
   position: absolute;
-  content: '';
-  font-size: 18px;
+  content: '🌓';
+  
+  font-size: 40px;
   height: 40px;
-  width: 50px;
+  width: 40px;
+  // top: px;
   left: 2px;
   bottom: 4px;
-  background-color: white;
+  // background-color: white;
   -webkit-transition: 0.4s;
   transition: 0.4s;
 }
@@ -70,10 +71,10 @@ input:checked + .slider:before {
   z-index: 99;
   position: fixed;
   display: inline-block;
-  width: 80px !important;
-  height: 50px !important;
+  width: 60px !important;
+  height: 40px !important;
   border-radius: 34px !important;
-  bottom: 31px;
+  bottom: 31px !important;
   //   left: 1000px;
   right: 32px;
 }
@@ -82,10 +83,13 @@ input:checked + .slider:before {
 //   z-index: 2;
 //   position: fixed;
 //   display: inline-block;
-//   width: 80px;
-//   height: 50px;
+//   width: 60px;
+//   height: 40px;
 
 //   bottom: 31px;
 //   //   left: 1000px;
 //   right: 32px;
 // }
+.darkmode--activated #my-element-with-background {
+  filter: invert(0);
+}
