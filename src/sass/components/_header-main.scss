@@ -244,19 +244,3 @@
     color: var(--accent-color);
   }
 }
-.home:focus {
-  position: relative;
-
-  &::after {
-    content: '';
-
-    position: absolute;
-    bottom: -3px;
-    left: 0;
-
-    height: 3px;
-    width: 100%;
-
-    background-color: var(--accent-color);
-  }
-}
