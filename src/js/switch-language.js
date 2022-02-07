@@ -4,6 +4,8 @@
 
 export default class LanguageApi {
   constructor() {
+  // this.placeholder='en';
+
     this.language = 'en';
     this.select = null;
     this.tranclater = {
@@ -50,6 +52,11 @@ export default class LanguageApi {
     this.select.dataset.language = lang;
     this.language = lang;
     console.log(lang);
+
+  //   const place = document.getAnimations("home-page");
+  // this.placeholder=place;
+  // console.log(place)
+
   }
   changeLanguage(fn) {
     const lang = this.select.dataset.language;
@@ -68,7 +75,7 @@ export default class LanguageApi {
 // const  allLang=['en','ua'];
 
 
-const refs={
-  place: document.querySelector('.search-form'),
-};
-console.log(refs.place);
+// function new Att(){
+//   const place = document.getAnimations("home-page");
+//   place.placeholder="";
+// }
