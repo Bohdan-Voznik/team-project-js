@@ -152,11 +152,14 @@ async function onPage(e) {
   const currentPage = pagination.getCurrentPage();
   pagination.movePageTo(currentPage);
   const lol = searchStatus
-    ? await serviceApi.fetchMoviesBySearch({ query, page: currentPage })
+    ? await serviceApi.fetchMoviesBySearch({ query: query, page: currentPage })
     : await serviceApi.fetchTrending({ page: currentPage, period: 'week' });
 
   window.scrollTo(0, 240);
-  const data = filmsMarcup.createMarkup(lol.films);
+
+  console.log(lol.films);
+  const data = filmsMarcup.createMarkup(lol.films, language.language);
+  console.log(data);
   refs.ulItem.innerHTML = data;
 }
 //============Registration============
@@ -324,6 +327,7 @@ async function logIn() {
 async function onFormSerchSubmit(e) {
   e.preventDefault();
   query = e.target.query.value;
+
   const films = await serviceApi.fetchMoviesBySearch({ query, page: 1 });
 
   const data = filmsMarcup.createMarkup(films.films, 'ua');
