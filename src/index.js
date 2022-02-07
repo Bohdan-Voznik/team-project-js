@@ -466,7 +466,6 @@ function sleep(fn) {
     setTimeout(() => resolve(fn()), 1200);
   });
 }
-
 // ------------------------QUEUE-WATCH---------------
 
 const libraryBtnsForm = document.querySelector('#library-page');
@@ -512,6 +511,6 @@ function onQueueWatchBtnClick(event) {
       
       refs.ulItem.innerHTML = dataW;
     }
-  }
-    
+  }    
 }
+
