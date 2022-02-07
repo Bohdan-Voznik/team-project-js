@@ -46,7 +46,6 @@ const options = {
 };
 const pagination = new Pagination('pagination', options);
 
-
 const refs = {
   ulItem: document.querySelector('.film__list'),
   serchForm: document.querySelector('.search-form'),
@@ -97,7 +96,7 @@ let btnWatched = null;
 let btnQueue = null;
 let loginStatus = false;
 let searchStatus = false;
-let query = " ";
+let query = ' ';
 
 refs.serchForm.addEventListener('submit', onFormSerchSubmit);
 refs.filmList.addEventListener('click', openInfoModal);
@@ -105,7 +104,6 @@ refs.modalInfoCloseBtn.addEventListener('click', closeInfoModal);
 refs.select.addEventListener('change', changeLanguage);
 refs.pagination.addEventListener('click', onPage);
 
-=======
 refs.sideNav.addEventListener('click', onSideNavClick);
 refs.modalAuthorizationClose.addEventListener('click', onModalAuthorizationCloseClick);
 refs.modalAuthorizationForm.addEventListener('submit', onModalAuthorizationFormSubmit);
@@ -153,8 +151,10 @@ async function onPage(e) {
 
   const currentPage = pagination.getCurrentPage();
   pagination.movePageTo(currentPage);
-  const lol = searchStatus ? await serviceApi.fetchMoviesBySearch({ query, page: currentPage }) : await serviceApi.fetchTrending({ page: currentPage, period: 'week' });
-  
+  const lol = searchStatus
+    ? await serviceApi.fetchMoviesBySearch({ query, page: currentPage })
+    : await serviceApi.fetchTrending({ page: currentPage, period: 'week' });
+
   window.scrollTo(0, 240);
   const data = filmsMarcup.createMarkup(lol.films);
   refs.ulItem.innerHTML = data;
@@ -319,7 +319,6 @@ async function logIn() {
 
   const data = filmsMarcup.createMarkup(films.films, 'en');
   refs.ulItem.innerHTML = data;
-  
 }
 
 async function onFormSerchSubmit(e) {
@@ -459,7 +458,7 @@ function closeInfoModal() {
 }
 
 function sendObj() {
-  console.log('отправка объекта'); // отправка
+  dataBaseAPI.resetLiberuStatus(modalFilm.objFilm); // отправка
 }
 
 function sleep(fn) {
@@ -467,9 +466,6 @@ function sleep(fn) {
     setTimeout(() => resolve(fn()), 1200);
   });
 }
-<<<<<<< Updated upstream
-=======
-
 // ------------------------QUEUE-WATCH---------------
 
 const libraryBtnsForm = document.querySelector('#library-page');
@@ -515,8 +511,6 @@ function onQueueWatchBtnClick(event) {
       
       refs.ulItem.innerHTML = dataW;
     }
-  }
-    
+  }    
 }
-// ------------
->>>>>>> Stashed changes
+
