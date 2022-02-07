@@ -1,4 +1,5 @@
 import filmInfo from '../partials/film-item.hbs';
+
 export function createMarkup(films, lang) {
 const FilmsList = films.map(film => {
          
@@ -14,8 +15,18 @@ const FilmsList = films.map(film => {
 });
 return FilmsList.join('');
 };
-
-
-
   
+  // const FilmsList = films.map(film => {
+  //   // if (!film.genreEn) {
+  //   //   film.genreEn = '';
+  //   // } else {
+  //   //   film.genreEn = film.genreEn.slice(0, 2).join(', ');
+  //   // }
 
+  // //   return filmInfo(film);
+
+  // }
+  // });
+
+  // return FilmsList.join('');
+}
