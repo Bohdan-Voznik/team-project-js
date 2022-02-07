@@ -2,7 +2,7 @@ import './sass/main.scss';
 import { initializeApp } from 'firebase/app';
 import { getDatabase, ref, get, update } from 'firebase/database';
 import 'tui-pagination/dist/tui-pagination.css';
-import { async, contains } from '@firebase/util';
+import { async, contains, errorPrefix } from '@firebase/util';
 import Darkmode from 'darkmode-js';
 import VanillaTilt from 'vanilla-tilt';
 
@@ -49,6 +49,7 @@ const pagination = new Pagination('pagination', options);
 const refs = {
   ulItem: document.querySelector('.film__list'),
   serchForm: document.querySelector('.search-form'),
+  searchNotify: document.querySelector('.warning-notification'),
   filmList: document.querySelector('.film__list'),
   modalInfo: document.querySelector('.background'),
   modalInfoCloseBtn: document.querySelector('.modal__close-btn'),
@@ -328,12 +329,24 @@ async function onFormSerchSubmit(e) {
   e.preventDefault();
   query = e.target.query.value;
 
-  const films = await serviceApi.fetchMoviesBySearch({ query, page: 1 });
+  try {
+    const films = await serviceApi.fetchMoviesBySearch({ query, page: 1 });
+    if (films === false) {
+      refs.searchNotify.classList.remove('is-hidden');
+      setTimeout(() => {
+        refs.searchNotify.classList.add('is-hidden');
+      }, 3000);
+      return;
+    }
 
-  const data = filmsMarcup.createMarkup(films.films, 'ua');
-  refs.ulItem.innerHTML = data;
-  searchStatus = true;
-  pagination.reset(serviceApi.totalPages);
+    const data = filmsMarcup.createMarkup(films.films, 'ua');
+    refs.ulItem.innerHTML = data;
+    searchStatus = true;
+    pagination.reset(serviceApi.totalPages);
+  } catch (error) {
+    console.log(error);
+  }
+
 }
 
 const switchCheckbox = document.querySelector('.switch__checkbox');
@@ -470,6 +483,7 @@ function sleep(fn) {
     setTimeout(() => resolve(fn()), 1200);
   });
 }
+
 // ------------------------QUEUE-WATCH---------------
 
 const libraryBtnsForm = document.querySelector('#library-page');
