@@ -4,8 +4,8 @@ import { getDatabase, ref, get, update } from 'firebase/database';
 import 'tui-pagination/dist/tui-pagination.css';
 import { async, contains } from '@firebase/util';
 import Darkmode from 'darkmode-js';
+import VanillaTilt from 'vanilla-tilt';
 
-import './js/my-header';
 import DataBaseAPI from './js/dataBaseAPI';
 import ServiceApi from './js/ServiceApi';
 import * as filmsMarcup from './js/film-list';
@@ -69,7 +69,27 @@ const refs = {
   modalRegistration: document.querySelector('.backdrop_registro'),
   modalRegistrationClose: document.querySelector('.backdrop_registro .modal__icon'),
   modalRegistrationForm: document.querySelector('.form-registration'),
+
+  homeBtn: document.querySelector('.home'),
+  libraryBtn: document.querySelector('.library'),
+  logoLink: document.getElementById('navigation-logo'),
+  bgImg: document.getElementById('header'),
+  homePage: document.getElementById('home-page'),
+  libraryPage: document.getElementById('library-page'),
+
+  // week: document.querySelector('search-perios__link--week'),
 };
+
+// VanillaTilt.init(refs.week, {
+//   max: 25,
+//   speed: 400,
+//   scale: 1.2,
+// });
+// refs.week.addEventListener('tiltChange', callback);
+
+// refs.week.tilt({
+//   scale: 12,
+// });
 
 let filmId = null;
 let btnWatched = null;
@@ -89,6 +109,36 @@ refs.modalAuthorizationForm.addEventListener('submit', onModalAuthorizationFormS
 refs.modalRegistrationButton.addEventListener('click', oModalRegistrationButtonClick);
 refs.modalRegistrationClose.addEventListener('click', onModalRegistrationCloseClick);
 refs.modalRegistrationForm.addEventListener('submit', onMmodalRegistrationFormSubmit);
+
+refs.libraryBtn.addEventListener('click', activeLibraryPage);
+refs.homeBtn.addEventListener('click', activeHomePage);
+refs.logoLink.addEventListener('click', activeHomePage);
+
+//====================HEADER===================//
+
+function activeHomePage() {
+  refs.libraryBtn.classList.remove('side-nav__link--current');
+  refs.homeBtn.classList.add('side-nav__link--current');
+  refs.libraryBtn.classList.remove('form-group');
+  refs.homeBtn.classList.add('search-form');
+  refs.libraryPage.classList.add('is-hidden');
+  refs.homePage.style.display = 'block';
+  refs.libraryPage.style.display = 'none';
+  refs.bgImg.classList.remove('header-bg-lib');
+  refs.bgImg.classList.add('header-bg');
+}
+
+function activeLibraryPage() {
+  refs.libraryBtn.classList.add('side-nav__link--current');
+  refs.homeBtn.classList.remove('side-nav__link--current');
+  refs.homeBtn.classList.remove('search-form');
+  refs.libraryBtn.classList.add('form-group');
+  refs.libraryPage.classList.remove('is-hidden');
+  refs.libraryPage.style.display = 'block';
+  refs.homePage.style.display = 'none';
+  refs.bgImg.classList.remove('header-bg');
+  refs.bgImg.classList.add('header-bg-lib');
+}
 
 //====================PAGINATION===================//
 
@@ -325,7 +375,7 @@ function openInfoModal(e) {
   //dataBaseAPI.getFilmByid({ category: dataBaseAPI.user.watched, id: filmId });
   modalFilm.joinGenre();
 
-  refs.modalContent.innerHTML = modalFilm.createMarkup(language.select);
+  refs.modalContent.innerHTML = modalFilm.createMarkup(language.language);
   //Находим кнопки по data-att:
   btnWatched = document.querySelector('button[data-watched]');
   btnQueue = document.querySelector('button[data-queue]');
