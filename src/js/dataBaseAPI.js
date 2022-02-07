@@ -150,8 +150,8 @@ export default class dataBaseApiServise {
     this.user = {};
     this.user.email = login;
     this.user.pasword = pasword;
-    this.user.queue = '';
-    this.user.watched = '';
+    this.user.queue = [];
+    this.user.watched = [];
     this.userRefInDatabase = refs;
 
     localStorage.setItem('user', JSON.stringify({ email: login, pasword: pasword }));

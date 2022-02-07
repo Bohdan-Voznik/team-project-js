@@ -153,11 +153,14 @@ async function onPage(e) {
   const currentPage = pagination.getCurrentPage();
   pagination.movePageTo(currentPage);
   const lol = searchStatus
-    ? await serviceApi.fetchMoviesBySearch({ query, page: currentPage })
+    ? await serviceApi.fetchMoviesBySearch({ query: query, page: currentPage })
     : await serviceApi.fetchTrending({ page: currentPage, period: 'week' });
 
   window.scrollTo(0, 240);
-  const data = filmsMarcup.createMarkup(lol.films);
+
+  console.log(lol.films);
+  const data = filmsMarcup.createMarkup(lol.films, language.language);
+  console.log(data);
   refs.ulItem.innerHTML = data;
 }
 //============Registration============
@@ -325,6 +328,7 @@ async function logIn() {
 async function onFormSerchSubmit(e) {
   e.preventDefault();
   query = e.target.query.value;
+
   try {
     const films = await serviceApi.fetchMoviesBySearch({ query, page: 1 });
     if (films === false) {
@@ -342,6 +346,7 @@ async function onFormSerchSubmit(e) {
   } catch (error) {
     console.log(error);
   }
+
 }
 
 const switchCheckbox = document.querySelector('.switch__checkbox');
@@ -470,7 +475,7 @@ function closeInfoModal() {
 }
 
 function sendObj() {
-  console.log('отправка объекта'); // отправка
+  dataBaseAPI.resetLiberuStatus(modalFilm.objFilm); // отправка
 }
 
 function sleep(fn) {
@@ -479,9 +484,51 @@ function sleep(fn) {
   });
 }
 
-// document.addEventListener('keydown', evt => {
-//   if (evt.code === 'KeyQ') {
-//     console.log('You shall not pass!');
-//     refs.searchNotify.classList.add('is-hidden');
-//   }
-// });
+// ------------------------QUEUE-WATCH---------------
+
+const libraryBtnsForm = document.querySelector('#library-page');
+
+libraryBtnsForm.addEventListener('change', onQueueWatchBtnClick);
+
+function onQueueWatchBtnClick(event) {
+  const selectedBtnValue = event.target.value;
+  console.log(selectedBtnValue);
+  const pageLang = language.language;
+  console.log(pageLang);
+
+  if (pageLang === 'en') {
+
+    if (selectedBtnValue === 'queue') {
+      console.log('posmotret');
+      console.log(dataBaseAPI.user.queue);
+      const dataQ = filmsMarcup.createMarkup(dataBaseAPI.user.queue, 'en');
+      console.log(dataQ);
+      refs.ulItem.innerHTML = dataQ;
+    }
+    if (selectedBtnValue === 'watched') {
+      console.log('videli');
+      console.log(dataBaseAPI.user.watched);
+      const dataW = filmsMarcup.createMarkup(dataBaseAPI.user.watched, 'en');
+      console.log(dataW);
+      refs.ulItem.innerHTML = dataW;
+    }
+  }
+
+  if (pageLang === 'ua') {
+    if (selectedBtnValue === 'queue') {
+      console.log('posmotret');
+      console.log(dataBaseAPI.user.queue);
+      const dataQ = filmsMarcup.createMarkup(dataBaseAPI.user.queue, 'ua');
+      
+      refs.ulItem.innerHTML = dataQ;
+    }
+    if (selectedBtnValue === 'watched') {
+      console.log('videli');
+      console.log(dataBaseAPI.user.watched);
+      const dataW = filmsMarcup.createMarkup(dataBaseAPI.user.watched, 'ua');
+      
+      refs.ulItem.innerHTML = dataW;
+    }
+  }    
+}
+
