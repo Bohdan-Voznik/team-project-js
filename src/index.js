@@ -129,7 +129,22 @@ function activeHomePage() {
   refs.libraryPage.style.display = 'none';
   refs.bgImg.classList.remove('header-bg-lib');
   refs.bgImg.classList.add('header-bg');
+  //console.log(serviceApi.fetchTrending({ page: 1, period: 'week' }));
+  const pageLang = language.language;
+  const currentPage = pagination.getCurrentPage();
+  serviceApi.fetchTrending({ page:currentPage, period: 'week' }).then(data => {
+    console.log(data.films);
+    if (pageLang === 'en') {
+      const homePage = filmsMarcup.createMarkup(data.films, 'en');
+      refs.ulItem.innerHTML = homePage;
+    }
+     if (pageLang === 'ua') {
+      const homePage = filmsMarcup.createMarkup(data.films, 'ua');
+      refs.ulItem.innerHTML = homePage;
+    }
+  })
 }
+
 
 function activeLibraryPage() {
   refs.libraryBtn.classList.add('side-nav__link--current');
@@ -141,6 +156,16 @@ function activeLibraryPage() {
   refs.homePage.style.display = 'none';
   refs.bgImg.classList.remove('header-bg');
   refs.bgImg.classList.add('header-bg-lib');
+  const pageLang = language.language;
+   
+  if (pageLang === 'en') {
+    const dataW = filmsMarcup.createMarkup(dataBaseAPI.user.watched, 'en');  
+    refs.ulItem.innerHTML = dataW;
+  }
+  if (pageLang === 'ua') {
+    const dataW = filmsMarcup.createMarkup(dataBaseAPI.user.watched, 'ua');  
+    refs.ulItem.innerHTML = dataW;
+    }
 }
 
 //====================PAGINATION===================//
