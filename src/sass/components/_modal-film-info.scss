@@ -31,7 +31,7 @@
     // ==============================
 
     width: 280px;
-    height: 80vh;
+    // height: 100vh;
     
     position: absolute;
     left: 50%;
@@ -131,20 +131,23 @@
 }
 
 .modal__specifications {
-    display: inline-flex;
-
-
     margin-bottom: 20px;
-
-
     font-family: Roboto;
     font-style: normal;
     font-weight: 500;
     font-size: 12px;
     line-height: 1.33;
+    height: auto;
+    border-spacing: 0px 5px;
 }
 
-.specifications-items{
+.specifications {
+    height: 30px;
+    vertical-align:top;
+
+}
+
+.specifications-items__text{
     color: #8C8C8C;
 }
 
@@ -152,19 +155,22 @@
     margin-bottom: 10px;
 }
 
-.specifications-values {
-  margin-left: 40px;
+.specifications-values__text {
+   
+    padding-left: 30px;
+    
+    max-width: 180px;
+    
+    @media screen and (min-width: 767px) {
+      max-width: 200px;
+    }
 }
 
-.specifications-values_text:not(:last-child) {
-    margin-bottom: 10px;
-}
-
-.specifications-values_text.slash {
+.specifications-values__text--slash {
     color: #8C8C8C;
 }
 
-.specifications-values_text--vote {
+.specifications-values__text--vote {
     display: inline-block;
     text-align: center;
     line-height: 16px;
@@ -177,7 +183,7 @@
     color: var(--white-text-color);
 }
 
-.specifications-values_text--votes {
+.specifications-values__text--votes {
     display: inline-block;
     text-align: center;
     line-height: 16px;
@@ -191,7 +197,7 @@
     color: var(--black-text-color);
 }
 
-.specifications-values_text.title {
+.specifications-values__text.title {
     text-transform: uppercase;
 }
 
@@ -256,6 +262,18 @@
     background-color: var(--button-accent-color);
     color: var(--button-text-color);
     border: 1px solid var(--button-accent-color);
+}
+
+.modal__info-not-login-user {
+    margin-top: 10px;
+    color: red;
+     font-family: Roboto;
+     font-style: normal;
+     font-weight: 500;
+     font-size: 12px;
+     line-height: 1.33;
+     text-align: center
+
 }
 
 

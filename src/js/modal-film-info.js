@@ -1,4 +1,5 @@
-import modalTpl from '../partials/modal-fim-info.hbs';
+import modalTplEn from '../partials/modal-fim-info-en.hbs';
+import modalTplUk from '../partials/modal-fim-info-uk.hbs';
 
 export default class ModalFilm {
   constructor() {
@@ -8,9 +9,21 @@ export default class ModalFilm {
     };
   }
 
-  createMarkup() {
-    //Подставляем инфу про фильм в модалку (в hbs):
-    return modalTpl(this.objFilm);
+  joinGenre() {
+    if (typeof this.objFilm.genreUk !== 'string')
+      this.objFilm.genreUk = this.objFilm.genreUk.join(', ');
+  }
+
+  createMarkup(lang) {
+    console.log(lang);
+    console.log(this.objFilm);
+
+    if (lang == 'en') {
+      return modalTplEn(this.objFilm);
+    }
+    if (lang == 'ua') {
+      return modalTplUk(this.objFilm);
+    }
   }
 
   //Обработка кликов по кнопкам в модалке:

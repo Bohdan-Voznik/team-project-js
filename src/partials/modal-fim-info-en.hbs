@@ -1,0 +1,49 @@
+
+    <img src="{{imageEn}}" alt="preview-film" class="modal__preview-image">
+
+    <div class="modal__text-content">
+
+        <h2 class="modal__title-of-film">{{titleEn}}</h2>
+
+          <table class='modal__specifications'>
+    <tr class="specifications">
+      <td class='specifications-items__text'>Vote/Votes</td>
+      <td class='specifications-values__text'>
+        <span class='specifications-values__text--vote'>{{vote}}</span>
+        <span class='specifications-values__text--slash'>/</span>
+        <span class='specifications-values__text--votes'>{{votes}}</span>
+      </td>
+    </tr>
+    <tr class="specifications">
+      <td class='specifications-items__text'>Popularity</td>
+      <td class='specifications-values__text popularity'>{{popularity}}</td>
+    </tr>
+    <tr class="specifications">
+      <td class='specifications-items__text'>Original Title</td>
+      <td class='specifications-values__text title'>{{titleEn}}</td>
+    </tr>
+    <tr class="specifications">
+      <td class='specifications-items__text'>Genre</td>
+      <td class='specifications-values__text genre'>{{genreEn}}</td>
+    </tr>
+  </table class="specifications">
+
+
+        <h3 class="modal__about-title">About</h3>
+
+        <p class="modal__about-text">
+          {{aboutEn}}
+        </p>
+
+        <div class="modal__buttons-status">
+            <button type="button" class="btn-add watched" data-watched="{{watched}}">Add to watched</button>
+            <button type="button" class="btn-add queue" data-queue="{{queue}}">Add to queue</button>
+        </div>
+
+          <p class="modal__info-not-login-user">Please log in to add the movie to your library.</p>
+
+
+    </div>
+
+      
+      

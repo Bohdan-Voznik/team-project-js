@@ -4,8 +4,8 @@
 @import './components/container';
 
 @import './components/header';
-@import './components/header-main';
 @import './components/header-lib';
+@import './components/header-main';
 @import './components/film-list';
 @import './components/pagination';
 @import './components/footer';
@@ -13,4 +13,7 @@
 @import './components/modal-film-info';
 @import './components/modal-avtor';
 @import './components/modal-registr';
+@import './components/team-modal';
+
 @import './components/dark-button';
+@import './components/switch-language';

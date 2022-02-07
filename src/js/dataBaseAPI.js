@@ -24,12 +24,12 @@ export default class dataBaseApiServise {
     const data = await this.getDataByRef(this.formatEmail(email));
     const { pasword: pass, queue: queue, watched: watched } = data === null ? {} : data;
     if (!pass) {
-      console.log('Вы не зарегистрированы!!!');
-      return 'Error';
+      // console.log('Вы не зарегистрированы!!!');
+      return 'login error';
     }
     if (pasword !== String(pass)) {
-      console.log('Неверный пароль!!!!');
-      return 'Error';
+      // console.log('Неверный пароль!!!!');
+      return 'password error';
     }
 
     this.userRefInDatabase = await ref(this.db, `users/${this.formatEmail(email)}`);
@@ -39,7 +39,7 @@ export default class dataBaseApiServise {
     this.user.queue = queue;
     this.user.watched = watched;
     console.log(this.user);
-    return 'logIn - OK';
+    return 'true';
   }
 
   //-------Готово
@@ -130,32 +130,39 @@ export default class dataBaseApiServise {
       off(this.userRefInDatabase);
     }
     this.user = {};
-    console.log('12');
     localStorage.removeItem('user');
   }
 
   async registration({ login = '', pasword = '' }) {
-    // console.log(login)
-
-    const data = await this.getDataByRef(formatEmail(login));
-    console.log('data: ', data);
-
+    const data = await this.getDataByRef(this.formatEmail(login));
     if (data !== null) {
-      return 'Пользователь уже зарегистрирован!';
+      return 'User error';
     }
     const user = {
       pasword: pasword,
       queue: '',
       watched: '',
     };
-    const refs = await ref(this.db, `users/${formatEmail(login)}`);
+
+    const refs = await ref(this.db, `users/${this.formatEmail(login)}`);
     update(refs, user);
-    return 'Ok';
+
+    this.user = {};
+    this.user.email = login;
+    this.user.pasword = pasword;
+    this.user.queue = '';
+    this.user.watched = '';
+    this.userRefInDatabase = refs;
+
+    localStorage.setItem('user', JSON.stringify({ email: login, pasword: pasword }));
+    return 'true';
   }
 
   //-------Готово
   getFilmIndexByID({ category = null, id = null }) {
-    return category
+    const cat = category ? category : [];
+    console.log('12345', cat);
+    return cat
       .map(film => {
         return film.id;
       })

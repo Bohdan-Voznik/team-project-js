@@ -1,0 +1,61 @@
+<img src='{{imageUk}}' alt='preview-film' class='modal__preview-image' />
+
+<div class='modal__text-content'>
+
+  <h2 class='modal__title-of-film'>{{titleUk}}</h2>
+
+  <table class='modal__specifications'>
+    <tr class="specifications">
+      <td class='specifications-items__text'>Оцінка/Всього голосів</td>
+      <td class='specifications-values__text'>
+        <span class='specifications-values__text--vote'>{{vote}}</span>
+        <span class='specifications-values__text--slash'>/</span>
+        <span class='specifications-values__text--votes'>{{votes}}</span>
+      </td>
+    </tr>
+    <tr class="specifications">
+      <td class='specifications-items__text'>Популярність</td>
+      <td class='specifications-values__text popularity'>{{popularity}}</td>
+    </tr>
+    <tr class="specifications">
+      <td class='specifications-items__text'>Оригінальна назва</td>
+      <td class='specifications-values__text title'>{{titleUk}}</td>
+    </tr>
+    <tr class="specifications">
+      <td class='specifications-items__text'>Жанр</td>
+      <td class='specifications-values__text genre'>{{genreUk}}</td>
+    </tr>
+  </table class="specifications">
+
+  {{! <div class='specifications-items'>
+    <p class='specifications-items__text'>Оцінка/Голосів</p>
+    <p class='specifications-items__text'>Популярність</p>
+    <p class='specifications-items__text'>Оригінальна назва</p>
+    <p class='specifications-items__text'>Жанр</p>
+  </div> }}
+
+  {{!-- <div class='specifications-values'>
+    <p class='specifications-values_text slash'>
+      <span class='specifications-values_text--vote'>{{vote}}</span>
+      /
+      <span class='specifications-values_text--votes'>{{votes}}</span>
+    </p>
+    <p class='specifications-values_text popularity'>{{popularity}}</p>
+    <p class='specifications-values_text title'>{{titleUk}}</p>
+    <p class='specifications-values_text genre'>{{genreUk}}</p>
+  </div> --}}
+
+  <h3 class='modal__about-title'>Про фільм</h3>
+
+  <p class='modal__about-text'>
+    {{aboutUk}}
+  </p>
+
+  <div class='modal__buttons-status'>
+    <button type='button' class='btn-add watched' data-watched='{{watched}}'>Додати до переглянутого</button>
+    <button type='button' class='btn-add queue' data-queue='{{queue}}'>Додати до черги</button>
+  </div>
+
+  <p class="modal__info-not-login-user">Будь-ласка, увійдіть в систему, щоб додати фільм до бібліотеки.</p>
+
+</div>
