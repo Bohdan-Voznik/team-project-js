@@ -2,7 +2,7 @@ import './sass/main.scss';
 import { initializeApp } from 'firebase/app';
 import { getDatabase, ref, get, update } from 'firebase/database';
 import 'tui-pagination/dist/tui-pagination.css';
-import { async, contains } from '@firebase/util';
+import { async, contains, errorPrefix } from '@firebase/util';
 import Darkmode from 'darkmode-js';
 import VanillaTilt from 'vanilla-tilt';
 
@@ -48,10 +48,10 @@ const options = {
 };
 const pagination = new Pagination('pagination', options);
 
-
 const refs = {
   ulItem: document.querySelector('.film__list'),
   serchForm: document.querySelector('.search-form'),
+  searchNotify: document.querySelector('.warning-notification'),
   filmList: document.querySelector('.film__list'),
   modalInfo: document.querySelector('.background'),
   modalInfoCloseBtn: document.querySelector('.modal__close-btn'),
@@ -99,7 +99,7 @@ let btnWatched = null;
 let btnQueue = null;
 let loginStatus = false;
 let searchStatus = false;
-let query = " ";
+let query = ' ';
 
 refs.serchForm.addEventListener('submit', onFormSerchSubmit);
 refs.filmList.addEventListener('click', openInfoModal);
@@ -107,7 +107,6 @@ refs.modalInfoCloseBtn.addEventListener('click', closeInfoModal);
 refs.select.addEventListener('change', changeLanguage);
 refs.pagination.addEventListener('click', onPage);
 
-// =======
 refs.sideNav.addEventListener('click', onSideNavClick);
 refs.modalAuthorizationClose.addEventListener('click', onModalAuthorizationCloseClick);
 refs.modalAuthorizationForm.addEventListener('submit', onModalAuthorizationFormSubmit);
@@ -155,10 +154,15 @@ async function onPage(e) {
 
   const currentPage = pagination.getCurrentPage();
   pagination.movePageTo(currentPage);
-  const lol = searchStatus ? await serviceApi.fetchMoviesBySearch({ query, page: currentPage }) : await serviceApi.fetchTrending({ page: currentPage, period: 'week' });
-  
+  const lol = searchStatus
+    ? await serviceApi.fetchMoviesBySearch({ query: query, page: currentPage })
+    : await serviceApi.fetchTrending({ page: currentPage, period: 'week' });
+
   window.scrollTo(0, 240);
-  const data = filmsMarcup.createMarkup(lol.films);
+
+  console.log(lol.films);
+  const data = filmsMarcup.createMarkup(lol.films, language.language);
+  console.log(data);
   refs.ulItem.innerHTML = data;
 }
 //============Registration============
@@ -321,18 +325,30 @@ async function logIn() {
 
   const data = filmsMarcup.createMarkup(films.films, 'en');
   refs.ulItem.innerHTML = data;
-  
 }
 
 async function onFormSerchSubmit(e) {
   e.preventDefault();
   query = e.target.query.value;
-  const films = await serviceApi.fetchMoviesBySearch({ query, page: 1 });
 
-  const data = filmsMarcup.createMarkup(films.films, 'ua');
-  refs.ulItem.innerHTML = data;
-  searchStatus = true;
-  pagination.reset(serviceApi.totalPages);
+  try {
+    const films = await serviceApi.fetchMoviesBySearch({ query, page: 1 });
+    if (films === false) {
+      refs.searchNotify.classList.remove('is-hidden');
+      setTimeout(() => {
+        refs.searchNotify.classList.add('is-hidden');
+      }, 3000);
+      return;
+    }
+
+    const data = filmsMarcup.createMarkup(films.films, 'ua');
+    refs.ulItem.innerHTML = data;
+    searchStatus = true;
+    pagination.reset(serviceApi.totalPages);
+  } catch (error) {
+    console.log(error);
+  }
+
 }
 
 const switchCheckbox = document.querySelector('.switch__checkbox');
@@ -461,7 +477,7 @@ function closeInfoModal() {
 }
 
 function sendObj() {
-  console.log('отправка объекта'); // отправка
+  dataBaseAPI.resetLiberuStatus(modalFilm.objFilm); // отправка
 }
 
 function sleep(fn) {
@@ -469,3 +485,52 @@ function sleep(fn) {
     setTimeout(() => resolve(fn()), 1200);
   });
 }
+
+// ------------------------QUEUE-WATCH---------------
+
+const libraryBtnsForm = document.querySelector('#library-page');
+
+libraryBtnsForm.addEventListener('change', onQueueWatchBtnClick);
+
+function onQueueWatchBtnClick(event) {
+  const selectedBtnValue = event.target.value;
+  console.log(selectedBtnValue);
+  const pageLang = language.language;
+  console.log(pageLang);
+
+  if (pageLang === 'en') {
+
+    if (selectedBtnValue === 'queue') {
+      console.log('posmotret');
+      console.log(dataBaseAPI.user.queue);
+      const dataQ = filmsMarcup.createMarkup(dataBaseAPI.user.queue, 'en');
+      console.log(dataQ);
+      refs.ulItem.innerHTML = dataQ;
+    }
+    if (selectedBtnValue === 'watched') {
+      console.log('videli');
+      console.log(dataBaseAPI.user.watched);
+      const dataW = filmsMarcup.createMarkup(dataBaseAPI.user.watched, 'en');
+      console.log(dataW);
+      refs.ulItem.innerHTML = dataW;
+    }
+  }
+
+  if (pageLang === 'ua') {
+    if (selectedBtnValue === 'queue') {
+      console.log('posmotret');
+      console.log(dataBaseAPI.user.queue);
+      const dataQ = filmsMarcup.createMarkup(dataBaseAPI.user.queue, 'ua');
+      
+      refs.ulItem.innerHTML = dataQ;
+    }
+    if (selectedBtnValue === 'watched') {
+      console.log('videli');
+      console.log(dataBaseAPI.user.watched);
+      const dataW = filmsMarcup.createMarkup(dataBaseAPI.user.watched, 'ua');
+      
+      refs.ulItem.innerHTML = dataW;
+    }
+  }    
+}
+

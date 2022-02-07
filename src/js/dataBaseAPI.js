@@ -150,8 +150,8 @@ export default class dataBaseApiServise {
     this.user = {};
     this.user.email = login;
     this.user.pasword = pasword;
-    this.user.queue = '';
-    this.user.watched = '';
+    this.user.queue = [];
+    this.user.watched = [];
     this.userRefInDatabase = refs;
 
     localStorage.setItem('user', JSON.stringify({ email: login, pasword: pasword }));
@@ -217,8 +217,8 @@ export default class dataBaseApiServise {
       vote,
       votes,
       popularity,
-      genreUk,
-      genreEn,
+      genreUk: typeof genreUk === 'string' ? genreUk.split(', ') : genreUk,
+      genreEn: typeof genreEn === 'string' ? genreEn.split(', ') : genreEn,
       aboutUk,
       aboutEn,
       reliseData,
