@@ -75,6 +75,8 @@ let filmId = null;
 let btnWatched = null;
 let btnQueue = null;
 let loginStatus = false;
+let searchStatus = false;
+let query = " ";
 
 refs.serchForm.addEventListener('submit', onFormSerchSubmit);
 refs.filmList.addEventListener('click', openInfoModal);
@@ -96,11 +98,13 @@ async function onPage(e) {
   if (e.currentTarget === e.target) {
     return;
   }
+
   const currentPage = pagination.getCurrentPage();
   pagination.movePageTo(currentPage);
-  const films = await serviceApi.fetchTrending({ page: currentPage, period: 'week' });
+  const lol = searchStatus ? await serviceApi.fetchMoviesBySearch({ query, page: currentPage }) : await serviceApi.fetchTrending({ page: currentPage, period: 'week' });
+  
   window.scrollTo(0, 240);
-  const data = filmsMarcup.createMarkup(films.films);
+  const data = filmsMarcup.createMarkup(lol.films);
   refs.ulItem.innerHTML = data;
 }
 //============Registration============
@@ -266,11 +270,12 @@ async function logIn() {
 
 async function onFormSerchSubmit(e) {
   e.preventDefault();
-  const query = e.target.query.value;
+  query = e.target.query.value;
   const films = await serviceApi.fetchMoviesBySearch({ query, page: 1 });
 
   const data = filmsMarcup.createMarkup(films.films);
   refs.ulItem.innerHTML = data;
+  searchStatus = true;
   pagination.reset(serviceApi.totalPages);
 }
 
