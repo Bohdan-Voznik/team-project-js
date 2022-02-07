@@ -15,11 +15,13 @@ export default class ModalFilm {
   }
 
   createMarkup(lang) {
-    console.log(lang.dataset.language);
+    console.log(lang);
     console.log(this.objFilm);
 
-    if (lang.dataset.language == 'en') return modalTplEn(this.objFilm);
-    if (lang.dataset.language == 'ua') {
+    if (lang == 'en') {
+      return modalTplEn(this.objFilm);
+    }
+    if (lang == 'ua') {
       return modalTplUk(this.objFilm);
     }
   }

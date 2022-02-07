@@ -160,7 +160,9 @@ export default class dataBaseApiServise {
 
   //-------Готово
   getFilmIndexByID({ category = null, id = null }) {
-    return category
+    const cat = category ? category : [];
+    console.log('12345', cat);
+    return cat
       .map(film => {
         return film.id;
       })
