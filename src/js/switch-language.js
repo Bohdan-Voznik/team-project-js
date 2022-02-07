@@ -7,9 +7,29 @@ export default class LanguageApi {
     this.language = 'en';
     this.select = null;
     this.tranclater = {
+      // search:{
+      //   en: 'Search movies',
+      //   ua: 'Пошук фільмів',
+      // },
+      log:{
+        en: 'LOG IN',
+        ua: 'УВІЙТИ',
+      },
+      lib:{
+        en: 'MY LIBRARY',
+        ua: 'МОЯ БІБЛІОТЕКА',
+      },
+      home:{
+        en: 'HOME',
+        ua: 'ГОЛОВНА',
+      },
+      film:{
+        en: 'Filmoteka',
+        ua: 'Фільмотека',
+      },
       right: {
-        en: '2020 | All Rights Reserved',
-        ua: '2020 | Усі права захищено',
+        en: '2022 | All Rights Reserved',
+        ua: '2022 | Усі права захищено',
       },
       developed: {
         en: '| Developed with',
@@ -48,3 +68,7 @@ export default class LanguageApi {
 // const  allLang=['en','ua'];
 
 
+const refs={
+  place: document.querySelector('.search-form'),
+};
+console.log(refs.place);

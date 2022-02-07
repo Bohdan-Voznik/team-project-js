@@ -18,6 +18,8 @@ const dataBaseAPI = new DataBaseAPI();
 const serviceApi = new ServiceApi();
 const modalFilm = new ModalFilm();
 new Darkmode().showWidget();
+
+
 const language = new Language();
 const options = {
   totalItems: 0,
@@ -105,7 +107,7 @@ refs.modalInfoCloseBtn.addEventListener('click', closeInfoModal);
 refs.select.addEventListener('change', changeLanguage);
 refs.pagination.addEventListener('click', onPage);
 
-=======
+// =======
 refs.sideNav.addEventListener('click', onSideNavClick);
 refs.modalAuthorizationClose.addEventListener('click', onModalAuthorizationCloseClick);
 refs.modalAuthorizationForm.addEventListener('submit', onModalAuthorizationFormSubmit);
