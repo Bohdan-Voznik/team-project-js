@@ -458,11 +458,60 @@ function closeInfoModal() {
 }
 
 function sendObj() {
-  console.log('отправка объекта'); // отправка
+  dataBaseAPI.resetLiberuStatus(modalFilm.objFilm); // отправка
 }
 
 function sleep(fn) {
   return new Promise(resolve => {
     setTimeout(() => resolve(fn()), 1200);
   });
+}
+
+// ------------------------QUEUE-WATCH---------------
+
+const libraryBtnsForm = document.querySelector('#library-page');
+
+libraryBtnsForm.addEventListener('change', onQueueWatchBtnClick);
+
+function onQueueWatchBtnClick(event) {
+  const selectedBtnValue = event.target.value;
+  console.log(selectedBtnValue);
+  const pageLang = language.language;
+  console.log(pageLang);
+
+  if (pageLang === 'en') {
+
+    if (selectedBtnValue === 'queue') {
+      console.log('posmotret');
+      console.log(dataBaseAPI.user.queue);
+      const dataQ = filmsMarcup.createMarkup(dataBaseAPI.user.queue, 'en');
+      console.log(dataQ);
+      refs.ulItem.innerHTML = dataQ;
+    }
+    if (selectedBtnValue === 'watched') {
+      console.log('videli');
+      console.log(dataBaseAPI.user.watched);
+      const dataW = filmsMarcup.createMarkup(dataBaseAPI.user.watched, 'en');
+      console.log(dataW);
+      refs.ulItem.innerHTML = dataW;
+    }
+  }
+
+  if (pageLang === 'ua') {
+    if (selectedBtnValue === 'queue') {
+      console.log('posmotret');
+      console.log(dataBaseAPI.user.queue);
+      const dataQ = filmsMarcup.createMarkup(dataBaseAPI.user.queue, 'ua');
+      
+      refs.ulItem.innerHTML = dataQ;
+    }
+    if (selectedBtnValue === 'watched') {
+      console.log('videli');
+      console.log(dataBaseAPI.user.watched);
+      const dataW = filmsMarcup.createMarkup(dataBaseAPI.user.watched, 'ua');
+      
+      refs.ulItem.innerHTML = dataW;
+    }
+  }
+    
 }
