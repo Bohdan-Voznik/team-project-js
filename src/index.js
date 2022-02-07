@@ -46,6 +46,7 @@ const options = {
 };
 const pagination = new Pagination('pagination', options);
 
+
 const refs = {
   ulItem: document.querySelector('.film__list'),
   serchForm: document.querySelector('.search-form'),
@@ -104,6 +105,7 @@ refs.modalInfoCloseBtn.addEventListener('click', closeInfoModal);
 refs.select.addEventListener('change', changeLanguage);
 refs.pagination.addEventListener('click', onPage);
 
+=======
 refs.sideNav.addEventListener('click', onSideNavClick);
 refs.modalAuthorizationClose.addEventListener('click', onModalAuthorizationCloseClick);
 refs.modalAuthorizationForm.addEventListener('submit', onModalAuthorizationFormSubmit);
@@ -314,8 +316,10 @@ async function logIn() {
   pagination.reset(serviceApi.totalPages);
 
   console.log(films.films);
-  const data = filmsMarcup.createMarkup(films.films);
+
+  const data = filmsMarcup.createMarkup(films.films, 'en');
   refs.ulItem.innerHTML = data;
+  
 }
 
 async function onFormSerchSubmit(e) {
@@ -323,7 +327,7 @@ async function onFormSerchSubmit(e) {
   query = e.target.query.value;
   const films = await serviceApi.fetchMoviesBySearch({ query, page: 1 });
 
-  const data = filmsMarcup.createMarkup(films.films);
+  const data = filmsMarcup.createMarkup(films.films, 'ua');
   refs.ulItem.innerHTML = data;
   searchStatus = true;
   pagination.reset(serviceApi.totalPages);

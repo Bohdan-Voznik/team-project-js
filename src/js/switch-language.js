@@ -47,6 +47,4 @@ export default class LanguageApi {
 
 // const  allLang=['en','ua'];
 
-//
 
-// changeURLLanguage()
