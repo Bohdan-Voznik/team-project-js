@@ -1,51 +1,21 @@
 import filmInfo from '../partials/film-item.hbs';
-
-
 export function createMarkup(films, lang) {
-  if (lang === 'en') {
-    const FilmsListEn = films.map(film => {
-      const enFilm =  {
-        image: film.imageEn,
-        title: film.titleEn,
-        genre: film.genreEn,
-        reliseData: film.reliseData,
-        vote: film.vote,
-        id: film.id
-      };
-      return filmInfo(enFilm);
+const FilmsList = films.map(film => {
+         
+  return filmInfo ({
+    image: lang === 'en' ? film.imageEn : film.imageUk,
+    title: lang === 'en' ? film.titleEn : film.titleUk,
+    genre: lang === 'en' ? film.genreEn.slice(0, 2).join(', ') : film.genreUk.slice(0, 2).join(', '),
+    reliseData: film.reliseData,
+    vote: film.vote,
+    id: film.id              
+}) 
 
-    })
-    return FilmsListEn.join('');
-  } 
-  if (lang === 'ua') {
-    const FilmsListUk = films.map(film => {
-      const ukFilm =  {
-        image: film.imageUk,
-        title: film.titleUk,
-        genre: film.genreUk,
-        reliseData: film.reliseData,
-        vote: film.vote,
-        id: film.id
-      };
-      
-      return filmInfo(ukFilm);
-
-    })
-    return FilmsListUk.join('');
-  }
+});
+return FilmsList.join('');
+};
 
 
-  // const FilmsList = films.map(film => {
-  //   // if (!film.genreEn) {
-  //   //   film.genreEn = '';
-  //   // } else {
-  //   //   film.genreEn = film.genreEn.slice(0, 2).join(', ');
-  //   // }
 
-  // //   return filmInfo(film);
   
-  // }
-  // });
-  
-  // return FilmsList.join('');
-}
+
