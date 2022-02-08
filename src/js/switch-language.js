@@ -43,7 +43,7 @@ export default class LanguageApi {
       },
       developed: {
         en: '| Developed with',
-        ua: '| Розроблено',
+        ua: '| Розроблено з',
       },
       by: {
         en: 'by',
