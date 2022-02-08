@@ -34,6 +34,7 @@ export default class ModalFilm {
       return modalTplUk(this.objFilm);
     }
   }
+  //
 
   //Обработка кликов по кнопкам в модалке:
 
