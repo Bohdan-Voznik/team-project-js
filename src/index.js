@@ -404,6 +404,12 @@ function titlMove() {
 async function onFormSearchSubmit(e) {
   e.preventDefault();
   query = e.target.query.value;
+  if (query === '') {
+    refs.searchNotify.classList.remove('is-hidden');
+    setTimeout(() => {
+      refs.searchNotify.classList.add('is-hidden');
+    }, 3000);
+  }
 
   try {
     const films = await serviceApi.fetchMoviesBySearch({ query, page: 1 });
@@ -423,13 +429,7 @@ async function onFormSearchSubmit(e) {
     refs.searchForm.query.value = '';
   } catch (error) {
     console.log(error);
-    if (error) {
-      refs.searchNotify.classList.remove('is-hidden');
-      setTimeout(() => {
-        refs.searchNotify.classList.add('is-hidden');
-      }, 3000);
-      return;
-    }
+    return;
   }
 }
 
