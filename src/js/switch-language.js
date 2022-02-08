@@ -27,7 +27,7 @@ export default class LanguageApi {
       },
       lib: {
         en: 'MY LIBRARY',
-        ua: 'МОЯ БІБЛІОТЕКА',
+        ua: 'БІБЛІОТЕКА',
       },
       home: {
         en: 'HOME',
