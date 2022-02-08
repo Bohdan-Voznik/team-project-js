@@ -14,6 +14,7 @@ import teamModal from './js/team-modal-open';
 import Language from './js/switch-language';
 import Pagination from 'tui-pagination';
 
+
 const dataBaseAPI = new DataBaseAPI();
 const serviceApi = new ServiceApi();
 const modalFilm = new ModalFilm();
@@ -142,10 +143,12 @@ function activeHomePage() {
     if (pageLang === 'en') {
       const homePage = filmsMarcup.createMarkup(data.films, 'en');
       refs.ulItem.innerHTML = homePage;
+      titlMove();
     }
     if (pageLang === 'ua') {
       const homePage = filmsMarcup.createMarkup(data.films, 'ua');
-      refs.ulItem.innerHTML = homePage;
+       refs.ulItem.innerHTML = homePage;
+       titlMove();
     }
   });
 }
@@ -165,11 +168,14 @@ function activeLibraryPage() {
   if (pageLang === 'en') {
     const dataW = filmsMarcup.createMarkup(dataBaseAPI.user.watched, 'en');
     refs.ulItem.innerHTML = dataW;
+    titlMove();
   }
   if (pageLang === 'ua') {
     const dataW = filmsMarcup.createMarkup(dataBaseAPI.user.watched, 'ua');
     refs.ulItem.innerHTML = dataW;
-  }
+
+    titlMove();
+    }
 }
 
 //====================PAGINATION===================//
@@ -191,7 +197,10 @@ async function onPage(e) {
   const data = filmsMarcup.createMarkup(lol.films, language.language);
   console.log(data);
   refs.ulItem.innerHTML = data;
+  titlMove();
 }
+
+
 //============Registration============
 
 async function onMmodalRegistrationFormSubmit(e) {
@@ -352,7 +361,20 @@ async function logIn() {
 
   const data = filmsMarcup.createMarkup(films.films, 'en');
   refs.ulItem.innerHTML = data;
+ 
+  titlMove();
+ 
 }
+
+//=================Titl=============================//
+function titlMove() {
+   const elements = document.querySelectorAll(".film__item");
+  console.log(elements);
+
+  elements.forEach(element => VanillaTilt.init(element, { scale: "1.1" }));
+}
+// ==============================//
+
 
 async function onFormSerchSubmit(e) {
   e.preventDefault();
@@ -370,6 +392,7 @@ async function onFormSerchSubmit(e) {
 
     const data = filmsMarcup.createMarkup(films.films, 'ua');
     refs.ulItem.innerHTML = data;
+    titlMove();
     searchStatus = true;
     pagination.reset(serviceApi.totalPages);
   } catch (error) {
@@ -547,12 +570,14 @@ function onQueueWatchBtnClick(event) {
       console.log(dataBaseAPI.user.queue);
       const dataQ = filmsMarcup.createMarkup(dataBaseAPI.user.queue, 'en');
       refs.ulItem.innerHTML = dataQ;
+      titlMove();
     }
     if (selectedBtnValue === 'watched') {
       console.log('videli');
       console.log(dataBaseAPI.user.watched);
       const dataW = filmsMarcup.createMarkup(dataBaseAPI.user.watched, 'en');
       refs.ulItem.innerHTML = dataW;
+      titlMove();
     }
   }
 
@@ -562,12 +587,14 @@ function onQueueWatchBtnClick(event) {
       console.log(dataBaseAPI.user.queue);
       const dataQ = filmsMarcup.createMarkup(dataBaseAPI.user.queue, 'ua');
       refs.ulItem.innerHTML = dataQ;
+      titlMove();
     }
     if (selectedBtnValue === 'watched') {
       console.log('videli');
       console.log(dataBaseAPI.user.watched);
       const dataW = filmsMarcup.createMarkup(dataBaseAPI.user.watched, 'ua');
       refs.ulItem.innerHTML = dataW;
+      titlMove();
     }
   }
 }
