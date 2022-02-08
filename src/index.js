@@ -13,9 +13,11 @@ import ModalFilm from './js/modal-film-info';
 import teamModal from './js/team-modal-open';
 import Language from './js/switch-language';
 import Pagination from 'tui-pagination';
-import SelectPure from "select-pure";
+import SelectPure from 'select-pure';
 
 import Loader from './js/loader';
+
+new Darkmode().showWidget();
 
 const dataBaseAPI = new DataBaseAPI();
 const serviceApi = new ServiceApi();
@@ -146,9 +148,12 @@ function activeHomePage() {
   refs.bgImg.classList.add('header-bg');
   //console.log(serviceApi.fetchTrending({ page: 1, period: 'week' }));
   const pageLang = language.language;
-  const currentPage = pagination.getCurrentPage();
-  serviceApi.fetchTrending({ page: currentPage, period: 'week' }).then(data => {
+  // const currentPage = pagination.getCurrentPage();
+  serviceApi.fetchTrending({ page: 1, period: 'week' }).then(data => {
     console.log(data.films);
+    searchStatus = false;
+    query = '';
+    pagination.reset(serviceApi.totalPages);
     if (pageLang === 'en') {
       const homePage = filmsMarcup.createMarkup(data.films, 'en');
       refs.ulItem.innerHTML = homePage;
@@ -399,6 +404,12 @@ function titlMove() {
 async function onFormSearchSubmit(e) {
   e.preventDefault();
   query = e.target.query.value;
+  if (query === '') {
+    refs.searchNotify.classList.remove('is-hidden');
+    setTimeout(() => {
+      refs.searchNotify.classList.add('is-hidden');
+    }, 3000);
+  }
 
   try {
     const films = await serviceApi.fetchMoviesBySearch({ query, page: 1 });
@@ -415,15 +426,10 @@ async function onFormSearchSubmit(e) {
     titlMove();
     searchStatus = true;
     pagination.reset(serviceApi.totalPages);
+    refs.searchForm.query.value = '';
   } catch (error) {
     console.log(error);
-    if (error) {
-      refs.searchNotify.classList.remove('is-hidden');
-      setTimeout(() => {
-        refs.searchNotify.classList.add('is-hidden');
-      }, 3000);
-      return;
-    }
+    return;
   }
 }
 
@@ -607,17 +613,16 @@ const libraryBtnsForm = document.querySelector('#library-page');
 libraryBtnsForm.addEventListener('change', onQueueWatchBtnClick);
 
 function onQueueWatchBtnClick() {
-  let selectedBtnValue = "";
+  let selectedBtnValue = '';
   const pageLang = language.language;
   if (refs.libraryButton.classList.contains('side-nav__link--current')) {
     if (refs.radioWatched.checked) {
-      selectedBtnValue = "watched";
-    }
-    else {
-      selectedBtnValue = "queue";
+      selectedBtnValue = 'watched';
+    } else {
+      selectedBtnValue = 'queue';
     }
   }
-  
+
   if (pageLang === 'en') {
     if (selectedBtnValue === 'queue') {
       console.log('posmotret');
