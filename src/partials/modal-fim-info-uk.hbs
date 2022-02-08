@@ -51,10 +51,17 @@
     {{aboutUk}}
   </p>
 
-  <div class='modal__buttons-status'>
-    <button type='button' class='btn-add watched' data-watched='{{watched}}'>Додати до переглянутого</button>
-    <button type='button' class='btn-add queue' data-queue='{{queue}}'>Додати до черги</button>
-  </div>
+   <div class="modal__buttons-status">
+            <button type="button" class="btn-add watched btn-add-to-watched" data-watched="{{watched}}">
+                <p class="modal-btn_text">Додати до переглянутого</p>
+               <span class="loader is-hidden"></span> 
+            </button>
+  
+            <button type="button" class="btn-add queue btn-add-to-queue" data-queue="{{queue}}">
+               <p class="modal-btn_text">Додати до черги</p>
+               <span class="loader is-hidden"></span> 
+            </button>
+    </div>
 
   <p class="modal__info-not-login-user">Будь-ласка, увійдіть в систему, щоб додати фільм до бібліотеки.</p>
 

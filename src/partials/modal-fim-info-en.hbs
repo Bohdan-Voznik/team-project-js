@@ -36,8 +36,15 @@
         </p>
 
         <div class="modal__buttons-status">
-            <button type="button" class="btn-add watched" data-watched="{{watched}}">Add to watched</button>
-            <button type="button" class="btn-add queue" data-queue="{{queue}}">Add to queue</button>
+            <button type="button" class="btn-add watched btn-add-to-watched" data-watched="{{watched}}">
+                <p class="modal-btn_text">Add to watched</p>
+               <span class="loader is-hidden"></span> 
+            </button>
+  
+            <button type="button" class="btn-add queue btn-add-to-queue" data-queue="{{queue}}">
+               <p class="modal-btn_text">Add to queue</p>
+               <span class="loader is-hidden"></span> 
+            </button>
         </div>
 
           <p class="modal__info-not-login-user">Please log in to add the movie to your library.</p>
