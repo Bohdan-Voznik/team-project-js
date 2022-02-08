@@ -247,7 +247,6 @@ function resetLoginStatus() {
     return;
   }
   refs.loginButton.innerHTML = 'LOG IN';
-  unlockLibrary(loginStatus);
 }
 
 async function onModalAuthorizationFormSubmit(e) {
@@ -384,7 +383,6 @@ async function onFormSerchSubmit(e) {
       setTimeout(() => {
         refs.searchNotify.classList.add('is-hidden');
       }, 3000);
-      unlockLibrary(loginStatus);
       return;
     }
 
