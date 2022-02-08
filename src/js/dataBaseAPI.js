@@ -249,7 +249,7 @@ export default class dataBaseApiServise {
     if (!category || !id) {
       return 'Error';
     }
-    const filmIndex = this.getFilmIndexByID({ category: this.user.watched, id: Number(id) });
+    const filmIndex = this.getFilmIndexByID({ category: category, id: Number(id) });
 
     if (filmIndex === -1) {
       console.log('no film');

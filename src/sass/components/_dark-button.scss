@@ -28,7 +28,7 @@
 .slider:before {
   position: absolute;
   content: '🌓';
-  
+
   font-size: 40px;
   height: 40px;
   width: 40px;
@@ -60,6 +60,8 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
+  bottom: 6px;
+  left: 0;
 }
 
 // .darkmode-layer {
@@ -71,25 +73,18 @@ input:checked + .slider:before {
   z-index: 99;
   position: fixed;
   display: inline-block;
-  width: 60px !important;
-  height: 40px !important;
+  width: 70px !important;
+  height: 50px !important;
   border-radius: 34px !important;
   bottom: 31px !important;
-  //   left: 1000px;
   right: 32px;
 }
-// .darkmode-layer--button {
-//   opacity: 0;
-//   z-index: 2;
-//   position: fixed;
-//   display: inline-block;
-//   width: 60px;
-//   height: 40px;
-
-//   bottom: 31px;
-//   //   left: 1000px;
-//   right: 32px;
-// }
-.darkmode--activated #my-element-with-background {
+.darkmode-layer--button {
+  width: 30px;
+  height: 30px;
+  right: -40px;
+  bottom: -40px;
+}
+.darkmode--activated .my-element-with-background {
   filter: invert(0);
 }
