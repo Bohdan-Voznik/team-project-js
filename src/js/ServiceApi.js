@@ -35,7 +35,7 @@ export default class ServiceApi {
       this.page = page;
       const url = `trending/movie/${period}`;
       const responseEn = await this.axInstance.get(url, { params: { page: this.page } });
-      this.totalPages = responseEn.data.total_pages;
+      this.totalPages = responseEn.data.total_results;
       const dataEn = responseEn.data.results.map(
         ({
           id,
@@ -55,7 +55,7 @@ export default class ServiceApi {
           imageEn:
             poster_path !== null
               ? `https://image.tmdb.org/t/p/w500${poster_path}`
-              : 'https://birdinflight.imgix.net/wp-content/uploads/2016/03/404_cover.jpg?fm=pjpg&q=70&fit=crop&crop=faces&w=630&h=420',
+              : 'https://bflix.biz/no-poster.png',
           reliseData: release_date === undefined ? '' : release_date.slice(0, 4),
           aboutEn: overview,
           votes: vote_count,
@@ -79,7 +79,7 @@ export default class ServiceApi {
           imageUk:
             poster_path !== null
               ? `https://image.tmdb.org/t/p/w500${poster_path}`
-              : 'https://birdinflight.imgix.net/wp-content/uploads/2016/03/404_cover.jpg?fm=pjpg&q=70&fit=crop&crop=faces&w=630&h=420',
+              : 'https://bflix.biz/no-poster.png',
           aboutUk: overview,
           aboutEn: dataEn[index].aboutEn,
           genreUk: this.arrayForGenresUk
@@ -101,7 +101,7 @@ export default class ServiceApi {
       const responseEn = await this.axInstance.get(url, {
         params: { query, page: this.page },
       });
-      this.totalPages = responseEn.data.total_pages;
+      this.totalPages = responseEn.data.total_results;
       console.log(responseEn.data.results);
       if (responseEn.data.results.length === 0) {
         return false;
@@ -126,7 +126,7 @@ export default class ServiceApi {
           imageEn:
             poster_path !== null
               ? `https://image.tmdb.org/t/p/w500${poster_path}`
-              : 'https://birdinflight.imgix.net/wp-content/uploads/2016/03/404_cover.jpg?fm=pjpg&q=70&fit=crop&crop=faces&w=630&h=420',
+              : 'https://bflix.biz/no-poster.png',
           reliseData: release_date === undefined ? '' : release_date.slice(0, 4),
           aboutEn: overview,
           votes: vote_count,
@@ -152,7 +152,7 @@ export default class ServiceApi {
           imageUk:
             poster_path !== null
               ? `https://image.tmdb.org/t/p/w500${poster_path}`
-              : 'https://birdinflight.imgix.net/wp-content/uploads/2016/03/404_cover.jpg?fm=pjpg&q=70&fit=crop&crop=faces&w=630&h=420',
+              : 'https://bflix.biz/no-poster.png',
           aboutUk: overview,
           aboutEn: dataEn[index].aboutEn,
           genreUk: this.arrayForGenresUk
