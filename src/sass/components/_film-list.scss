@@ -26,16 +26,19 @@
 .film__item {
   width: 100%;
   margin-bottom: 20px;
+  margin-top: 20px;
   @media screen and (min-width: 768px) and (max-width: 1023px) {
     width: 280px;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
+    margin-top: 20px;
     &:nth-child(odd) {
       margin-right: 30px;
     }
   }
   @media screen and (min-width: 1024px) {
     width: 274px;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
+    margin-top: 20px;
     &:not(:nth-child(3n + 3)) {
       margin-right: 30px;
     }

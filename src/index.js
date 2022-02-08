@@ -13,6 +13,7 @@ import ModalFilm from './js/modal-film-info';
 import teamModal from './js/team-modal-open';
 import Language from './js/switch-language';
 import Pagination from 'tui-pagination';
+import SelectPure from "select-pure";
 
 import Loader from './js/loader';
 
@@ -54,7 +55,7 @@ const pagination = new Pagination('pagination', options);
 
 const refs = {
   ulItem: document.querySelector('.film__list'),
-  serchForm: document.querySelector('.search-form'),
+  searchForm: document.querySelector('.search-form'),
   searchNotify: document.querySelector('.warning-notification'),
   filmList: document.querySelector('.film__list'),
   modalInfo: document.querySelector('.background'),
@@ -108,7 +109,7 @@ let loginStatus = false;
 let searchStatus = false;
 let query = ' ';
 
-refs.serchForm.addEventListener('submit', onFormSerchSubmit);
+refs.searchForm.addEventListener('submit', onFormSearchSubmit);
 refs.filmList.addEventListener('click', openInfoModal);
 refs.modalInfoCloseBtn.addEventListener('click', closeInfoModal);
 refs.select.addEventListener('change', changeLanguage);
@@ -125,6 +126,11 @@ refs.modalRegistrationForm.addEventListener('submit', onMmodalRegistrationFormSu
 refs.libraryBtn.addEventListener('click', activeLibraryPage);
 refs.homeBtn.addEventListener('click', activeHomePage);
 refs.logoLink.addEventListener('click', activeHomePage);
+
+//================ЗАПУСК ПРИ СТАРТЕ================
+storageCheck();
+logIn();
+//================^^^ЗАПУСК ПРИ СТАРТЕ^^^================
 
 //====================HEADER===================//
 
@@ -235,6 +241,9 @@ async function onMmodalRegistrationFormSubmit(e) {
       onModalRegistrationCloseClick();
       onModalAuthorizationCloseClick();
       console.log(dataBaseAPI.user);
+      //------------------------------
+      // onСhangeUserData();
+      //------------------------------
       break;
   }
 }
@@ -253,10 +262,10 @@ function oModalRegistrationButtonClick(e) {
 //============LOGIN============
 function resetLoginStatus() {
   if (refs.loginButton.dataset.action === 'true') {
-    refs.loginButton.innerHTML = 'LOG OUT';
+    refs.loginButton.innerHTML = language.language === 'en' ? 'LOG OUT' : 'ВИЙТИ';
     return;
   }
-  refs.loginButton.innerHTML = 'LOG IN';
+  refs.loginButton.innerHTML = language.language === 'en' ? 'LOG IN' : 'УВІЙТИ';
 }
 
 async function onModalAuthorizationFormSubmit(e) {
@@ -301,6 +310,9 @@ async function onModalAuthorizationFormSubmit(e) {
       loginStatus = true;
       resetLoginStatus();
       onModalAuthorizationCloseClick();
+      //------------------------------
+      // onСhangeUserData();
+      //------------------------------
       break;
   }
 }
@@ -338,7 +350,6 @@ function onSideNavClick(e) {
   }
 }
 
-logIn();
 // --------------------Меняем язык ввода-----------
 function changeLanguage() {
   language.select = refs.select;
@@ -349,10 +360,9 @@ function murcup(key, lang) {
   document.querySelector(`.lng-${key}`).innerHTML = language.tranclater[key][lang];
 }
 // --------------------Меняем язык ввода-----------
-// dataBaseAPI.logOut();
 
 //-----------------Проверяем наичие логина и пароля в localStorage-----------------
-function storageCheck() {
+async function storageCheck() {
   const user = JSON.parse(localStorage.getItem('user'));
 
   if (!user) {
@@ -360,7 +370,10 @@ function storageCheck() {
   }
 
   const { email, pasword } = user;
-  logIn(email, pasword);
+  await dataBaseAPI.logIn({ email: email, pasword: pasword });
+  refs.loginButton.dataset.action = 'true';
+  loginStatus = true;
+  resetLoginStatus();
 }
 
 async function logIn() {
@@ -368,7 +381,7 @@ async function logIn() {
 
   pagination.reset(serviceApi.totalPages);
 
-  console.log(films.films);
+  // console.log(films.films);
 
   const data = filmsMarcup.createMarkup(films.films, 'en');
   refs.ulItem.innerHTML = data;
@@ -379,13 +392,11 @@ async function logIn() {
 //=================Titl=============================//
 function titlMove() {
   const elements = document.querySelectorAll('.film__item');
-  console.log(elements);
-
   elements.forEach(element => VanillaTilt.init(element, { scale: '1.05' }));
 }
 // ==============================//
 
-async function onFormSerchSubmit(e) {
+async function onFormSearchSubmit(e) {
   e.preventDefault();
   query = e.target.query.value;
 
@@ -406,12 +417,19 @@ async function onFormSerchSubmit(e) {
     pagination.reset(serviceApi.totalPages);
   } catch (error) {
     console.log(error);
+    if (error) {
+      refs.searchNotify.classList.remove('is-hidden');
+      setTimeout(() => {
+        refs.searchNotify.classList.add('is-hidden');
+      }, 3000);
+      return;
+    }
   }
 }
 
 const switchCheckbox = document.querySelector('.switch__checkbox');
 const switchToggle = document.querySelector('.darkmode-toggle');
-console.log(switchToggle);
+// console.log(switchToggle);
 
 switchToggle.addEventListener('click', onChangeBg);
 function onChangeBg() {
@@ -588,21 +606,29 @@ const libraryBtnsForm = document.querySelector('#library-page');
 
 libraryBtnsForm.addEventListener('change', onQueueWatchBtnClick);
 
-function onQueueWatchBtnClick(event) {
-  const selectedBtnValue = event.target.value;
+function onQueueWatchBtnClick() {
+  let selectedBtnValue = "";
   const pageLang = language.language;
-
+  if (refs.libraryButton.classList.contains('side-nav__link--current')) {
+    if (refs.radioWatched.checked) {
+      selectedBtnValue = "watched";
+    }
+    else {
+      selectedBtnValue = "queue";
+    }
+  }
+  
   if (pageLang === 'en') {
     if (selectedBtnValue === 'queue') {
       console.log('posmotret');
-      console.log(dataBaseAPI.user.queue);
+      console.log(selectedBtnValue);
       const dataQ = filmsMarcup.createMarkup(dataBaseAPI.user.queue, 'en');
       refs.ulItem.innerHTML = dataQ;
       titlMove();
     }
     if (selectedBtnValue === 'watched') {
       console.log('videli');
-      console.log(dataBaseAPI.user.watched);
+      console.log(selectedBtnValue);
       const dataW = filmsMarcup.createMarkup(dataBaseAPI.user.watched, 'en');
       refs.ulItem.innerHTML = dataW;
       titlMove();
@@ -612,14 +638,14 @@ function onQueueWatchBtnClick(event) {
   if (pageLang === 'ua') {
     if (selectedBtnValue === 'queue') {
       console.log('posmotret');
-      console.log(dataBaseAPI.user.queue);
+      // console.log(dataBaseAPI.user.queue);
       const dataQ = filmsMarcup.createMarkup(dataBaseAPI.user.queue, 'ua');
       refs.ulItem.innerHTML = dataQ;
       titlMove();
     }
     if (selectedBtnValue === 'watched') {
       console.log('videli');
-      console.log(dataBaseAPI.user.watched);
+      // console.log(dataBaseAPI.user.watched);
       const dataW = filmsMarcup.createMarkup(dataBaseAPI.user.watched, 'ua');
       refs.ulItem.innerHTML = dataW;
       titlMove();

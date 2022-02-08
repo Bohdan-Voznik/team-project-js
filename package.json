@@ -29,6 +29,7 @@
     "axios": "^0.25.0",
     "darkmode-js": "^1.5.7",
     "firebase": "^9.6.6",
+    "select-pure": "^2.1.2-alpha.0",
     "tilt.js": "^1.2.1",
     "tui-pagination": "^3.4.1",
     "vanilla-tilt": "^1.7.2"
