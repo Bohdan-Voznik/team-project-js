@@ -15,10 +15,14 @@ import Language from './js/switch-language';
 import Pagination from 'tui-pagination';
 import SelectPure from "select-pure";
 
+import Loader from './js/loader';
+
 const dataBaseAPI = new DataBaseAPI();
 const serviceApi = new ServiceApi();
 const modalFilm = new ModalFilm();
-new Darkmode().showWidget();
+
+const loaderSignIn = new Loader({ selector: '.auth-sign-in' });
+const loaderRegistr = new Loader({ selector: '.reg-btn' });
 
 const language = new Language();
 const options = {
@@ -211,7 +215,9 @@ async function onMmodalRegistrationFormSubmit(e) {
   e.preventDefault();
   const login = String(e.target.login.value);
   const pasword = e.target.pasword.value;
+  loaderRegistr.disabled();
   const status = await dataBaseAPI.registration({ login: login, pasword: pasword });
+  loaderRegistr.enabled('REGISTRATION');
   switch (status) {
     case 'User error':
       console.log('User error');
@@ -247,7 +253,11 @@ function onModalRegistrationCloseClick() {
 }
 
 function oModalRegistrationButtonClick(e) {
+  //спинер on
+  //кнопка
+  //ожидание setTimeout
   refs.modalRegistration.classList.remove('is-hidden');
+  //кнопка
 }
 //============LOGIN============
 function resetLoginStatus() {
@@ -263,9 +273,12 @@ async function onModalAuthorizationFormSubmit(e) {
 
   const login = e.target.login.value;
   const pasword = e.target.password.value;
-  // показать спинер
+  // показать спинер is-hidden
   //запретить нажатие на кнопки
+
+  loaderSignIn.disabled();
   const status = await dataBaseAPI.logIn({ email: login, pasword: pasword });
+  loaderSignIn.enabled();
   // скрыть спинер
   //Разренить нажатие на кнопки
   switch (status) {
@@ -379,7 +392,7 @@ async function logIn() {
 //=================Titl=============================//
 function titlMove() {
   const elements = document.querySelectorAll('.film__item');
-  elements.forEach(element => VanillaTilt.init(element, { scale: '1.1' }));
+  elements.forEach(element => VanillaTilt.init(element, { scale: '1.05' }));
 }
 // ==============================//
 
@@ -518,37 +531,56 @@ function openInfoModal(e) {
 }
 
 async function addToWatched() {
+  const loaderWatched = new Loader({ selector: '.btn-add-to-watched' });
+
+  const textSpinner = language.language === 'en' ? 'Add to watched' : 'Додати до переглянутого';
+
   if (modalFilm.objFilm.watched) {
     modalFilm.objFilmWatched = false;
     btnWatched.setAttribute('data-watched', modalFilm.objFilm.watched);
-    // спинер вкл + выкл кнопку
+
+    loaderWatched.resetLoaderColor();
+    loaderWatched.disabled();
     await sleep(sendObj);
-    // спинер выкл + вкл кнопку
+    loaderWatched.enabled(textSpinner);
+    loaderWatched.resetLoaderColor();
+
     btnWatched.classList.remove('selected');
   } else {
     modalFilm.objFilmWatched = true;
     btnWatched.setAttribute('data-watched', modalFilm.objFilm.watched);
-    // спинер вкл + выкл кнопку
+
+    loaderWatched.disabled();
     await sleep(sendObj);
-    // спинер выкл + вкл кнопку
+    loaderWatched.enabled(textSpinner);
+
     btnWatched.classList.add('selected');
   }
 }
 
 async function addToQueue() {
+  const loaderQueue = new Loader({ selector: '.btn-add-to-queue' });
+  const textSpinner = language.language === 'en' ? 'Add to queue' : 'Додати до черги';
+
   if (modalFilm.objFilm.queue) {
     modalFilm.objFilmQueue = false;
     btnQueue.setAttribute('data-queue', modalFilm.objFilm.queue);
-    // спинер вкл + выкл кнопку
+
+    loaderQueue.resetLoaderColor();
+    loaderQueue.disabled();
     await sleep(sendObj);
-    // спинер выкл + вкл кнопку
+    loaderQueue.enabled(textSpinner);
+    loaderQueue.resetLoaderColor();
+
     btnQueue.classList.remove('selected');
   } else {
     modalFilm.objFilmQueue = true;
     btnQueue.setAttribute('data-queue', modalFilm.objFilm.queue);
-    // спинер вкл + выкл кнопку
+
+    loaderQueue.disabled();
     await sleep(sendObj);
-    // спинер выкл + вкл кнопку
+    loaderQueue.enabled(textSpinner);
+
     btnQueue.classList.add('selected');
   }
 }

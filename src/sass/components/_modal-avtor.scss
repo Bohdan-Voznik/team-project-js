@@ -111,9 +111,9 @@
     margin-bottom: 30px;
   }
 }
-.adds {
-  // margin-bottom: 10px;
-}
+// .adds {
+//   // margin-bottom: 10px;
+// }
 .modal__buttons {
   display: flex;
   justify-content: space-evenly;
@@ -134,6 +134,15 @@
   height: 45px;
 
   display: inline-block;
+  position: relative;
+
+  // &.auth-sign-in{
+    //  display: flex;
+    //  justify-content: center;
+    //  align-items: center;
+    //  
+  // }
+ 
 
   text-transform: uppercase;
 
