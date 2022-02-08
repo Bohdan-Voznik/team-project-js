@@ -381,7 +381,7 @@ function titlMove() {
   const elements = document.querySelectorAll('.film__item');
   console.log(elements);
 
-  elements.forEach(element => VanillaTilt.init(element, { scale: '1.1' }));
+  elements.forEach(element => VanillaTilt.init(element, { scale: '1.03' }));
 }
 // ==============================//
 
