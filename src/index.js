@@ -13,6 +13,7 @@ import ModalFilm from './js/modal-film-info';
 import teamModal from './js/team-modal-open';
 import Language from './js/switch-language';
 import Pagination from 'tui-pagination';
+import SelectPure from "select-pure";
 
 
 const dataBaseAPI = new DataBaseAPI();
