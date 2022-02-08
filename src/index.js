@@ -13,6 +13,7 @@ import ModalFilm from './js/modal-film-info';
 import teamModal from './js/team-modal-open';
 import Language from './js/switch-language';
 import Pagination from 'tui-pagination';
+import SelectPure from "select-pure";
 
 const dataBaseAPI = new DataBaseAPI();
 const serviceApi = new ServiceApi();
@@ -378,8 +379,6 @@ async function logIn() {
 //=================Titl=============================//
 function titlMove() {
   const elements = document.querySelectorAll('.film__item');
-  // console.log(elements);
-
   elements.forEach(element => VanillaTilt.init(element, { scale: '1.1' }));
 }
 // ==============================//
@@ -575,21 +574,29 @@ const libraryBtnsForm = document.querySelector('#library-page');
 
 libraryBtnsForm.addEventListener('change', onQueueWatchBtnClick);
 
-function onQueueWatchBtnClick(event) {
-  const selectedBtnValue = event.target.value;
+function onQueueWatchBtnClick() {
+  let selectedBtnValue = "";
   const pageLang = language.language;
-
+  if (refs.libraryButton.classList.contains('side-nav__link--current')) {
+    if (refs.radioWatched.checked) {
+      selectedBtnValue = "watched";
+    }
+    else {
+      selectedBtnValue = "queue";
+    }
+  }
+  
   if (pageLang === 'en') {
     if (selectedBtnValue === 'queue') {
       console.log('posmotret');
-      console.log(dataBaseAPI.user.queue);
+      console.log(selectedBtnValue);
       const dataQ = filmsMarcup.createMarkup(dataBaseAPI.user.queue, 'en');
       refs.ulItem.innerHTML = dataQ;
       titlMove();
     }
     if (selectedBtnValue === 'watched') {
       console.log('videli');
-      console.log(dataBaseAPI.user.watched);
+      console.log(selectedBtnValue);
       const dataW = filmsMarcup.createMarkup(dataBaseAPI.user.watched, 'en');
       refs.ulItem.innerHTML = dataW;
       titlMove();
@@ -599,14 +606,14 @@ function onQueueWatchBtnClick(event) {
   if (pageLang === 'ua') {
     if (selectedBtnValue === 'queue') {
       console.log('posmotret');
-      console.log(dataBaseAPI.user.queue);
+      // console.log(dataBaseAPI.user.queue);
       const dataQ = filmsMarcup.createMarkup(dataBaseAPI.user.queue, 'ua');
       refs.ulItem.innerHTML = dataQ;
       titlMove();
     }
     if (selectedBtnValue === 'watched') {
       console.log('videli');
-      console.log(dataBaseAPI.user.watched);
+      // console.log(dataBaseAPI.user.watched);
       const dataW = filmsMarcup.createMarkup(dataBaseAPI.user.watched, 'ua');
       refs.ulItem.innerHTML = dataW;
       titlMove();
