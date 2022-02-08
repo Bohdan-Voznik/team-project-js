@@ -14,7 +14,6 @@ import teamModal from './js/team-modal-open';
 import Language from './js/switch-language';
 import Pagination from 'tui-pagination';
 
-
 const dataBaseAPI = new DataBaseAPI();
 const serviceApi = new ServiceApi();
 const modalFilm = new ModalFilm();
@@ -123,6 +122,11 @@ refs.libraryBtn.addEventListener('click', activeLibraryPage);
 refs.homeBtn.addEventListener('click', activeHomePage);
 refs.logoLink.addEventListener('click', activeHomePage);
 
+//================ЗАПУСК ПРИ СТАРТЕ================
+storageCheck();
+logIn();
+//================^^^ЗАПУСК ПРИ СТАРТЕ^^^================
+
 //====================HEADER===================//
 
 function activeHomePage() {
@@ -147,8 +151,8 @@ function activeHomePage() {
     }
     if (pageLang === 'ua') {
       const homePage = filmsMarcup.createMarkup(data.films, 'ua');
-       refs.ulItem.innerHTML = homePage;
-       titlMove();
+      refs.ulItem.innerHTML = homePage;
+      titlMove();
     }
   });
 }
@@ -175,7 +179,7 @@ function activeLibraryPage() {
     refs.ulItem.innerHTML = dataW;
 
     titlMove();
-    }
+  }
 }
 
 //====================PAGINATION===================//
@@ -199,7 +203,6 @@ async function onPage(e) {
   refs.ulItem.innerHTML = data;
   titlMove();
 }
-
 
 //============Registration============
 
@@ -231,6 +234,9 @@ async function onMmodalRegistrationFormSubmit(e) {
       onModalRegistrationCloseClick();
       onModalAuthorizationCloseClick();
       console.log(dataBaseAPI.user);
+      //------------------------------
+      // onСhangeUserData();
+      //------------------------------
       break;
   }
 }
@@ -245,10 +251,10 @@ function oModalRegistrationButtonClick(e) {
 //============LOGIN============
 function resetLoginStatus() {
   if (refs.loginButton.dataset.action === 'true') {
-    refs.loginButton.innerHTML = 'LOG OUT';
+    refs.loginButton.innerHTML = language.language === 'en' ? 'LOG OUT' : 'ВИЙТИ';
     return;
   }
-  refs.loginButton.innerHTML = 'LOG IN';
+  refs.loginButton.innerHTML = language.language === 'en' ? 'LOG IN' : 'УВІЙТИ';
 }
 
 async function onModalAuthorizationFormSubmit(e) {
@@ -290,6 +296,9 @@ async function onModalAuthorizationFormSubmit(e) {
       loginStatus = true;
       resetLoginStatus();
       onModalAuthorizationCloseClick();
+      //------------------------------
+      // onСhangeUserData();
+      //------------------------------
       break;
   }
 }
@@ -327,7 +336,6 @@ function onSideNavClick(e) {
   }
 }
 
-logIn();
 // --------------------Меняем язык ввода-----------
 function changeLanguage() {
   language.select = refs.select;
@@ -338,10 +346,9 @@ function murcup(key, lang) {
   document.querySelector(`.lng-${key}`).innerHTML = language.tranclater[key][lang];
 }
 // --------------------Меняем язык ввода-----------
-// dataBaseAPI.logOut();
 
 //-----------------Проверяем наичие логина и пароля в localStorage-----------------
-function storageCheck() {
+async function storageCheck() {
   const user = JSON.parse(localStorage.getItem('user'));
 
   if (!user) {
@@ -349,7 +356,10 @@ function storageCheck() {
   }
 
   const { email, pasword } = user;
-  logIn(email, pasword);
+  await dataBaseAPI.logIn({ email: email, pasword: pasword });
+  refs.loginButton.dataset.action = 'true';
+  loginStatus = true;
+  resetLoginStatus();
 }
 
 async function logIn() {
@@ -361,20 +371,18 @@ async function logIn() {
 
   const data = filmsMarcup.createMarkup(films.films, 'en');
   refs.ulItem.innerHTML = data;
- 
+
   titlMove();
- 
 }
 
 //=================Titl=============================//
 function titlMove() {
-   const elements = document.querySelectorAll(".film__item");
+  const elements = document.querySelectorAll('.film__item');
   console.log(elements);
 
-  elements.forEach(element => VanillaTilt.init(element, { scale: "1.1" }));
+  elements.forEach(element => VanillaTilt.init(element, { scale: '1.1' }));
 }
 // ==============================//
-
 
 async function onFormSerchSubmit(e) {
   e.preventDefault();
