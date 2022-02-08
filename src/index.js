@@ -14,7 +14,6 @@ import teamModal from './js/team-modal-open';
 import Language from './js/switch-language';
 import Pagination from 'tui-pagination';
 
-
 const dataBaseAPI = new DataBaseAPI();
 const serviceApi = new ServiceApi();
 const modalFilm = new ModalFilm();
@@ -147,8 +146,8 @@ function activeHomePage() {
     }
     if (pageLang === 'ua') {
       const homePage = filmsMarcup.createMarkup(data.films, 'ua');
-       refs.ulItem.innerHTML = homePage;
-       titlMove();
+      refs.ulItem.innerHTML = homePage;
+      titlMove();
     }
   });
 }
@@ -175,7 +174,7 @@ function activeLibraryPage() {
     refs.ulItem.innerHTML = dataW;
 
     titlMove();
-    }
+  }
 }
 
 //====================PAGINATION===================//
@@ -199,7 +198,6 @@ async function onPage(e) {
   refs.ulItem.innerHTML = data;
   titlMove();
 }
-
 
 //============Registration============
 
@@ -249,6 +247,7 @@ function resetLoginStatus() {
     return;
   }
   refs.loginButton.innerHTML = 'LOG IN';
+  unlockLibrary(loginStatus);
 }
 
 async function onModalAuthorizationFormSubmit(e) {
@@ -361,20 +360,18 @@ async function logIn() {
 
   const data = filmsMarcup.createMarkup(films.films, 'en');
   refs.ulItem.innerHTML = data;
- 
+
   titlMove();
- 
 }
 
 //=================Titl=============================//
 function titlMove() {
-   const elements = document.querySelectorAll(".film__item");
+  const elements = document.querySelectorAll('.film__item');
   console.log(elements);
 
-  elements.forEach(element => VanillaTilt.init(element, { scale: "1.1" }));
+  elements.forEach(element => VanillaTilt.init(element, { scale: '1.1' }));
 }
 // ==============================//
-
 
 async function onFormSerchSubmit(e) {
   e.preventDefault();
@@ -387,6 +384,7 @@ async function onFormSerchSubmit(e) {
       setTimeout(() => {
         refs.searchNotify.classList.add('is-hidden');
       }, 3000);
+      unlockLibrary(loginStatus);
       return;
     }
 
