@@ -107,3 +107,7 @@
   background-color: rgb(184, 183, 183);
   background-image: url(../img/arrow-right2.svg);
 }
+
+.darkmode--activated .my-element-with-background.tui-page-btn {
+  color: #fff;
+}

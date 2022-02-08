@@ -20,7 +20,6 @@ const serviceApi = new ServiceApi();
 const modalFilm = new ModalFilm();
 new Darkmode().showWidget();
 
-
 const language = new Language();
 const options = {
   totalItems: 0,
@@ -31,19 +30,20 @@ const options = {
   firstItemClassName: 'tui-first-child',
   lastItemClassName: 'tui-last-child',
   template: {
-    page: '<a href="#" data-page="{{page}}" class="tui-page-btn">{{page}}</a>',
-    currentPage: '<strong class="tui-page-btn tui-is-selected">{{page}}</strong>',
+    page: '<a href="#" data-page="{{page}}" class="tui-page-btn my-element-with-background">{{page}}</a>',
+    currentPage:
+      '<strong class="tui-page-btn tui-is-selected my-element-with-background">{{page}}</strong>',
     moveButton:
       '<a href="#" data-more="{{type}}" class="tui-page-btn tui-{{type}} custom-class-{{type}}">' +
       '<span class="tui-ico-{{type}}"></span>' +
       '</a>',
     disabledMoveButton:
-      '<span class="tui-page-btn tui-is-disabled tui-{{type}} custom-class-{{type}}">' +
+      '<span class="tui-page-btn tui-is-disabled tui-{{type}} custom-class-{{type}} my-element-with-background">' +
       '<span class="tui-ico-{{type}}"></span>' +
       '</span>',
     moreButton:
-      '<a href="#" class="tui-page-btn tui-{{type}}-is-ellip custom-class-{{type}}">' +
-      '<span class="tui-ico-ellip">...</span>' +
+      '<a href="#" class="tui-page-btn tui-{{type}}-is-ellip custom-class-{{type}} my-element-with-background">' +
+      '<span class="tui-ico-ellip my-element-with-background">...</span>' +
       '</a>',
   },
 };
@@ -80,6 +80,9 @@ const refs = {
   bgImg: document.getElementById('header'),
   homePage: document.getElementById('home-page'),
   libraryPage: document.getElementById('library-page'),
+
+  radioWatched: document.querySelector('.radio-watched'),
+  radioQueue: document.querySelector('.radio-queue'),
 
   // week: document.querySelector('search-perios__link--week'),
 };
@@ -135,21 +138,20 @@ function activeHomePage() {
   //console.log(serviceApi.fetchTrending({ page: 1, period: 'week' }));
   const pageLang = language.language;
   const currentPage = pagination.getCurrentPage();
-  serviceApi.fetchTrending({ page:currentPage, period: 'week' }).then(data => {
+  serviceApi.fetchTrending({ page: currentPage, period: 'week' }).then(data => {
     console.log(data.films);
     if (pageLang === 'en') {
       const homePage = filmsMarcup.createMarkup(data.films, 'en');
       refs.ulItem.innerHTML = homePage;
       titlMove();
     }
-     if (pageLang === 'ua') {
+    if (pageLang === 'ua') {
       const homePage = filmsMarcup.createMarkup(data.films, 'ua');
        refs.ulItem.innerHTML = homePage;
        titlMove();
     }
-  })
+  });
 }
-
 
 function activeLibraryPage() {
   refs.libraryBtn.classList.add('side-nav__link--current');
@@ -162,15 +164,16 @@ function activeLibraryPage() {
   refs.bgImg.classList.remove('header-bg');
   refs.bgImg.classList.add('header-bg-lib');
   const pageLang = language.language;
-   
+
   if (pageLang === 'en') {
-    const dataW = filmsMarcup.createMarkup(dataBaseAPI.user.watched, 'en');  
+    const dataW = filmsMarcup.createMarkup(dataBaseAPI.user.watched, 'en');
     refs.ulItem.innerHTML = dataW;
     titlMove();
   }
   if (pageLang === 'ua') {
-    const dataW = filmsMarcup.createMarkup(dataBaseAPI.user.watched, 'ua');  
+    const dataW = filmsMarcup.createMarkup(dataBaseAPI.user.watched, 'ua');
     refs.ulItem.innerHTML = dataW;
+
     titlMove();
     }
 }
@@ -395,7 +398,6 @@ async function onFormSerchSubmit(e) {
   } catch (error) {
     console.log(error);
   }
-
 }
 
 const switchCheckbox = document.querySelector('.switch__checkbox');
@@ -417,9 +419,10 @@ function checkButtonData() {
   else btnQueue.classList.remove('selected');
 }
 
-function checkUserLog(serviceData) {
+function checkUserLog(serviceData, filmId) {
   if (loginStatus) {
     const databaseData = dataBaseAPI.getLiberuStatus(filmId);
+    console.log(serviceData, databaseData);
     modalFilm.setFilm = Object.assign(serviceData, databaseData);
     return;
   }
@@ -428,6 +431,7 @@ function checkUserLog(serviceData) {
       watched: false,
       queue: false,
     };
+    console.log('serviceData:', serviceData, 'databaseData:', statusDefault);
     modalFilm.setFilm = Object.assign(serviceData, statusDefault);
     return;
   }
@@ -440,14 +444,31 @@ function openInfoModal(e) {
 
   const filmCard = e.target.closest('.film__item');
 
-  filmId = filmCard.dataset.id;
+  filmId = +filmCard.dataset.id;
+  console.log('filmId', filmId);
+  //============
 
-  const serviceData = serviceApi.getFilmById(filmId);
+  console.log('in lib', refs.libraryButton.classList.contains('.side-nav__link--current'));
+  if (refs.libraryButton.classList.contains('side-nav__link--current')) {
+    if (refs.radioWatched.checked) {
+      console.log('watched');
+      modalFilm.setFilm = dataBaseAPI.getFilmByid({
+        category: dataBaseAPI.user.watched,
+        id: filmId,
+      });
+    } else {
+      console.log('queue');
+      modalFilm.setFilm = dataBaseAPI.getFilmByid({ category: dataBaseAPI.user.queue, id: filmId });
+    }
+  } else {
+    const serviceData = serviceApi.getFilmById(filmId);
+    console.log('serviceData', serviceData);
 
-  checkUserLog(serviceData);
+    checkUserLog(serviceData, filmId);
+  }
 
   //dataBaseAPI.getFilmByid({ category: dataBaseAPI.user.watched, id: filmId });
-  modalFilm.joinGenre();
+  // modalFilm.joinGenre();
 
   refs.modalContent.innerHTML = modalFilm.createMarkup(language.language);
   //Находим кнопки по data-att:
@@ -541,17 +562,13 @@ libraryBtnsForm.addEventListener('change', onQueueWatchBtnClick);
 
 function onQueueWatchBtnClick(event) {
   const selectedBtnValue = event.target.value;
-  console.log(selectedBtnValue);
   const pageLang = language.language;
-  console.log(pageLang);
 
   if (pageLang === 'en') {
-
     if (selectedBtnValue === 'queue') {
       console.log('posmotret');
       console.log(dataBaseAPI.user.queue);
       const dataQ = filmsMarcup.createMarkup(dataBaseAPI.user.queue, 'en');
-      console.log(dataQ);
       refs.ulItem.innerHTML = dataQ;
       titlMove();
     }
@@ -559,7 +576,6 @@ function onQueueWatchBtnClick(event) {
       console.log('videli');
       console.log(dataBaseAPI.user.watched);
       const dataW = filmsMarcup.createMarkup(dataBaseAPI.user.watched, 'en');
-      console.log(dataW);
       refs.ulItem.innerHTML = dataW;
       titlMove();
     }
@@ -570,7 +586,6 @@ function onQueueWatchBtnClick(event) {
       console.log('posmotret');
       console.log(dataBaseAPI.user.queue);
       const dataQ = filmsMarcup.createMarkup(dataBaseAPI.user.queue, 'ua');
-      
       refs.ulItem.innerHTML = dataQ;
       titlMove();
     }
@@ -578,10 +593,8 @@ function onQueueWatchBtnClick(event) {
       console.log('videli');
       console.log(dataBaseAPI.user.watched);
       const dataW = filmsMarcup.createMarkup(dataBaseAPI.user.watched, 'ua');
-      
       refs.ulItem.innerHTML = dataW;
       titlMove();
     }
-  }    
+  }
 }
-

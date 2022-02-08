@@ -15,6 +15,15 @@ export default class ModalFilm {
   }
 
   createMarkup(lang) {
+    this.objFilm.genreUk =
+      typeof this.objFilm.genreUk !== 'string'
+        ? this.objFilm.genreUk.join(', ')
+        : this.objFilm.genreUk;
+    this.objFilm.genreEn =
+      typeof this.objFilm.genreEn !== 'string'
+        ? this.objFilm.genreEn.join(', ')
+        : this.objFilm.genreEn;
+
     console.log(lang);
     console.log(this.objFilm);
 
@@ -25,6 +34,7 @@ export default class ModalFilm {
       return modalTplUk(this.objFilm);
     }
   }
+  //
 
   //Обработка кликов по кнопкам в модалке:
 

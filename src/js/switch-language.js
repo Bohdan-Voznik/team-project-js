@@ -4,7 +4,7 @@
 
 export default class LanguageApi {
   constructor() {
-  // this.placeholder='en';
+    // this.placeholder='en';
 
     this.language = 'en';
     this.select = null;
@@ -13,30 +13,30 @@ export default class LanguageApi {
       //   en: 'Search movies',
       //   ua: 'Пошук фільмів',
       // },
-      queue:{
+      queue: {
         en: 'Queue',
         ua: 'В ЧЕРГУ',
       },
-      watch:{
+      watch: {
         en: 'Watched',
         ua: 'ДИВИТИСЬ',
       },
-      log:{
+      log: {
         en: 'LOG IN',
         ua: 'УВІЙТИ',
       },
-      lib:{
+      lib: {
         en: 'MY LIBRARY',
         ua: 'МОЯ БІБЛІОТЕКА',
       },
-      home:{
+      home: {
         en: 'HOME',
         ua: 'ГОЛОВНА',
       },
-      film:{
-        en: 'Filmoteka',
-        ua: 'Фільмотека',
-      },
+      // film:{
+      //   en: 'Filmoteka',
+      //   ua: 'Фільмотека',
+      // },
       right: {
         en: '2022 | All Rights Reserved',
         ua: '2022 | Усі права захищено',
@@ -61,17 +61,18 @@ export default class LanguageApi {
     this.language = lang;
     console.log(lang);
 
-  //   const place = document.getAnimations("home-page");
-  // this.placeholder=place;
-  // console.log(place)
-
+    //   const place = document.getAnimations("home-page");
+    // this.placeholder=place;
+    // console.log(place)
   }
   changeLanguage(fn) {
+    document.querySelector('.search-field').placeholder =
+      this.language === 'en' ? 'Search movies' : 'Пошук фільмів';
     const lang = this.select.dataset.language;
-    console.log(lang);
-    Object.keys(this.tranclater).map(key => {
-      console.log(key);
 
+    console.log(lang);
+
+    Object.keys(this.tranclater).map(key => {
       fn(key, lang);
     });
   }
@@ -81,7 +82,6 @@ export default class LanguageApi {
 // console.log(select)
 
 // const  allLang=['en','ua'];
-
 
 // function new Att(){
 //   const place = document.getAnimations("home-page");
