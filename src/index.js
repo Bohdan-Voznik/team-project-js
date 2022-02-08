@@ -50,7 +50,7 @@ const pagination = new Pagination('pagination', options);
 
 const refs = {
   ulItem: document.querySelector('.film__list'),
-  serchForm: document.querySelector('.search-form'),
+  searchForm: document.querySelector('.search-form'),
   searchNotify: document.querySelector('.warning-notification'),
   filmList: document.querySelector('.film__list'),
   modalInfo: document.querySelector('.background'),
@@ -104,7 +104,7 @@ let loginStatus = false;
 let searchStatus = false;
 let query = ' ';
 
-refs.serchForm.addEventListener('submit', onFormSerchSubmit);
+refs.searchForm.addEventListener('submit', onFormSearchSubmit);
 refs.filmList.addEventListener('click', openInfoModal);
 refs.modalInfoCloseBtn.addEventListener('click', closeInfoModal);
 refs.select.addEventListener('change', changeLanguage);
@@ -367,7 +367,7 @@ async function logIn() {
 
   pagination.reset(serviceApi.totalPages);
 
-  console.log(films.films);
+  // console.log(films.films);
 
   const data = filmsMarcup.createMarkup(films.films, 'en');
   refs.ulItem.innerHTML = data;
@@ -378,13 +378,13 @@ async function logIn() {
 //=================Titl=============================//
 function titlMove() {
   const elements = document.querySelectorAll('.film__item');
-  console.log(elements);
+  // console.log(elements);
 
   elements.forEach(element => VanillaTilt.init(element, { scale: '1.1' }));
 }
 // ==============================//
 
-async function onFormSerchSubmit(e) {
+async function onFormSearchSubmit(e) {
   e.preventDefault();
   query = e.target.query.value;
 
@@ -405,12 +405,19 @@ async function onFormSerchSubmit(e) {
     pagination.reset(serviceApi.totalPages);
   } catch (error) {
     console.log(error);
+    if (error) {
+      refs.searchNotify.classList.remove('is-hidden');
+      setTimeout(() => {
+        refs.searchNotify.classList.add('is-hidden');
+      }, 3000);
+      return;
+    }
   }
 }
 
 const switchCheckbox = document.querySelector('.switch__checkbox');
 const switchToggle = document.querySelector('.darkmode-toggle');
-console.log(switchToggle);
+// console.log(switchToggle);
 
 switchToggle.addEventListener('click', onChangeBg);
 function onChangeBg() {
