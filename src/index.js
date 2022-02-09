@@ -429,7 +429,7 @@ function storageDackMoodCheck() {
 }
 
 async function logIn() {
-  const films = await serviceApi.fetchTrending({ page: 1, period: 'week' });
+  const films = await serviceApi.fetchTrending({ page: 1, period: 'day' });
 
   pagination.reset(serviceApi.totalPages);
 
