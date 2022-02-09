@@ -1,22 +1,28 @@
 <section class="film">
 
     <div class="container">
+       
         <div role="group" class="period-box">
+            
             <ul class="storage list">
                 <li class="storage__item  my-element-with-background">
                     <label class="period-day__label">
                         <input type="radio" name="storage-btn" value="day" class="storage__input visually-hidden  day"
                             checked />
-                        <span class="storage__btn period-btn lng-watch">per day</span>
+                        <span class="storage__btn period-btn lng-watch lng-day">TOP day</span>
                     </label>
                 </li>
                 <li class="storage__item  my-element-with-background">
                     <label class="period-week__label">
                         <input type="radio" name="storage-btn" value="week" class="storage__input visually-hidden  week" />
-                        <span class="storage__btn period-btn lng-queue">per week</span>
+                        <span class="storage__btn period-btn lng-queue lng-week">TOP week</span>
                     </label>
                 </li>
             </ul>
+        </div>
+
+        <div class="preloader-wrapper is-hidden">
+            <img class="preloader" src="./img/ezgif.com-gif-maker.gif" alt="">
         </div>
         <ul class="film__list">
             

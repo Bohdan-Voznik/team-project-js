@@ -6,7 +6,7 @@
   top: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.25);
+  background: rgba(0, 0, 0, 0.26);
   opacity: 1;
   // pointer-events: none;
 
@@ -218,7 +218,8 @@
 
 .btn-add {
   display: inline-block;
-    position: relative;
+  position: relative;
+  
 
 
   text-transform: uppercase;
@@ -243,6 +244,7 @@
   @media screen and (min-width: 768px) {
     width: 125px;
     height: 44px;
+    padding: 0 15px;
   }
 
   @media screen and (min-width: 1024px) {

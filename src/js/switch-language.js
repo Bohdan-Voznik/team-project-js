@@ -9,17 +9,45 @@ export default class LanguageApi {
     this.language = 'en';
     this.select = null;
     this.tranclater = {
-      // search:{
-      //   en: 'Search movies',
-      //   ua: 'Пошук фільмів',
-      // },
+       search:{
+        en: 'Search result not successful. Enter the correct movie name',
+        ua: 'Результат пошуку невдалий. Введіть правильну назву фільму',
+      },
+      reg:{
+        en: 'REGISTRATION',
+        ua: 'РЕЄСТРАЦІЯ',
+      },
+      registr:{
+        en: 'REGISTRATION',
+        ua: 'РЕЄСТРАЦІЯ',
+      },
+      avtor:{
+        en: 'AUTHORIZATION',
+        ua: 'АВТОРИЗАЦІЯ',
+      },
+      sing:{
+        en: 'Sign in',
+        ua: 'ВХІД',
+      },
+      acc:{
+        en: 'Create Account',
+        ua: 'СТВОРИТИ АКАУНТ',
+      },
+      day:{
+        en: 'TOP day',
+        ua: 'ТОП дня',
+      },
+      week:{
+        en: 'TOP  week',
+        ua: 'ТОП тижня',
+      },
       queue: {
         en: 'Queue',
-        ua: 'В ЧЕРГУ',
+        ua: 'ДО ЧЕРГИ',
       },
       watch: {
         en: 'Watched',
-        ua: 'ДИВИТИСЬ',
+        ua: 'ПЕРЕГЛЯНУТИ',
       },
       log: {
         en: 'LOG IN',
@@ -71,6 +99,17 @@ export default class LanguageApi {
     const lang = this.select.dataset.language;
 
     console.log(lang);
+    document.querySelector('.modal-form__placeholder').placeholder =
+    this.language === 'en' ? 'login' : 'логін';
+    
+    document.querySelector('.form_password').placeholder =
+    this.language === 'en' ? 'password' : 'пароль';
+
+    document.querySelector('.form_email').placeholder =
+    this.language === 'en' ? 'email' : 'електронна пошта';
+
+    document.querySelector('.form_pas').placeholder =
+    this.language === 'en' ? 'password' : 'пароль';
 
     Object.keys(this.tranclater).map(key => {
       fn(key, lang);

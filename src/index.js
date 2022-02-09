@@ -26,6 +26,7 @@ const modalFilm = new ModalFilm();
 
 const loaderSignIn = new Loader({ selector: '.auth-sign-in' });
 const loaderRegistr = new Loader({ selector: '.reg-btn' });
+const loaderCat = new Loader({ selector: '.preloader-wrapper' });
 
 const language = new Language();
 const options = {
@@ -96,7 +97,6 @@ const refs = {
   radioBtnWeek: document.querySelector('.week'),
   periodLabelDay: document.querySelector('.period-day__label'),
   periodLabelWeek: document.querySelector('.period-week__label'),
-
 };
 
 const switchCheckbox = document.querySelector('.switch__checkbox');
@@ -121,7 +121,6 @@ let loginStatus = false;
 let searchStatus = false;
 let query = ' ';
 
-
 refs.searchForm.addEventListener('submit', onFormSearchSubmit);
 refs.filmList.addEventListener('click', openInfoModal);
 refs.modalInfoCloseBtn.addEventListener('click', closeInfoModal);
@@ -144,6 +143,13 @@ refs.radioBtnDay.addEventListener('click', periodPer);
 genresSelectEl.addEventListener('change', makeFilterPerGenre);
 
 
+// const backdropReg = document.querySelector('.backdrop_registro');
+// const backdropAuth = document.querySelector('.backdrop');
+// const backdropFilmInfo = document.querySelector('.background');
+// backdropReg.addEventListener('click', onModalRegistrationCloseClick);
+// backdropAuth.addEventListener('click', onModalAuthorizationCloseClick);
+// backdropFilmInfo.addEventListener('click', closeInfoModal);
+
 //================ЗАПУСК ПРИ СТАРТЕ================
 storageCheck();
 logIn();
@@ -155,13 +161,12 @@ function periodPer() {
   const pageLang = language.language;
 
   if (refs.radioBtnWeek.checked) {
-    period = "week"
+    period = 'week';
   }
-   if (refs.radioBtnDay.checked) {
-    period = "day"
-    }
-    serviceApi.fetchTrending({ page: 1, period: period }).then(data => {
-      
+  if (refs.radioBtnDay.checked) {
+    period = 'day';
+  }
+  serviceApi.fetchTrending({ page: 1, period: period }).then(data => {
     console.log(data.films);
     searchStatus = false;
     query = '';
@@ -177,7 +182,7 @@ function periodPer() {
       titlMove();
     }
   });
-  }
+}
 
 function activeHomePage() {
   refs.libraryBtn.classList.remove('side-nav__link--current');
@@ -192,11 +197,11 @@ function activeHomePage() {
   refs.periodLabelDay.classList.remove('display-none');
   refs.periodLabelWeek.classList.remove('display-none');
   refs.pagination.classList.remove('display-none');
-  
+
   //console.log(serviceApi.fetchTrending({ page: 1, period: 'week' }));
-  
+
   // const currentPage = pagination.getCurrentPage();
-  periodPer();  
+  periodPer();
 }
 
 function activeLibraryPage() {
@@ -212,7 +217,7 @@ function activeLibraryPage() {
   refs.pagination.classList.add('display-none');
   refs.bgImg.classList.remove('header-bg');
   refs.bgImg.classList.add('header-bg-lib');
-  
+
   const pageLang = language.language;
 
   refs.radioWatched.checked = true;
@@ -235,12 +240,18 @@ async function onPage(e) {
   if (e.currentTarget === e.target) {
     return;
   }
-
+  let period = '';
   const currentPage = pagination.getCurrentPage();
   pagination.movePageTo(currentPage);
+  if (refs.radioBtnWeek.checked) {
+    period = 'week';
+  }
+  if (refs.radioBtnDay.checked) {
+    period = 'day';
+  }
   const lol = searchStatus
     ? await serviceApi.fetchMoviesBySearch({ query: query, page: currentPage })
-    : await serviceApi.fetchTrending({ page: currentPage, period: 'week' });
+    : await serviceApi.fetchTrending({ page: currentPage, period: period });
 
   window.scrollTo(0, 240);
 
@@ -289,7 +300,14 @@ async function onMmodalRegistrationFormSubmit(e) {
       break;
   }
 }
-
+function onEscapeClickReg(e) {
+  if (e.code === 'Escape') {
+    refs.modalAuthorization.classList.add('is-hidden');
+    document.removeEventListener('keydown', onEscapeClickReg);
+    onModalRegistrationCloseClick();
+  }
+  console.log(e.code);
+}
 function onModalRegistrationCloseClick() {
   refs.modalRegistration.classList.add('is-hidden');
 }
@@ -299,6 +317,8 @@ function oModalRegistrationButtonClick(e) {
   //кнопка
   //ожидание setTimeout
   refs.modalRegistration.classList.remove('is-hidden');
+  document.addEventListener('keydown', onEscapeClickLogin);
+  document.addEventListener('keydown', onEscapeClickReg);
   //кнопка
 }
 //============LOGIN============
@@ -367,6 +387,14 @@ function onModalAuthorizationCloseClick() {
   refs.loginButton.classList.remove('side-nav__link--current');
   refs.modalAuthorization.classList.add('is-hidden');
 }
+function onEscapeClickLogin(e) {
+  if (e.code === 'Escape') {
+    refs.modalAuthorization.classList.add('is-hidden');
+    document.removeEventListener('keydown', onEscapeClickLogin);
+    onModalAuthorizationCloseClick();
+  }
+  console.log(e.code);
+}
 
 function onSideNavClick(e) {
   if (e.currentTarget === e.target) {
@@ -385,6 +413,9 @@ function onSideNavClick(e) {
   if (e.target.classList.contains('login')) {
     refs.loginButton.classList.add('side-nav__link--current');
     refs.modalAuthorization.classList.remove('is-hidden');
+    document.addEventListener('keydown', onEscapeClickLogin);
+
+    // document.querySelector('.backdrop').addEventListener('click');
     console.log('Нажли на login');
   }
 
@@ -401,7 +432,14 @@ function changeLanguage() {
   language.select = refs.select;
   language.changeDataSet();
   language.changeLanguage(murcup);
+
   createSelectMarkup();
+
+
+  const data = filmsMarcup.createMarkup(serviceApi.arrayForFilms, language.language);
+  // console.log(serviceApi.arrayForFilms);
+  refs.ulItem.innerHTML = data;
+  onQueueWatchBtnClick();
 }
 function murcup(key, lang) {
   document.querySelector(`.lng-${key}`).innerHTML = language.tranclater[key][lang];
@@ -434,14 +472,22 @@ function storageDackMoodCheck() {
   switchCheckbox.checked = true;
 }
 
+async function sleepFilm() {
+  return await serviceApi.fetchTrending({ page: 1, period: 'day' });
+}
 async function logIn() {
-  const films = await serviceApi.fetchTrending({ page: 1, period: 'day' });
+  refs.pagination.classList.add('display-none');
+  loaderCat.show();
+  const films = await sleep(sleepFilm);
 
   pagination.reset(serviceApi.totalPages);
 
   createSelectMarkup();
 
   const data = filmsMarcup.createMarkup(films.films, 'en');
+  loaderCat.hidden();
+  refs.pagination.classList.remove('display-none');
+
   refs.ulItem.innerHTML = data;
 
   titlMove();
@@ -474,7 +520,7 @@ async function onFormSearchSubmit(e) {
       return;
     }
 
-    const data = filmsMarcup.createMarkup(films.films, 'ua');
+    const data = filmsMarcup.createMarkup(films.films, language.language);
     refs.ulItem.innerHTML = data;
     titlMove();
     searchStatus = true;
@@ -495,12 +541,45 @@ function onChangeBg() {
 }
 
 //============Pavel modal-film
-function checkButtonData() {
-  if (modalFilm.objFilm.watched) btnWatched.classList.add('selected');
-  else btnWatched.classList.remove('selected');
+function disabledBodyScroll() {
+  let pagePosition = window.scrollY;
+  document.body.classList.add('disable-scroll');
+  document.body.dataset.position = pagePosition;
+  console.log(pagePosition);
+  window.scrollTo({ top: pagePosition });
+  document.body.style.top = `${-pagePosition}px`;
+  document.body.style.position = 'fixed';
+}
 
-  if (modalFilm.objFilm.queue) btnQueue.classList.add('selected');
-  else btnQueue.classList.remove('selected');
+function enabledBodyScroll() {
+  let pagePosition = parseInt(document.body.dataset.position, 10);
+  document.body.style.position = 'static';
+  document.body.style.top = 'auto';
+  document.body.classList.remove('disable-scroll');
+  window.scroll({ top: pagePosition, left: 0 });
+  document.body.removeAttribute('data-position');
+}
+
+function checkButtonData() {
+  if (modalFilm.objFilm.watched) {
+    btnWatched.classList.add('selected');
+    document.querySelector('.btn-add-to-watched .modal-btn_text').textContent =
+      language.language === 'en' ? 'Delete from watched' : 'Видалити з переглянутого';
+  } else {
+    btnWatched.classList.remove('selected');
+    document.querySelector('.btn-add-to-watched .modal-btn_text').textContent =
+      language.language === 'en' ? 'Add to watched' : 'Додати до переглянутого';
+  }
+
+  if (modalFilm.objFilm.queue) {
+    btnQueue.classList.add('selected');
+    document.querySelector('.btn-add-to-queue .modal-btn_text').textContent =
+      language.language === 'en' ? 'Delete from queue' : 'Видалити з черги';
+  } else {
+    btnQueue.classList.remove('selected');
+    document.querySelector('.btn-add-to-queue .modal-btn_text').textContent =
+      language.language === 'en' ? 'Add to queue' : 'Додати до черги';
+  }
 }
 
 function checkUserLog(serviceData, filmId) {
@@ -523,8 +602,6 @@ function checkUserLog(serviceData, filmId) {
 
 function openInfoModal(e) {
   e.preventDefault();
-
-  document.body.style.overflow = 'hidden'; //Запрещаем прокрутку body, пока открыта модалка
 
   const filmCard = e.target.closest('.film__item');
 
@@ -584,13 +661,26 @@ function openInfoModal(e) {
     btnQueue.style.backgroundColor = 'rgb(160, 160, 160)';
   }
 
-  if (filmCard) refs.modalInfo.classList.toggle('is-hidden'); //открываем модалку, убирая класс
+  if (filmCard) {
+    refs.modalInfo.classList.toggle('is-hidden'); //открываем модалку, убирая класс
+    document.addEventListener('keydown', onEscapeClickInfoModal);
+    disabledBodyScroll(); //Запрещаем прокрутку body, пока открыта модалка (если filmcard прийдет - то и откроется модалка, а тогда и запрещем скролл)
+  }
 }
 
 async function addToWatched() {
   const loaderWatched = new Loader({ selector: '.btn-add-to-watched' });
+  // const textSpinner = language.language === 'en' ? 'Add to watched' : 'Додати до переглянутого';
+  const textInButton = document.querySelector('.btn-add-to-watched .modal-btn_text');
 
-  const textSpinner = language.language === 'en' ? 'Add to watched' : 'Додати до переглянутого';
+  const textSpinner = textInButton.textContent;
+  console.log(textSpinner);
+  // textSpinner = language.language = 'en'
+  //   ? (textSpinner.textContent = 'Add to watched')
+  //   : (textSpinner.textContent = 'Додати до переглянутого');
+  //   textSpinner = language.language = 'en'
+  //     ? (textSpinner.textContent = 'Delete from watched')
+  //     : (textSpinner.textContent = 'Видалити з переглянутого');
 
   if (modalFilm.objFilm.watched) {
     modalFilm.objFilmWatched = false;
@@ -602,6 +692,13 @@ async function addToWatched() {
     loaderWatched.enabled(textSpinner);
     loaderWatched.resetLoaderColor();
 
+    textInButton.textContent =
+      language.language === 'en' ? 'Add to watched' : 'Додати до переглянутого';
+
+    // language.language = 'en'
+    //   ? (btnWatched.textContent = 'Added to watched')
+    //   : (btnWatched.textContent = 'Вже переглянуто');
+
     btnWatched.classList.remove('selected');
   } else {
     modalFilm.objFilmWatched = true;
@@ -611,13 +708,20 @@ async function addToWatched() {
     await sleep(sendObj);
     loaderWatched.enabled(textSpinner);
 
+    textInButton.textContent =
+      language.language === 'en' ? 'Delete from watched' : 'Видалити з переглянутого';
+
     btnWatched.classList.add('selected');
   }
 }
 
 async function addToQueue() {
   const loaderQueue = new Loader({ selector: '.btn-add-to-queue' });
-  const textSpinner = language.language === 'en' ? 'Add to queue' : 'Додати до черги';
+  // const textSpinner = language.language === 'en' ? 'Add to queue' : 'Додати до черги';
+
+  const textInButton = document.querySelector('.btn-add-to-queue .modal-btn_text');
+
+  const textSpinner = textInButton.textContent;
 
   if (modalFilm.objFilm.queue) {
     modalFilm.objFilmQueue = false;
@@ -629,6 +733,8 @@ async function addToQueue() {
     loaderQueue.enabled(textSpinner);
     loaderQueue.resetLoaderColor();
 
+    textInButton.textContent = language.language === 'en' ? 'Add to queue' : 'Додати до черги';
+
     btnQueue.classList.remove('selected');
   } else {
     modalFilm.objFilmQueue = true;
@@ -638,13 +744,23 @@ async function addToQueue() {
     await sleep(sendObj);
     loaderQueue.enabled(textSpinner);
 
+    textInButton.textContent =
+      language.language === 'en' ? 'Delete from queue' : 'Выдалити з черги';
     btnQueue.classList.add('selected');
   }
 }
+function onEscapeClickInfoModal(e) {
+  if (e.code === 'Escape') {
+    refs.modalAuthorization.classList.add('is-hidden');
+    document.removeEventListener('keydown', onEscapeClickInfoModal);
+    closeInfoModal();
+  }
+  console.log(e.code);
+}
 
 function closeInfoModal() {
-  document.body.style.overflow = 'auto'; //Разрешаем прокрутку body, пока модалка закрыта
   refs.modalInfo.classList.toggle('is-hidden'); //скрываем модалку, вешая класс
+  enabledBodyScroll(); //Разрешаем прокрутку body, пока модалка закрыта
 }
 
 function sendObj() {
