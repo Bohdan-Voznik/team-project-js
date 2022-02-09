@@ -94,7 +94,6 @@ const refs = {
   radioBtnWeek: document.querySelector('.week'),
   periodLabelDay: document.querySelector('.period-day__label'),
   periodLabelWeek: document.querySelector('.period-week__label'),
-
 };
 
 const switchCheckbox = document.querySelector('.switch__checkbox');
@@ -118,7 +117,6 @@ let loginStatus = false;
 let searchStatus = false;
 let query = ' ';
 
-
 refs.searchForm.addEventListener('submit', onFormSearchSubmit);
 refs.filmList.addEventListener('click', openInfoModal);
 refs.modalInfoCloseBtn.addEventListener('click', closeInfoModal);
@@ -137,8 +135,7 @@ refs.libraryBtn.addEventListener('click', activeLibraryPage);
 refs.homeBtn.addEventListener('click', activeHomePage);
 refs.logoLink.addEventListener('click', activeHomePage);
 refs.radioBtnWeek.addEventListener('click', periodPer);
-refs.radioBtnDay.addEventListener('click',periodPer);
-
+refs.radioBtnDay.addEventListener('click', periodPer);
 
 //================ЗАПУСК ПРИ СТАРТЕ================
 storageCheck();
@@ -151,13 +148,12 @@ function periodPer() {
   const pageLang = language.language;
 
   if (refs.radioBtnWeek.checked) {
-    period = "week"
+    period = 'week';
   }
-   if (refs.radioBtnDay.checked) {
-    period = "day"
-    }
-    serviceApi.fetchTrending({ page: 1, period: period }).then(data => {
-      
+  if (refs.radioBtnDay.checked) {
+    period = 'day';
+  }
+  serviceApi.fetchTrending({ page: 1, period: period }).then(data => {
     console.log(data.films);
     searchStatus = false;
     query = '';
@@ -173,7 +169,7 @@ function periodPer() {
       titlMove();
     }
   });
-  }
+}
 
 function activeHomePage() {
   refs.libraryBtn.classList.remove('side-nav__link--current');
@@ -188,11 +184,11 @@ function activeHomePage() {
   refs.periodLabelDay.classList.remove('display-none');
   refs.periodLabelWeek.classList.remove('display-none');
   refs.pagination.classList.remove('display-none');
-  
+
   //console.log(serviceApi.fetchTrending({ page: 1, period: 'week' }));
-  
+
   // const currentPage = pagination.getCurrentPage();
-  periodPer();  
+  periodPer();
 }
 
 function activeLibraryPage() {
@@ -208,7 +204,7 @@ function activeLibraryPage() {
   refs.pagination.classList.add('display-none');
   refs.bgImg.classList.remove('header-bg');
   refs.bgImg.classList.add('header-bg-lib');
-  
+
   const pageLang = language.language;
 
   refs.radioWatched.checked = true;
@@ -487,6 +483,25 @@ function onChangeBg() {
 }
 
 //============Pavel modal-film
+function disabledBodyScroll() {
+  let pagePosition = window.scrollY;
+  document.body.classList.add('disable-scroll');
+  document.body.dataset.position = pagePosition;
+  console.log(pagePosition);
+  window.scrollTo({ top: pagePosition });
+  document.body.style.top = `${-pagePosition}px`;
+  document.body.style.position = 'fixed';
+}
+
+function enabledBodyScroll() {
+  let pagePosition = parseInt(document.body.dataset.position, 10);
+  document.body.style.position = 'static';
+  document.body.style.top = 'auto';
+  document.body.classList.remove('disable-scroll');
+  window.scroll({ top: pagePosition, left: 0 });
+  document.body.removeAttribute('data-position');
+}
+
 function checkButtonData() {
   if (modalFilm.objFilm.watched) btnWatched.classList.add('selected');
   else btnWatched.classList.remove('selected');
@@ -515,8 +530,6 @@ function checkUserLog(serviceData, filmId) {
 
 function openInfoModal(e) {
   e.preventDefault();
-
-  document.body.style.overflow = 'hidden'; //Запрещаем прокрутку body, пока открыта модалка
 
   const filmCard = e.target.closest('.film__item');
 
@@ -576,7 +589,10 @@ function openInfoModal(e) {
     btnQueue.style.backgroundColor = 'rgb(160, 160, 160)';
   }
 
-  if (filmCard) refs.modalInfo.classList.toggle('is-hidden'); //открываем модалку, убирая класс
+  if (filmCard) {
+    refs.modalInfo.classList.toggle('is-hidden'); //открываем модалку, убирая класс
+    disabledBodyScroll(); //Запрещаем прокрутку body, пока открыта модалка (если filmcard прийдет - то и откроется модалка, а тогда и запрещем скролл)
+  }
 }
 
 async function addToWatched() {
@@ -635,8 +651,8 @@ async function addToQueue() {
 }
 
 function closeInfoModal() {
-  document.body.style.overflow = 'auto'; //Разрешаем прокрутку body, пока модалка закрыта
   refs.modalInfo.classList.toggle('is-hidden'); //скрываем модалку, вешая класс
+  enabledBodyScroll(); //Разрешаем прокрутку body, пока модалка закрыта
 }
 
 function sendObj() {
