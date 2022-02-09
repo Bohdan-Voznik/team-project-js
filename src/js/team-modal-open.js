@@ -2,17 +2,16 @@ const teamModalOpenLink = document.querySelector('[data-team-modal-open]');
 const teamModalCloseBtn = document.querySelector('[data-team-modal-close]');
 const teamModalWindow = document.querySelector('[data-team-modal]');
 const backdropTeamModal = document.querySelector('.team-modal-backdrop');
-backdropTeamModal.addEventListener('click', teamModalClickToggle)
+// backdropTeamModal.addEventListener('click', teamModalClickToggle)
 teamModalOpenLink.addEventListener('click', teamModalClickToggle);
 teamModalCloseBtn.addEventListener('click', teamModalClickToggle);
 function onEscapeClickTeamModal(e) {
- 
-      if (e.code === 'Escape') {
-        teamModalWindow.classList.toggle('is-hidden');
-        document.removeEventListener('keydown', onEscapeClickTeamModal);
-        // teamModalClickToggle()
-      } 
-      console.log(e.code);
+  if (e.code === 'Escape') {
+    teamModalWindow.classList.toggle('is-hidden');
+    document.removeEventListener('keydown', onEscapeClickTeamModal);
+    // teamModalClickToggle()
+  }
+  console.log(e.code);
 }
 
 function teamModalClickToggle(event) {

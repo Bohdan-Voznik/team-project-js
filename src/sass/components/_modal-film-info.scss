@@ -218,7 +218,8 @@
 
 .btn-add {
   display: inline-block;
-    position: relative;
+  position: relative;
+  
 
 
   text-transform: uppercase;
@@ -243,6 +244,7 @@
   @media screen and (min-width: 768px) {
     width: 125px;
     height: 44px;
+    padding: 0 15px;
   }
 
   @media screen and (min-width: 1024px) {
