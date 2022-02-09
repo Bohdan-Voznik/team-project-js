@@ -15,6 +15,8 @@ import Language from './js/switch-language';
 import Pagination from 'tui-pagination';
 
 import Loader from './js/loader';
+import genresSelect from './partials/genres-select-options-markup.hbs';
+import NiceSelect from './js/nice-select2';
 
 new Darkmode().showWidget();
 
@@ -99,6 +101,7 @@ const refs = {
 
 const switchCheckbox = document.querySelector('.switch__checkbox');
 const switchToggle = document.querySelector('.darkmode-toggle');
+const genresSelectEl = document.querySelector('.select-genres');
 
 // VanillaTilt.init(refs.week, {
 //   max: 25,
@@ -137,6 +140,8 @@ refs.homeBtn.addEventListener('click', activeHomePage);
 refs.logoLink.addEventListener('click', activeHomePage);
 refs.radioBtnWeek.addEventListener('click', periodPer);
 refs.radioBtnDay.addEventListener('click', periodPer);
+genresSelectEl.addEventListener('change', makeFilterPerGenre);
+
 
 // const backdropReg = document.querySelector('.backdrop_registro');
 // const backdropAuth = document.querySelector('.backdrop');
@@ -144,6 +149,7 @@ refs.radioBtnDay.addEventListener('click', periodPer);
 // backdropReg.addEventListener('click', onModalRegistrationCloseClick);
 // backdropAuth.addEventListener('click', onModalAuthorizationCloseClick);
 // backdropFilmInfo.addEventListener('click', closeInfoModal);
+
 //================ЗАПУСК ПРИ СТАРТЕ================
 storageCheck();
 logIn();
@@ -427,6 +433,9 @@ function changeLanguage() {
   language.changeDataSet();
   language.changeLanguage(murcup);
 
+  createSelectMarkup();
+
+
   const data = filmsMarcup.createMarkup(serviceApi.arrayForFilms, language.language);
   // console.log(serviceApi.arrayForFilms);
   refs.ulItem.innerHTML = data;
@@ -434,6 +443,7 @@ function changeLanguage() {
 }
 function murcup(key, lang) {
   document.querySelector(`.lng-${key}`).innerHTML = language.tranclater[key][lang];
+
 }
 // --------------------Меняем язык ввода-----------
 
@@ -471,6 +481,8 @@ async function logIn() {
   const films = await sleep(sleepFilm);
 
   pagination.reset(serviceApi.totalPages);
+
+  createSelectMarkup();
 
   const data = filmsMarcup.createMarkup(films.films, 'en');
   loaderCat.hidden();
@@ -780,15 +792,11 @@ function onQueueWatchBtnClick() {
 
   if (pageLang === 'en') {
     if (selectedBtnValue === 'queue') {
-      console.log('posmotret');
-      console.log(selectedBtnValue);
       const dataQ = filmsMarcup.createMarkup(dataBaseAPI.user.queue, 'en');
       refs.ulItem.innerHTML = dataQ;
       titlMove();
     }
     if (selectedBtnValue === 'watched') {
-      console.log('videli');
-      console.log(selectedBtnValue);
       const dataW = filmsMarcup.createMarkup(dataBaseAPI.user.watched, 'en');
       refs.ulItem.innerHTML = dataW;
       titlMove();
@@ -797,18 +805,127 @@ function onQueueWatchBtnClick() {
 
   if (pageLang === 'ua') {
     if (selectedBtnValue === 'queue') {
-      console.log('posmotret');
-      // console.log(dataBaseAPI.user.queue);
       const dataQ = filmsMarcup.createMarkup(dataBaseAPI.user.queue, 'ua');
       refs.ulItem.innerHTML = dataQ;
       titlMove();
     }
     if (selectedBtnValue === 'watched') {
-      console.log('videli');
-      // console.log(dataBaseAPI.user.watched);
       const dataW = filmsMarcup.createMarkup(dataBaseAPI.user.watched, 'ua');
       refs.ulItem.innerHTML = dataW;
       titlMove();
     }
   }
 }
+
+// ------------------- SELECT-for-GENRES----------
+function createSelectMarkup() {
+const genresEn = serviceApi.arrayForGenresEn;
+  const genresUa = serviceApi.arrayForGenresUk;
+
+  console.log(genresEn);
+
+  const lang = language.language;
+
+  if (lang === "en") {
+    makeGenresSelecrorMarkup(genresEn);
+  }
+
+  if (lang === "ua") {
+    makeGenresSelecrorMarkup(genresUa);
+}
+}
+
+
+
+function makeGenresSelecrorMarkup(genres) {
+  const genresSelectorMarkup = genres.map(genre => genresSelect(genre)).join('');
+  if (language.language === "en") {
+    genresSelectEl.innerHTML = `<option name="All genres">All genres</option> ${genresSelectorMarkup}`;
+  }
+  if (language.language === "ua") {
+    genresSelectEl.innerHTML = `<option name="Всі жанри">Всі жанри</option> ${genresSelectorMarkup}`;
+  }
+  NiceSelect.bind(document.getElementById("#a-select"));
+
+}
+
+
+
+function makeFilterPerGenre(event) {
+  let selectedBtnValue = '';
+  if (refs.libraryButton.classList.contains('side-nav__link--current')) {
+   
+    if (refs.radioWatched.checked) {
+      selectedBtnValue = 'watched';
+      
+    } else {
+      selectedBtnValue = 'queue';
+    }
+  }
+  else {
+    genresSelectEl.classList.add('is-hidden');
+  }
+
+  const selectValue = event.target.value;
+  const pageLang = language.language;
+  const userFilmsWatched = dataBaseAPI.user.watched;
+  const userFilmsQueue = dataBaseAPI.user.queue;
+  console.log(selectValue);
+  
+  if (selectValue === 'All genres' || selectValue === 'Всі жанри') {
+    onQueueWatchBtnClick();
+    console.log(selectValue);
+    return;
+  }
+
+    if (pageLang === 'en') {
+      if (selectedBtnValue === 'queue') {
+        const filteredQueueFilmsEn = userFilmsQueue.filter(film => film.genreEn.includes(selectValue));
+        console.log(filteredQueueFilmsEn);
+
+        const dataQueueEn = filmsMarcup.createMarkup(filteredQueueFilmsEn, 'en');
+        refs.ulItem.innerHTML = dataQueueEn;
+      }
+
+      if (selectedBtnValue === 'watched') {
+        const filteredWatchedFilmsEn = userFilmsWatched.filter(film => film.genreEn.includes(selectValue));
+        console.log(filteredWatchedFilmsEn);
+    
+        const dataWatchedEn = filmsMarcup.createMarkup(filteredWatchedFilmsEn, 'en');
+        refs.ulItem.innerHTML = dataWatchedEn;
+      }
+    }
+
+    if (pageLang === 'ua') {
+      if (selectedBtnValue === 'queue') {
+        const filteredQueueFilmsUa = userFilmsQueue.filter(film => film.genreUk.includes(selectValue));
+        console.log(filteredQueueFilmsUa);
+
+        const dataQueueUa = filmsMarcup.createMarkup(filteredQueueFilmsUa, 'ua');
+        refs.ulItem.innerHTML = dataQueueUa;
+      }
+
+      if (selectedBtnValue === 'watched') {
+        const filteredWatchedFilmsUa = userFilmsWatched.filter(film => film.genreUk.includes(selectValue));
+        console.log(filteredWatchedFilmsUa);
+
+        const dataWatchedUa = filmsMarcup.createMarkup(filteredWatchedFilmsUa, 'ua');
+        refs.ulItem.innerHTML = dataWatchedUa;
+      }
+    }
+}
+ 
+  
+  
+    
+   
+  
+     
+   
+
+
+
+  
+    
+
+
