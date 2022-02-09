@@ -24,6 +24,7 @@ const modalFilm = new ModalFilm();
 
 const loaderSignIn = new Loader({ selector: '.auth-sign-in' });
 const loaderRegistr = new Loader({ selector: '.reg-btn' });
+const loaderCat = new Loader({ selector: '.preloader-wrapper'});
 
 const language = new Language();
 const options = {
@@ -436,12 +437,17 @@ function storageDackMoodCheck() {
   switchCheckbox.checked = true;
 }
 
-async function logIn() {
-  const films = await serviceApi.fetchTrending({ page: 1, period: 'day' });
+async function sleepFilm() {
+ return await serviceApi.fetchTrending({ page: 1, period: 'day' })
+}
+async function logIn() { 
+  loaderCat.show()
+  const films = await sleep(sleepFilm)
 
   pagination.reset(serviceApi.totalPages);
 
   const data = filmsMarcup.createMarkup(films.films, 'en');
+  loaderCat.hidden()
   refs.ulItem.innerHTML = data;
 
   titlMove();

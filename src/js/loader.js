@@ -36,7 +36,15 @@ export default class Loader {
     this.refs.loadMoreButton.classList.remove('is-hidden');
   }
 
-  hidden() {
+  hidden()  {
     this.refs.loadMoreButton.classList.add('is-hidden');
+  }
+
+  showCat() {
+    this.refs.loadMoreButton.classList.remove('display-none');
+  }
+
+  hiddenCat() {
+    this.refs.loadMoreButton.classList.add('display-none');
   }
 }

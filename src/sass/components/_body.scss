@@ -1,0 +1,16 @@
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+// header {
+//   //   align-self: start;
+//   flex-grow: 1;
+// }
+// footer {
+//   //   align-self: end;
+//   flex-grow: 0;
+// }
+.film {
+  flex: 1;
+}
