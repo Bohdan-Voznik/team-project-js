@@ -11,7 +11,7 @@ export default class LanguageApi {
     this.tranclater = {
        search:{
         en: 'Search result not successful. Enter the correct movie name',
-        ua: 'Результат пошуку не вдалий. Введіть правильну назву фільму',
+        ua: 'Результат пошуку невдалий. Введіть правильну назву фільму',
       },
       reg:{
         en: 'REGISTRATION',
@@ -43,11 +43,11 @@ export default class LanguageApi {
       },
       queue: {
         en: 'Queue',
-        ua: 'В ЧЕРГУ',
+        ua: 'ДО ЧЕРГИ',
       },
       watch: {
         en: 'Watched',
-        ua: 'ДИВИТИСЬ',
+        ua: 'ПЕРЕГЛЯНУТИ',
       },
       log: {
         en: 'LOG IN',
