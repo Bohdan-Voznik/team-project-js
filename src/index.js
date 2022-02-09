@@ -13,7 +13,6 @@ import ModalFilm from './js/modal-film-info';
 import teamModal from './js/team-modal-open';
 import Language from './js/switch-language';
 import Pagination from 'tui-pagination';
-import SelectPure from 'select-pure';
 
 import Loader from './js/loader';
 
@@ -89,9 +88,10 @@ const refs = {
 
   radioWatched: document.querySelector('.radio-watched'),
   radioQueue: document.querySelector('.radio-queue'),
-
-  // week: document.querySelector('search-perios__link--week'),
 };
+
+const switchCheckbox = document.querySelector('.switch__checkbox');
+const switchToggle = document.querySelector('.darkmode-toggle');
 
 // VanillaTilt.init(refs.week, {
 //   max: 25,
@@ -149,6 +149,7 @@ function activeHomePage() {
   //console.log(serviceApi.fetchTrending({ page: 1, period: 'week' }));
   const pageLang = language.language;
   // const currentPage = pagination.getCurrentPage();
+
   serviceApi.fetchTrending({ page: 1, period: 'week' }).then(data => {
     console.log(data.films);
     searchStatus = false;
@@ -178,7 +179,7 @@ function activeLibraryPage() {
   refs.bgImg.classList.remove('header-bg');
   refs.bgImg.classList.add('header-bg-lib');
   const pageLang = language.language;
-  
+
   refs.radioWatched.checked = true;
 
   if (pageLang === 'en') {
@@ -385,13 +386,21 @@ async function storageCheck() {
   loginStatus = true;
   resetLoginStatus();
 }
+storageDackMoodCheck();
+//-----------------Проверяем наичие темы в localStorage-----------------
+function storageDackMoodCheck() {
+  const darkmode = JSON.parse(localStorage.getItem('darkmode'));
+
+  if (darkmode === null || !darkmode) {
+    return;
+  }
+  switchCheckbox.checked = true;
+}
 
 async function logIn() {
   const films = await serviceApi.fetchTrending({ page: 1, period: 'week' });
 
   pagination.reset(serviceApi.totalPages);
-
-  // console.log(films.films);
 
   const data = filmsMarcup.createMarkup(films.films, 'en');
   refs.ulItem.innerHTML = data;
@@ -438,8 +447,6 @@ async function onFormSearchSubmit(e) {
   }
 }
 
-const switchCheckbox = document.querySelector('.switch__checkbox');
-const switchToggle = document.querySelector('.darkmode-toggle');
 // console.log(switchToggle);
 
 switchToggle.addEventListener('click', onChangeBg);
