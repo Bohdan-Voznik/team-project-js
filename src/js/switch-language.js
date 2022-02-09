@@ -13,6 +13,14 @@ export default class LanguageApi {
       //   en: 'Search movies',
       //   ua: 'Пошук фільмів',
       // },
+      day:{
+        en: 'TOP day',
+        ua: 'ТОП дня',
+      },
+      week:{
+        en: 'TOP  week',
+        ua: 'ТОП тижня',
+      },
       queue: {
         en: 'Queue',
         ua: 'В ЧЕРГУ',

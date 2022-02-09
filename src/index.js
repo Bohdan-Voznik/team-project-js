@@ -231,12 +231,18 @@ async function onPage(e) {
   if (e.currentTarget === e.target) {
     return;
   }
-
+let period= '';
   const currentPage = pagination.getCurrentPage();
   pagination.movePageTo(currentPage);
+  if (refs.radioBtnWeek.checked) {
+    period = 'week';
+  }
+  if (refs.radioBtnDay.checked) {
+    period = 'day';
+  };
   const lol = searchStatus
     ? await serviceApi.fetchMoviesBySearch({ query: query, page: currentPage })
-    : await serviceApi.fetchTrending({ page: currentPage, period: 'week' });
+    : await serviceApi.fetchTrending({ page: currentPage, period: period });
 
   window.scrollTo(0, 240);
 
@@ -397,9 +403,15 @@ function changeLanguage() {
   language.select = refs.select;
   language.changeDataSet();
   language.changeLanguage(murcup);
+
+  const data = filmsMarcup.createMarkup(serviceApi.arrayForFilms, language.language);
+  // console.log(serviceApi.arrayForFilms);
+  refs.ulItem.innerHTML = data;
+  onQueueWatchBtnClick();
 }
 function murcup(key, lang) {
   document.querySelector(`.lng-${key}`).innerHTML = language.tranclater[key][lang];
+
 }
 // --------------------Меняем язык ввода-----------
 
@@ -466,7 +478,7 @@ async function onFormSearchSubmit(e) {
       return;
     }
 
-    const data = filmsMarcup.createMarkup(films.films, 'ua');
+    const data = filmsMarcup.createMarkup(films.films, language.language);
     refs.ulItem.innerHTML = data;
     titlMove();
     searchStatus = true;
