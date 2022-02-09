@@ -178,6 +178,8 @@ function activeLibraryPage() {
   refs.bgImg.classList.remove('header-bg');
   refs.bgImg.classList.add('header-bg-lib');
   const pageLang = language.language;
+  
+  refs.radioWatched.checked = true;
 
   if (pageLang === 'en') {
     const dataW = filmsMarcup.createMarkup(dataBaseAPI.user.watched, 'en');
@@ -187,7 +189,6 @@ function activeLibraryPage() {
   if (pageLang === 'ua') {
     const dataW = filmsMarcup.createMarkup(dataBaseAPI.user.watched, 'ua');
     refs.ulItem.innerHTML = dataW;
-
     titlMove();
   }
 }
