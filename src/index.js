@@ -287,7 +287,15 @@ async function onMmodalRegistrationFormSubmit(e) {
       break;
   }
 }
-
+function onEscapeClickReg(e) {
+ 
+      if (e.code === 'Escape') {
+        refs.modalAuthorization.classList.add('is-hidden');
+        document.removeEventListener('keydown', onEscapeClickReg);
+        onModalRegistrationCloseClick()
+      } 
+      console.log(e.code);
+}
 function onModalRegistrationCloseClick() {
   refs.modalRegistration.classList.add('is-hidden');
 }
@@ -297,6 +305,8 @@ function oModalRegistrationButtonClick(e) {
   //кнопка
   //ожидание setTimeout
   refs.modalRegistration.classList.remove('is-hidden');
+  document.addEventListener('keydown', onEscapeClickLogin)
+  document.addEventListener('keydown', onEscapeClickReg);
   //кнопка
 }
 //============LOGIN============
@@ -365,6 +375,15 @@ function onModalAuthorizationCloseClick() {
   refs.loginButton.classList.remove('side-nav__link--current');
   refs.modalAuthorization.classList.add('is-hidden');
 }
+function onEscapeClickLogin(e) {
+ 
+      if (e.code === 'Escape') {
+        refs.modalAuthorization.classList.add('is-hidden');
+        document.removeEventListener('keydown', onEscapeClickLogin);
+        onModalAuthorizationCloseClick()
+      } 
+      console.log(e.code);
+}
 
 function onSideNavClick(e) {
   if (e.currentTarget === e.target) {
@@ -383,7 +402,12 @@ function onSideNavClick(e) {
   if (e.target.classList.contains('login')) {
     refs.loginButton.classList.add('side-nav__link--current');
     refs.modalAuthorization.classList.remove('is-hidden');
+    document.addEventListener('keydown', onEscapeClickLogin) 
+     
+    
+    // document.querySelector('.backdrop').addEventListener('click');
     console.log('Нажли на login');
+  
   }
 
   if (e.target.classList.contains('home')) {
@@ -603,6 +627,7 @@ function openInfoModal(e) {
 
   if (filmCard) {
     refs.modalInfo.classList.toggle('is-hidden'); //открываем модалку, убирая класс
+    document.addEventListener('keydown', onEscapeClickInfoModal);
     disabledBodyScroll(); //Запрещаем прокрутку body, пока открыта модалка (если filmcard прийдет - то и откроется модалка, а тогда и запрещем скролл)
   }
 }
@@ -660,6 +685,15 @@ async function addToQueue() {
 
     btnQueue.classList.add('selected');
   }
+}
+function onEscapeClickInfoModal(e) {
+ 
+      if (e.code === 'Escape') {
+        refs.modalAuthorization.classList.add('is-hidden');
+        document.removeEventListener('keydown', onEscapeClickInfoModal);
+        closeInfoModal()
+      } 
+      console.log(e.code);
 }
 
 function closeInfoModal() {
