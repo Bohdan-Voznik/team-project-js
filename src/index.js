@@ -137,6 +137,12 @@ refs.logoLink.addEventListener('click', activeHomePage);
 refs.radioBtnWeek.addEventListener('click', periodPer);
 refs.radioBtnDay.addEventListener('click', periodPer);
 
+const backdropReg = document.querySelector('.backdrop_registro');
+const backdropAuth = document.querySelector('.backdrop');
+const backdropFilmInfo = document.querySelector('.background');
+backdropReg.addEventListener('click', onModalRegistrationCloseClick);
+backdropAuth.addEventListener('click', onModalAuthorizationCloseClick);
+backdropFilmInfo.addEventListener('click', closeInfoModal);
 //================ЗАПУСК ПРИ СТАРТЕ================
 storageCheck();
 logIn();
