@@ -24,7 +24,7 @@ const modalFilm = new ModalFilm();
 
 const loaderSignIn = new Loader({ selector: '.auth-sign-in' });
 const loaderRegistr = new Loader({ selector: '.reg-btn' });
-const loaderCat = new Loader({ selector: '.preloader-wrapper'});
+const loaderCat = new Loader({ selector: '.preloader-wrapper' });
 
 const language = new Language();
 const options = {
@@ -87,6 +87,7 @@ const refs = {
   bgImg: document.getElementById('header'),
   homePage: document.getElementById('home-page'),
   libraryPage: document.getElementById('library-page'),
+  liberyItem: document.querySelector('.side-nav__item--libery'),
 
   radioWatched: document.querySelector('.radio-watched'),
   radioQueue: document.querySelector('.radio-queue'),
@@ -141,9 +142,21 @@ refs.radioBtnDay.addEventListener('click', periodPer);
 const backdropReg = document.querySelector('.backdrop_registro');
 const backdropAuth = document.querySelector('.backdrop');
 const backdropFilmInfo = document.querySelector('.background');
-backdropReg.addEventListener('click', onModalRegistrationCloseClick);
-backdropAuth.addEventListener('click', onModalAuthorizationCloseClick);
-backdropFilmInfo.addEventListener('click', closeInfoModal);
+backdropReg.addEventListener('click', e => {
+  if (e.target === e.currentTarget) {
+    onModalRegistrationCloseClick();
+  }
+});
+backdropAuth.addEventListener('click', e => {
+  if (e.target === e.currentTarget) {
+    onModalAuthorizationCloseClick();
+  }
+});
+backdropFilmInfo.addEventListener('click', e => {
+  if (e.target === e.currentTarget) {
+    closeInfoModal();
+  }
+});
 //================ЗАПУСК ПРИ СТАРТЕ================
 storageCheck();
 logIn();
@@ -234,7 +247,7 @@ async function onPage(e) {
   if (e.currentTarget === e.target) {
     return;
   }
-let period= '';
+  let period = '';
   const currentPage = pagination.getCurrentPage();
   pagination.movePageTo(currentPage);
   if (refs.radioBtnWeek.checked) {
@@ -242,7 +255,7 @@ let period= '';
   }
   if (refs.radioBtnDay.checked) {
     period = 'day';
-  };
+  }
   const lol = searchStatus
     ? await serviceApi.fetchMoviesBySearch({ query: query, page: currentPage })
     : await serviceApi.fetchTrending({ page: currentPage, period: period });
@@ -284,6 +297,7 @@ async function onMmodalRegistrationFormSubmit(e) {
       console.log('Reg - OK');
       refs.loginButton.dataset.action = 'true';
       loginStatus = true;
+      refs.liberyItem.classList.remove('display-none');
       resetLoginStatus();
       onModalRegistrationCloseClick();
       onModalAuthorizationCloseClick();
@@ -295,13 +309,12 @@ async function onMmodalRegistrationFormSubmit(e) {
   }
 }
 function onEscapeClickReg(e) {
- 
-      if (e.code === 'Escape') {
-        refs.modalAuthorization.classList.add('is-hidden');
-        document.removeEventListener('keydown', onEscapeClickReg);
-        onModalRegistrationCloseClick()
-      } 
-      console.log(e.code);
+  if (e.code === 'Escape') {
+    refs.modalAuthorization.classList.add('is-hidden');
+    document.removeEventListener('keydown', onEscapeClickReg);
+    onModalRegistrationCloseClick();
+  }
+  console.log(e.code);
 }
 function onModalRegistrationCloseClick() {
   refs.modalRegistration.classList.add('is-hidden');
@@ -312,7 +325,7 @@ function oModalRegistrationButtonClick(e) {
   //кнопка
   //ожидание setTimeout
   refs.modalRegistration.classList.remove('is-hidden');
-  document.addEventListener('keydown', onEscapeClickLogin)
+  document.addEventListener('keydown', onEscapeClickLogin);
   document.addEventListener('keydown', onEscapeClickReg);
   //кнопка
 }
@@ -330,6 +343,10 @@ async function onModalAuthorizationFormSubmit(e) {
 
   const login = e.target.login.value;
   const pasword = e.target.password.value;
+  // console.log(Boolean(login));
+  if (!login || !pasword) {
+    return;
+  }
   // показать спинер is-hidden
   //запретить нажатие на кнопки
 
@@ -367,6 +384,7 @@ async function onModalAuthorizationFormSubmit(e) {
       loginStatus = true;
       resetLoginStatus();
       onModalAuthorizationCloseClick();
+      refs.liberyItem.classList.remove('display-none');
       //------------------------------
       dataBaseAPI.onСhangeUserData(onСhangeUserData);
       // ------------------------------
@@ -383,13 +401,12 @@ function onModalAuthorizationCloseClick() {
   refs.modalAuthorization.classList.add('is-hidden');
 }
 function onEscapeClickLogin(e) {
- 
-      if (e.code === 'Escape') {
-        refs.modalAuthorization.classList.add('is-hidden');
-        document.removeEventListener('keydown', onEscapeClickLogin);
-        onModalAuthorizationCloseClick()
-      } 
-      console.log(e.code);
+  if (e.code === 'Escape') {
+    refs.modalAuthorization.classList.add('is-hidden');
+    document.removeEventListener('keydown', onEscapeClickLogin);
+    onModalAuthorizationCloseClick();
+  }
+  console.log(e.code);
 }
 
 function onSideNavClick(e) {
@@ -400,6 +417,7 @@ function onSideNavClick(e) {
   console.log(dataBaseAPI);
   if (e.target.dataset.action === 'true') {
     dataBaseAPI.logOut();
+    refs.liberyItem.classList.add('display-none');
     refs.loginButton.dataset.action = 'false';
     loginStatus = false;
     resetLoginStatus();
@@ -409,12 +427,10 @@ function onSideNavClick(e) {
   if (e.target.classList.contains('login')) {
     refs.loginButton.classList.add('side-nav__link--current');
     refs.modalAuthorization.classList.remove('is-hidden');
-    document.addEventListener('keydown', onEscapeClickLogin) 
-     
-    
+    document.addEventListener('keydown', onEscapeClickLogin);
+
     // document.querySelector('.backdrop').addEventListener('click');
     console.log('Нажли на login');
-  
   }
 
   if (e.target.classList.contains('home')) {
@@ -438,7 +454,6 @@ function changeLanguage() {
 }
 function murcup(key, lang) {
   document.querySelector(`.lng-${key}`).innerHTML = language.tranclater[key][lang];
-
 }
 // --------------------Меняем язык ввода-----------
 
@@ -454,6 +469,7 @@ async function storageCheck() {
   await dataBaseAPI.logIn({ email: email, pasword: pasword });
   refs.loginButton.dataset.action = 'true';
   loginStatus = true;
+  refs.liberyItem.classList.remove('display-none');
   resetLoginStatus();
 }
 storageDackMoodCheck();
@@ -468,16 +484,30 @@ function storageDackMoodCheck() {
 }
 
 async function sleepFilm() {
- return await serviceApi.fetchTrending({ page: 1, period: 'day' })
+  return await serviceApi.fetchTrending({ page: 1, period: 'day' });
 }
-async function logIn() { 
-  loaderCat.show()
-  const films = await sleep(sleepFilm)
+
+async function setLanguageForDefault() {
+  const currentCountry = await serviceApi.getGeoInfo();
+  if (currentCountry !== 'Ukraine') {
+    return;
+  }
+  refs.select.selectedIndex = 0;
+  const event = new Event('change');
+  refs.select.dispatchEvent(event);
+}
+
+async function logIn() {
+  console.log();
+  await setLanguageForDefault();
+
+  loaderCat.show();
+  const films = await sleep(sleepFilm);
 
   pagination.reset(serviceApi.totalPages);
 
-  const data = filmsMarcup.createMarkup(films.films, 'en');
-  loaderCat.hidden()
+  const data = filmsMarcup.createMarkup(films.films, language.language);
+  loaderCat.hidden();
   refs.ulItem.innerHTML = data;
 
   titlMove();
@@ -699,17 +729,17 @@ async function addToQueue() {
   }
 }
 function onEscapeClickInfoModal(e) {
- 
-      if (e.code === 'Escape') {
-        refs.modalAuthorization.classList.add('is-hidden');
-        document.removeEventListener('keydown', onEscapeClickInfoModal);
-        closeInfoModal()
-      } 
-      console.log(e.code);
+  if (e.code === 'Escape') {
+    refs.modalAuthorization.classList.add('is-hidden');
+    document.removeEventListener('keydown', onEscapeClickInfoModal);
+    closeInfoModal();
+  }
+  console.log(e.code);
 }
 
 function closeInfoModal() {
-  refs.modalInfo.classList.toggle('is-hidden'); //скрываем модалку, вешая класс
+  console.log('click');
+  refs.modalInfo.classList.add('is-hidden'); //скрываем модалку, вешая класс
   enabledBodyScroll(); //Разрешаем прокрутку body, пока модалка закрыта
 }
 
