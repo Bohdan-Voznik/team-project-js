@@ -15,6 +15,8 @@ import Language from './js/switch-language';
 import Pagination from 'tui-pagination';
 
 import Loader from './js/loader';
+import genresSelect from './partials/genres-select-options-markup.hbs';
+import NiceSelect from './js/nice-select2';
 
 new Darkmode().showWidget();
 
@@ -433,6 +435,30 @@ async function logIn() {
 
   pagination.reset(serviceApi.totalPages);
 
+  const genresEn = serviceApi.arrayForGenresEn;
+  const genresUa = serviceApi.arrayForGenresUk;
+
+  console.log(genresEn);
+
+  const lang = language.language;
+
+  if (lang === "en") {
+    makeGenresSelecrorMarkup(genresEn);
+  }
+
+  if (lang === "ua") {
+    makeGenresSelecrorMarkup(genresUa);
+  }
+  genresSelectEl.addEventListener('change', makeFilterPerGenre);
+
+// function makeFilterPerGenre(event) {
+//   const selectValue = event.target.value;
+//   console.log(selectValue);
+
+// }
+
+  
+
   const data = filmsMarcup.createMarkup(films.films, 'en');
   refs.ulItem.innerHTML = data;
 
@@ -668,15 +694,11 @@ function onQueueWatchBtnClick() {
 
   if (pageLang === 'en') {
     if (selectedBtnValue === 'queue') {
-      console.log('posmotret');
-      console.log(selectedBtnValue);
       const dataQ = filmsMarcup.createMarkup(dataBaseAPI.user.queue, 'en');
       refs.ulItem.innerHTML = dataQ;
       titlMove();
     }
     if (selectedBtnValue === 'watched') {
-      console.log('videli');
-      console.log(selectedBtnValue);
       const dataW = filmsMarcup.createMarkup(dataBaseAPI.user.watched, 'en');
       refs.ulItem.innerHTML = dataW;
       titlMove();
@@ -685,18 +707,102 @@ function onQueueWatchBtnClick() {
 
   if (pageLang === 'ua') {
     if (selectedBtnValue === 'queue') {
-      console.log('posmotret');
-      // console.log(dataBaseAPI.user.queue);
       const dataQ = filmsMarcup.createMarkup(dataBaseAPI.user.queue, 'ua');
       refs.ulItem.innerHTML = dataQ;
       titlMove();
     }
     if (selectedBtnValue === 'watched') {
-      console.log('videli');
-      // console.log(dataBaseAPI.user.watched);
       const dataW = filmsMarcup.createMarkup(dataBaseAPI.user.watched, 'ua');
       refs.ulItem.innerHTML = dataW;
       titlMove();
     }
   }
 }
+
+// ------------------- SELECT-for-GENRES----------
+
+
+
+const genresSelectEl = document.querySelector('.select-genres');
+
+function makeGenresSelecrorMarkup(genres) {
+  const genresSelectorMarkup = genres.map(genre => genresSelect(genre)).join('');
+  genresSelectEl.innerHTML = genresSelectorMarkup;
+  // console.log(genresSelectorMarkup);
+  NiceSelect.bind(document.getElementById("#a-select"));
+
+}
+
+
+
+function makeFilterPerGenre(event) {
+  let selectedBtnValue = '';
+  if (refs.libraryButton.classList.contains('side-nav__link--current')) {
+   
+    if (refs.radioWatched.checked) {
+      selectedBtnValue = 'watched';
+      
+    } else {
+      selectedBtnValue = 'queue';
+    }
+  }
+  else {
+    genresSelectEl.classList.add('is-hidden');
+  }
+
+  const selectValue = event.target.value;
+  const pageLang = language.language;
+  const userFilmsWatched = dataBaseAPI.user.watched;
+  const userFilmsQueue = dataBaseAPI.user.queue;
+
+    if (pageLang === 'en') {
+      if (selectedBtnValue === 'queue') {
+        const filteredQueueFilmsEn = userFilmsQueue.filter(film => film.genreEn.includes(selectValue));
+        console.log(filteredQueueFilmsEn);
+
+        const dataQueueEn = filmsMarcup.createMarkup(filteredQueueFilmsEn, 'en');
+        refs.ulItem.innerHTML = dataQueueEn;
+      }
+
+      if (selectedBtnValue === 'watched') {
+        const filteredWatchedFilmsEn = userFilmsWatched.filter(film => film.genreEn.includes(selectValue));
+        console.log(filteredWatchedFilmsEn);
+    
+        const dataWatchedEn = filmsMarcup.createMarkup(filteredWatchedFilmsEn, 'en');
+        refs.ulItem.innerHTML = dataWatchedEn;
+      }
+    }
+
+    if (pageLang === 'ua') {
+      if (selectedBtnValue === 'queue') {
+        const filteredQueueFilmsUa = userFilmsQueue.filter(film => film.genreUk.includes(selectValue));
+        console.log(filteredQueueFilmsUa);
+
+        const dataQueueUa = filmsMarcup.createMarkup(filteredQueueFilmsUa, 'ua');
+        refs.ulItem.innerHTML = dataQueueUa;
+      }
+
+      if (selectedBtnValue === 'watched') {
+        const filteredWatchedFilmsUa = userFilmsWatched.filter(film => film.genreUk.includes(selectValue));
+        console.log(filteredWatchedFilmsUa);
+
+        const dataWatchedUa = filmsMarcup.createMarkup(filteredWatchedFilmsUa, 'ua');
+        refs.ulItem.innerHTML = dataWatchedUa;
+      }
+    }
+}
+ 
+  
+  
+    
+   
+  
+     
+   
+
+
+
+  
+    
+
+
