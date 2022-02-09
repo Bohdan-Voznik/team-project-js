@@ -101,6 +101,7 @@ const refs = {
 
 const switchCheckbox = document.querySelector('.switch__checkbox');
 const switchToggle = document.querySelector('.darkmode-toggle');
+const genresSelectEl = document.querySelector('.select-genres');
 
 // VanillaTilt.init(refs.week, {
 //   max: 25,
@@ -139,7 +140,8 @@ refs.libraryBtn.addEventListener('click', activeLibraryPage);
 refs.homeBtn.addEventListener('click', activeHomePage);
 refs.logoLink.addEventListener('click', activeHomePage);
 refs.radioBtnWeek.addEventListener('click', periodPer);
-refs.radioBtnDay.addEventListener('click',periodPer);
+refs.radioBtnDay.addEventListener('click', periodPer);
+genresSelectEl.addEventListener('change', makeFilterPerGenre);
 
 
 //================ЗАПУСК ПРИ СТАРТЕ================
@@ -399,9 +401,11 @@ function changeLanguage() {
   language.select = refs.select;
   language.changeDataSet();
   language.changeLanguage(murcup);
+  createSelectMarkup();
 }
 function murcup(key, lang) {
   document.querySelector(`.lng-${key}`).innerHTML = language.tranclater[key][lang];
+
 }
 // --------------------Меняем язык ввода-----------
 
@@ -435,29 +439,7 @@ async function logIn() {
 
   pagination.reset(serviceApi.totalPages);
 
-  const genresEn = serviceApi.arrayForGenresEn;
-  const genresUa = serviceApi.arrayForGenresUk;
-
-  console.log(genresEn);
-
-  const lang = language.language;
-
-  if (lang === "en") {
-    makeGenresSelecrorMarkup(genresEn);
-  }
-
-  if (lang === "ua") {
-    makeGenresSelecrorMarkup(genresUa);
-  }
-  genresSelectEl.addEventListener('change', makeFilterPerGenre);
-
-// function makeFilterPerGenre(event) {
-//   const selectValue = event.target.value;
-//   console.log(selectValue);
-
-// }
-
-  
+  createSelectMarkup();
 
   const data = filmsMarcup.createMarkup(films.films, 'en');
   refs.ulItem.innerHTML = data;
@@ -720,15 +702,33 @@ function onQueueWatchBtnClick() {
 }
 
 // ------------------- SELECT-for-GENRES----------
+function createSelectMarkup() {
+const genresEn = serviceApi.arrayForGenresEn;
+  const genresUa = serviceApi.arrayForGenresUk;
+
+  console.log(genresEn);
+
+  const lang = language.language;
+
+  if (lang === "en") {
+    makeGenresSelecrorMarkup(genresEn);
+  }
+
+  if (lang === "ua") {
+    makeGenresSelecrorMarkup(genresUa);
+}
+}
 
 
-
-const genresSelectEl = document.querySelector('.select-genres');
 
 function makeGenresSelecrorMarkup(genres) {
   const genresSelectorMarkup = genres.map(genre => genresSelect(genre)).join('');
-  genresSelectEl.innerHTML = genresSelectorMarkup;
-  // console.log(genresSelectorMarkup);
+  if (language.language === "en") {
+    genresSelectEl.innerHTML = `<option name="All genres">All genres</option> ${genresSelectorMarkup}`;
+  }
+  if (language.language === "ua") {
+    genresSelectEl.innerHTML = `<option name="Всі жанри">Всі жанри</option> ${genresSelectorMarkup}`;
+  }
   NiceSelect.bind(document.getElementById("#a-select"));
 
 }
@@ -754,6 +754,13 @@ function makeFilterPerGenre(event) {
   const pageLang = language.language;
   const userFilmsWatched = dataBaseAPI.user.watched;
   const userFilmsQueue = dataBaseAPI.user.queue;
+  console.log(selectValue);
+  
+  if (selectValue === 'All genres' || selectValue === 'Всі жанри') {
+    onQueueWatchBtnClick();
+    console.log(selectValue);
+    return;
+  }
 
     if (pageLang === 'en') {
       if (selectedBtnValue === 'queue') {
