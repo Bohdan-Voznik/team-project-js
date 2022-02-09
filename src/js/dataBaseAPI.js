@@ -3,7 +3,7 @@ import { getDatabase, ref, get, update, onValue, off } from 'firebase/database';
 
 export default class dataBaseApiServise {
   constructor() {
-    this.userRefInDatabase = null;
+    (this.indexOfSerch = 1), (this.userRefInDatabase = null);
     this.user = {};
 
     this.firebaseConfig = {
@@ -108,19 +108,17 @@ export default class dataBaseApiServise {
   }
 
   //-------Готово
-  onСhangeUserData(functions = []) {
+  onСhangeUserData(fn) {
     onValue(this.userRefInDatabase, async snapshot => {
-      console.log('изменения!!');
+      if (this.indexOfSerch === 1) {
+        this.indexOfSerch += 1;
+        return;
+      }
       const { pasword: paswordDb, queue: queueDb, watched: watchedDb } = await snapshot.val();
       this.user.pasword = paswordDb;
       this.user.queue = queueDb;
       this.user.watched = watchedDb;
-
-      if (functions.length !== 0) {
-        functions.map(fn => {
-          fn();
-        });
-      }
+      fn();
     });
   }
 
@@ -130,6 +128,7 @@ export default class dataBaseApiServise {
       off(this.userRefInDatabase);
     }
     this.user = {};
+    this.indexOfSerch = 1;
     localStorage.removeItem('user');
   }
 
