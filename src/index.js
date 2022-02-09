@@ -64,6 +64,7 @@ const refs = {
   modalInfoCloseBtn: document.querySelector('.modal__close-btn'),
   modalContent: document.querySelector('.modal__content'),
   select: document.querySelector('.change-lang'),
+
   pagination: document.getElementById('pagination'),
 
   sideNav: document.querySelector('.side-nav'),
@@ -90,6 +91,12 @@ const refs = {
   radioWatched: document.querySelector('.radio-watched'),
   radioQueue: document.querySelector('.radio-queue'),
 
+  radioBtnDay: document.querySelector('.day'),
+  radioBtnWeek: document.querySelector('.week'),
+  periodLabelDay: document.querySelector('.period-day__label'),
+  periodLabelWeek: document.querySelector('.period-week__label'),
+
+
   // week: document.querySelector('search-perios__link--week'),
 };
 
@@ -111,6 +118,7 @@ let loginStatus = false;
 let searchStatus = false;
 let query = ' ';
 
+
 refs.searchForm.addEventListener('submit', onFormSearchSubmit);
 refs.filmList.addEventListener('click', openInfoModal);
 refs.modalInfoCloseBtn.addEventListener('click', closeInfoModal);
@@ -128,6 +136,9 @@ refs.modalRegistrationForm.addEventListener('submit', onMmodalRegistrationFormSu
 refs.libraryBtn.addEventListener('click', activeLibraryPage);
 refs.homeBtn.addEventListener('click', activeHomePage);
 refs.logoLink.addEventListener('click', activeHomePage);
+refs.radioBtnWeek.addEventListener('click', periodPer);
+refs.radioBtnDay.addEventListener('click',periodPer);
+
 
 //================ЗАПУСК ПРИ СТАРТЕ================
 storageCheck();
@@ -135,21 +146,16 @@ logIn();
 //================^^^ЗАПУСК ПРИ СТАРТЕ^^^================
 
 //====================HEADER===================//
-
-function activeHomePage() {
-  refs.libraryBtn.classList.remove('side-nav__link--current');
-  refs.homeBtn.classList.add('side-nav__link--current');
-  refs.libraryBtn.classList.remove('form-group');
-  refs.homeBtn.classList.add('search-form');
-  refs.libraryPage.classList.add('is-hidden');
-  refs.homePage.style.display = 'block';
-  refs.libraryPage.style.display = 'none';
-  refs.bgImg.classList.remove('header-bg-lib');
-  refs.bgImg.classList.add('header-bg');
-  //console.log(serviceApi.fetchTrending({ page: 1, period: 'week' }));
+function periodPer() {
+  let period = '';
   const pageLang = language.language;
-  // const currentPage = pagination.getCurrentPage();
-  serviceApi.fetchTrending({ page: 1, period: 'week' }).then(data => {
+  if (refs.radioBtnWeek.checked) {
+    period = "week"
+  }
+   if (refs.radioBtnDay.checked) {
+    period = "day"
+    }
+    serviceApi.fetchTrending({ page: 1, period: period }).then(data => {
     console.log(data.films);
     searchStatus = false;
     query = '';
@@ -165,6 +171,26 @@ function activeHomePage() {
       titlMove();
     }
   });
+  }
+
+function activeHomePage() {
+  refs.libraryBtn.classList.remove('side-nav__link--current');
+  refs.homeBtn.classList.add('side-nav__link--current');
+  refs.libraryBtn.classList.remove('form-group');
+  refs.homeBtn.classList.add('search-form');
+  refs.libraryPage.classList.add('is-hidden');
+  refs.homePage.style.display = 'block';
+  refs.libraryPage.style.display = 'none';
+  refs.bgImg.classList.remove('header-bg-lib');
+  refs.bgImg.classList.add('header-bg');
+  refs.periodLabelDay.classList.remove('display-none');
+  refs.periodLabelWeek.classList.remove('display-none');
+  refs.pagination.classList.remove('display-none');
+  
+  //console.log(serviceApi.fetchTrending({ page: 1, period: 'week' }));
+  
+  // const currentPage = pagination.getCurrentPage();
+  periodPer();  
 }
 
 function activeLibraryPage() {
@@ -175,8 +201,12 @@ function activeLibraryPage() {
   refs.libraryPage.classList.remove('is-hidden');
   refs.libraryPage.style.display = 'block';
   refs.homePage.style.display = 'none';
+  refs.periodLabelDay.classList.add('display-none');
+  refs.periodLabelWeek.classList.add('display-none');
+  refs.pagination.classList.add('display-none');
   refs.bgImg.classList.remove('header-bg');
   refs.bgImg.classList.add('header-bg-lib');
+  
   const pageLang = language.language;
   
   refs.radioWatched.checked = true;
