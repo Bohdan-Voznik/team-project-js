@@ -91,3 +91,7 @@ input:checked + .slider:before {
 .darkmode--activated .my-element-with-background {
   filter: invert(0);
 }
+
+.darkmode--activated .film__name {
+  filter: invert(1);
+}

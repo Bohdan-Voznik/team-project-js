@@ -247,7 +247,7 @@ async function onMmodalRegistrationFormSubmit(e) {
       onModalAuthorizationCloseClick();
       console.log(dataBaseAPI.user);
       //------------------------------
-      // onСhangeUserData();
+      dataBaseAPI.onСhangeUserData();
       //------------------------------
       break;
   }
@@ -316,10 +316,14 @@ async function onModalAuthorizationFormSubmit(e) {
       resetLoginStatus();
       onModalAuthorizationCloseClick();
       //------------------------------
-      // onСhangeUserData();
-      //------------------------------
+      dataBaseAPI.onСhangeUserData(onСhangeUserData);
+      // ------------------------------
       break;
   }
+}
+
+function onСhangeUserData() {
+  onQueueWatchBtnClick();
 }
 
 function onModalAuthorizationCloseClick() {
