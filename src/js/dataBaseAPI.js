@@ -24,11 +24,11 @@ export default class dataBaseApiServise {
     const data = await this.getDataByRef(this.formatEmail(email));
     const { pasword: pass, queue: queue, watched: watched } = data === null ? {} : data;
     if (!pass) {
-      // console.log('Вы не зарегистрированы!!!');
+     
       return 'login error';
     }
     if (pasword !== String(pass)) {
-      // console.log('Неверный пароль!!!!');
+     
       return 'password error';
     }
 
@@ -38,7 +38,7 @@ export default class dataBaseApiServise {
     this.user.pasword = pass;
     this.user.queue = queue ? queue : [];
     this.user.watched = watched ? watched : [];
-    console.log(this.user);
+   
     return 'true';
   }
 
@@ -70,13 +70,13 @@ export default class dataBaseApiServise {
     }
     const isFilmChecked = this.getFilmIndexByID({ category: category, id: id });
 
-    console.log(Number(id));
+    
     if (isFilmChecked === -1) {
-      console.log('такого нет');
+     
       return;
     }
     category.splice(isFilmChecked, 1);
-    console.log('removeMovieFromLibrary: ', this.user);
+   
     this.saveUserDataToDatabase();
     return 'removeMovieFromLibrary - OK';
   }
@@ -84,18 +84,18 @@ export default class dataBaseApiServise {
   //-------Готово
   addMovieToLibrary({ category = null, film = null }) {
     if (!category || !film) {
-      console.log('Error');
+  
       return 'Error';
     }
 
     const isFilmChecked = this.getFilmIndexByID({ category: category, id: film.id });
     if (isFilmChecked !== -1) {
-      console.log('in arr');
+     
       return;
     }
 
     category.splice(0, 0, film);
-    console.log('addMovieToLibrary: ', this.user);
+   
     this.saveUserDataToDatabase();
     return 'addMovieToLibrary - OK';
   }
@@ -104,7 +104,7 @@ export default class dataBaseApiServise {
   //записывает данные пользователя в БД
   saveUserDataToDatabase() {
     update(this.userRefInDatabase, this.user);
-    console.log('Запись успешна');
+   
   }
 
   //-------Готово
@@ -160,7 +160,7 @@ export default class dataBaseApiServise {
   //-------Готово
   getFilmIndexByID({ category = null, id = null }) {
     const cat = category ? category : [];
-    console.log('12345', cat);
+    
     return cat
       .map(film => {
         return film.id;
@@ -171,7 +171,7 @@ export default class dataBaseApiServise {
   //-------Готово
   getLiberuStatus(id = null) {
     if (!id) {
-      console.log('Error');
+      
       return 'Error';
     }
 
@@ -184,7 +184,7 @@ export default class dataBaseApiServise {
         this.getFilmIndexByID({ category: this.user.queue, id: Number(id) }) === -1 ? false : true,
     };
 
-    console.log(id, data);
+    
     return data;
   }
 
@@ -223,35 +223,35 @@ export default class dataBaseApiServise {
       reliseData,
     };
 
-    console.log('test');
+    
 
     if (watched) {
-      console.log('watched - OK');
+      
       this.addMovieToLibrary({ category: this.user.watched, film: data });
     } else {
       this.removeMovieFromLibrary({ category: this.user.watched, id: data.id });
     }
 
     if (queue) {
-      console.log('queue - OK');
+      
       this.addMovieToLibrary({ category: this.user.queue, film: data });
     } else {
       this.removeMovieFromLibrary({ category: this.user.queue, id: data.id });
     }
 
-    console.log(this.user);
+    
   }
 
   //-------Готово
   getFilmByid({ category = null, id = null }) {
-    console.log(category, id);
+  
     if (!category || !id) {
       return 'Error';
     }
     const filmIndex = this.getFilmIndexByID({ category: category, id: Number(id) });
 
     if (filmIndex === -1) {
-      console.log('no film');
+     
       return;
     }
     const data = category[filmIndex];

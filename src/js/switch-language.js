@@ -1,10 +1,6 @@
-// import ServiceApi from './js/header';
-// const API = ServiceApi();
-// console.log(api.fetchTrending)
 
 export default class LanguageApi {
   constructor() {
-    // this.placeholder='en';
 
     this.language = 'en';
     this.select = null;
@@ -61,10 +57,7 @@ export default class LanguageApi {
         en: 'HOME',
         ua: 'ГОЛОВНА',
       },
-      // film:{
-      //   en: 'Filmoteka',
-      //   ua: 'Фільмотека',
-      // },
+      
       right: {
         en: '2022 | All Rights Reserved',
         ua: '2022 | Усі права захищено',
@@ -87,18 +80,13 @@ export default class LanguageApi {
     let lang = this.select.value;
     this.select.dataset.language = lang;
     this.language = lang;
-    console.log(lang);
-
-    //   const place = document.getAnimations("home-page");
-    // this.placeholder=place;
-    // console.log(place)
+    
   }
   changeLanguage(fn) {
     document.querySelector('.search-field').placeholder =
       this.language === 'en' ? 'Search movies' : 'Пошук фільмів';
     const lang = this.select.dataset.language;
 
-    console.log(lang);
     document.querySelector('.modal-form__placeholder').placeholder =
     this.language === 'en' ? 'login' : 'логін';
     
@@ -116,13 +104,3 @@ export default class LanguageApi {
     });
   }
 }
-
-//
-// console.log(select)
-
-// const  allLang=['en','ua'];
-
-// function new Att(){
-//   const place = document.getAnimations("home-page");
-//   place.placeholder="";
-// }
