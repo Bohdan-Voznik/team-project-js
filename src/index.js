@@ -24,7 +24,7 @@ const modalFilm = new ModalFilm();
 
 const loaderSignIn = new Loader({ selector: '.auth-sign-in' });
 const loaderRegistr = new Loader({ selector: '.reg-btn' });
-const loaderCat = new Loader({ selector: '.preloader-wrapper'});
+const loaderCat = new Loader({ selector: '.preloader-wrapper' });
 
 const language = new Language();
 const options = {
@@ -138,12 +138,12 @@ refs.logoLink.addEventListener('click', activeHomePage);
 refs.radioBtnWeek.addEventListener('click', periodPer);
 refs.radioBtnDay.addEventListener('click', periodPer);
 
-const backdropReg = document.querySelector('.backdrop_registro');
-const backdropAuth = document.querySelector('.backdrop');
-const backdropFilmInfo = document.querySelector('.background');
-backdropReg.addEventListener('click', onModalRegistrationCloseClick);
-backdropAuth.addEventListener('click', onModalAuthorizationCloseClick);
-backdropFilmInfo.addEventListener('click', closeInfoModal);
+// const backdropReg = document.querySelector('.backdrop_registro');
+// const backdropAuth = document.querySelector('.backdrop');
+// const backdropFilmInfo = document.querySelector('.background');
+// backdropReg.addEventListener('click', onModalRegistrationCloseClick);
+// backdropAuth.addEventListener('click', onModalAuthorizationCloseClick);
+// backdropFilmInfo.addEventListener('click', closeInfoModal);
 //================ЗАПУСК ПРИ СТАРТЕ================
 storageCheck();
 logIn();
@@ -234,7 +234,7 @@ async function onPage(e) {
   if (e.currentTarget === e.target) {
     return;
   }
-let period= '';
+  let period = '';
   const currentPage = pagination.getCurrentPage();
   pagination.movePageTo(currentPage);
   if (refs.radioBtnWeek.checked) {
@@ -242,7 +242,7 @@ let period= '';
   }
   if (refs.radioBtnDay.checked) {
     period = 'day';
-  };
+  }
   const lol = searchStatus
     ? await serviceApi.fetchMoviesBySearch({ query: query, page: currentPage })
     : await serviceApi.fetchTrending({ page: currentPage, period: period });
@@ -295,13 +295,12 @@ async function onMmodalRegistrationFormSubmit(e) {
   }
 }
 function onEscapeClickReg(e) {
- 
-      if (e.code === 'Escape') {
-        refs.modalAuthorization.classList.add('is-hidden');
-        document.removeEventListener('keydown', onEscapeClickReg);
-        onModalRegistrationCloseClick()
-      } 
-      console.log(e.code);
+  if (e.code === 'Escape') {
+    refs.modalAuthorization.classList.add('is-hidden');
+    document.removeEventListener('keydown', onEscapeClickReg);
+    onModalRegistrationCloseClick();
+  }
+  console.log(e.code);
 }
 function onModalRegistrationCloseClick() {
   refs.modalRegistration.classList.add('is-hidden');
@@ -312,7 +311,7 @@ function oModalRegistrationButtonClick(e) {
   //кнопка
   //ожидание setTimeout
   refs.modalRegistration.classList.remove('is-hidden');
-  document.addEventListener('keydown', onEscapeClickLogin)
+  document.addEventListener('keydown', onEscapeClickLogin);
   document.addEventListener('keydown', onEscapeClickReg);
   //кнопка
 }
@@ -383,13 +382,12 @@ function onModalAuthorizationCloseClick() {
   refs.modalAuthorization.classList.add('is-hidden');
 }
 function onEscapeClickLogin(e) {
- 
-      if (e.code === 'Escape') {
-        refs.modalAuthorization.classList.add('is-hidden');
-        document.removeEventListener('keydown', onEscapeClickLogin);
-        onModalAuthorizationCloseClick()
-      } 
-      console.log(e.code);
+  if (e.code === 'Escape') {
+    refs.modalAuthorization.classList.add('is-hidden');
+    document.removeEventListener('keydown', onEscapeClickLogin);
+    onModalAuthorizationCloseClick();
+  }
+  console.log(e.code);
 }
 
 function onSideNavClick(e) {
@@ -409,12 +407,10 @@ function onSideNavClick(e) {
   if (e.target.classList.contains('login')) {
     refs.loginButton.classList.add('side-nav__link--current');
     refs.modalAuthorization.classList.remove('is-hidden');
-    document.addEventListener('keydown', onEscapeClickLogin) 
-     
-    
+    document.addEventListener('keydown', onEscapeClickLogin);
+
     // document.querySelector('.backdrop').addEventListener('click');
     console.log('Нажли на login');
-  
   }
 
   if (e.target.classList.contains('home')) {
@@ -438,7 +434,6 @@ function changeLanguage() {
 }
 function murcup(key, lang) {
   document.querySelector(`.lng-${key}`).innerHTML = language.tranclater[key][lang];
-
 }
 // --------------------Меняем язык ввода-----------
 
@@ -468,16 +463,19 @@ function storageDackMoodCheck() {
 }
 
 async function sleepFilm() {
- return await serviceApi.fetchTrending({ page: 1, period: 'day' })
+  return await serviceApi.fetchTrending({ page: 1, period: 'day' });
 }
-async function logIn() { 
-  loaderCat.show()
-  const films = await sleep(sleepFilm)
+async function logIn() {
+  refs.pagination.classList.add('display-none');
+  loaderCat.show();
+  const films = await sleep(sleepFilm);
 
   pagination.reset(serviceApi.totalPages);
 
   const data = filmsMarcup.createMarkup(films.films, 'en');
-  loaderCat.hidden()
+  loaderCat.hidden();
+  refs.pagination.classList.remove('display-none');
+
   refs.ulItem.innerHTML = data;
 
   titlMove();
@@ -551,11 +549,25 @@ function enabledBodyScroll() {
 }
 
 function checkButtonData() {
-  if (modalFilm.objFilm.watched) btnWatched.classList.add('selected');
-  else btnWatched.classList.remove('selected');
+  if (modalFilm.objFilm.watched) {
+    btnWatched.classList.add('selected');
+    document.querySelector('.btn-add-to-watched .modal-btn_text').textContent =
+      language.language === 'en' ? 'Delete from watched' : 'Видалити з переглянутого';
+  } else {
+    btnWatched.classList.remove('selected');
+    document.querySelector('.btn-add-to-watched .modal-btn_text').textContent =
+      language.language === 'en' ? 'Add to watched' : 'Додати до переглянутого';
+  }
 
-  if (modalFilm.objFilm.queue) btnQueue.classList.add('selected');
-  else btnQueue.classList.remove('selected');
+  if (modalFilm.objFilm.queue) {
+    btnQueue.classList.add('selected');
+    document.querySelector('.btn-add-to-queue .modal-btn_text').textContent =
+      language.language === 'en' ? 'Delete from queue' : 'Видалити з черги';
+  } else {
+    btnQueue.classList.remove('selected');
+    document.querySelector('.btn-add-to-queue .modal-btn_text').textContent =
+      language.language === 'en' ? 'Add to queue' : 'Додати до черги';
+  }
 }
 
 function checkUserLog(serviceData, filmId) {
@@ -646,8 +658,17 @@ function openInfoModal(e) {
 
 async function addToWatched() {
   const loaderWatched = new Loader({ selector: '.btn-add-to-watched' });
+  // const textSpinner = language.language === 'en' ? 'Add to watched' : 'Додати до переглянутого';
+  const textInButton = document.querySelector('.btn-add-to-watched .modal-btn_text');
 
-  const textSpinner = language.language === 'en' ? 'Add to watched' : 'Додати до переглянутого';
+  const textSpinner = textInButton.textContent;
+  console.log(textSpinner);
+  // textSpinner = language.language = 'en'
+  //   ? (textSpinner.textContent = 'Add to watched')
+  //   : (textSpinner.textContent = 'Додати до переглянутого');
+  //   textSpinner = language.language = 'en'
+  //     ? (textSpinner.textContent = 'Delete from watched')
+  //     : (textSpinner.textContent = 'Видалити з переглянутого');
 
   if (modalFilm.objFilm.watched) {
     modalFilm.objFilmWatched = false;
@@ -659,6 +680,13 @@ async function addToWatched() {
     loaderWatched.enabled(textSpinner);
     loaderWatched.resetLoaderColor();
 
+    textInButton.textContent =
+      language.language === 'en' ? 'Add to watched' : 'Додати до переглянутого';
+
+    // language.language = 'en'
+    //   ? (btnWatched.textContent = 'Added to watched')
+    //   : (btnWatched.textContent = 'Вже переглянуто');
+
     btnWatched.classList.remove('selected');
   } else {
     modalFilm.objFilmWatched = true;
@@ -668,13 +696,20 @@ async function addToWatched() {
     await sleep(sendObj);
     loaderWatched.enabled(textSpinner);
 
+    textInButton.textContent =
+      language.language === 'en' ? 'Delete from watched' : 'Видалити з переглянутого';
+
     btnWatched.classList.add('selected');
   }
 }
 
 async function addToQueue() {
   const loaderQueue = new Loader({ selector: '.btn-add-to-queue' });
-  const textSpinner = language.language === 'en' ? 'Add to queue' : 'Додати до черги';
+  // const textSpinner = language.language === 'en' ? 'Add to queue' : 'Додати до черги';
+
+  const textInButton = document.querySelector('.btn-add-to-queue .modal-btn_text');
+
+  const textSpinner = textInButton.textContent;
 
   if (modalFilm.objFilm.queue) {
     modalFilm.objFilmQueue = false;
@@ -686,6 +721,8 @@ async function addToQueue() {
     loaderQueue.enabled(textSpinner);
     loaderQueue.resetLoaderColor();
 
+    textInButton.textContent = language.language === 'en' ? 'Add to queue' : 'Додати до черги';
+
     btnQueue.classList.remove('selected');
   } else {
     modalFilm.objFilmQueue = true;
@@ -695,17 +732,18 @@ async function addToQueue() {
     await sleep(sendObj);
     loaderQueue.enabled(textSpinner);
 
+    textInButton.textContent =
+      language.language === 'en' ? 'Delete from queue' : 'Выдалити з черги';
     btnQueue.classList.add('selected');
   }
 }
 function onEscapeClickInfoModal(e) {
- 
-      if (e.code === 'Escape') {
-        refs.modalAuthorization.classList.add('is-hidden');
-        document.removeEventListener('keydown', onEscapeClickInfoModal);
-        closeInfoModal()
-      } 
-      console.log(e.code);
+  if (e.code === 'Escape') {
+    refs.modalAuthorization.classList.add('is-hidden');
+    document.removeEventListener('keydown', onEscapeClickInfoModal);
+    closeInfoModal();
+  }
+  console.log(e.code);
 }
 
 function closeInfoModal() {
