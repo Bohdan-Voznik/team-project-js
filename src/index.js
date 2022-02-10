@@ -554,7 +554,7 @@ async function onFormSearchSubmit(e) {
   }
 }
 
-// console.log(switchToggle);
+
 
 switchToggle.addEventListener('click', onChangeBg);
 function onChangeBg() {
@@ -628,7 +628,7 @@ function openInfoModal(e) {
   
   //============
 
-  console.log('in lib', refs.libraryButton.classList.contains('.side-nav__link--current'));
+ 
   if (refs.libraryButton.classList.contains('side-nav__link--current')) {
     if (refs.radioWatched.checked) {
       modalFilm.setFilm = dataBaseAPI.getFilmByid({
@@ -758,7 +758,7 @@ function onEscapeClickInfoModal(e) {
 }
 
 function closeInfoModal() {
-  console.log('click');
+
   refs.modalInfo.classList.add('is-hidden'); //скрываем модалку, вешая класс
   enabledBodyScroll(); //Разрешаем прокрутку body, пока модалка закрыта
 }
@@ -821,8 +821,6 @@ function onQueueWatchBtnClick() {
 function createSelectMarkup() {
   const genresEn = serviceApi.arrayForGenresEn;
   const genresUa = serviceApi.arrayForGenresUk;
-
-  console.log(genresEn);
 
   const lang = language.language;
 
