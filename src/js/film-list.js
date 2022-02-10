@@ -1,7 +1,7 @@
 import filmInfo from '../partials/film-item.hbs';
 
 export function createMarkup(films, lang) {
-  const FilmsList = films.map(film => {
+  const filmsList = films.map(film => {
     return filmInfo({
       image: lang === 'en' ? film.imageEn : film.imageUk,
       title: lang === 'en' ? film.titleEn : film.titleUk,
@@ -12,7 +12,7 @@ export function createMarkup(films, lang) {
       id: film.id,
     });
   });
-  return FilmsList.join('');
+  return filmsList.join('');
 }
 
 // const FilmsList = films.map(film => {

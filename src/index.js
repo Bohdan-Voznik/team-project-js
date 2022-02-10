@@ -15,6 +15,8 @@ import Language from './js/switch-language';
 import Pagination from 'tui-pagination';
 
 import Loader from './js/loader';
+import genresSelect from './partials/genres-select-options-markup.hbs';
+import NiceSelect from './js/nice-select2';
 
 new Darkmode().showWidget();
 
@@ -100,6 +102,7 @@ const refs = {
 
 const switchCheckbox = document.querySelector('.switch__checkbox');
 const switchToggle = document.querySelector('.darkmode-toggle');
+const genresSelectEl = document.querySelector('.select-genres');
 
 // VanillaTilt.init(refs.week, {
 //   max: 25,
@@ -138,10 +141,12 @@ refs.homeBtn.addEventListener('click', activeHomePage);
 refs.logoLink.addEventListener('click', activeHomePage);
 refs.radioBtnWeek.addEventListener('click', periodPer);
 refs.radioBtnDay.addEventListener('click', periodPer);
+genresSelectEl.addEventListener('change', makeFilterPerGenre);
 
 const backdropReg = document.querySelector('.backdrop_registro');
 const backdropAuth = document.querySelector('.backdrop');
 const backdropFilmInfo = document.querySelector('.background');
+
 backdropReg.addEventListener('click', e => {
   if (e.target === e.currentTarget) {
     onModalRegistrationCloseClick();
@@ -157,6 +162,7 @@ backdropFilmInfo.addEventListener('click', e => {
     closeInfoModal();
   }
 });
+
 //================ЗАПУСК ПРИ СТАРТЕ================
 storageCheck();
 logIn();
@@ -447,6 +453,9 @@ function changeLanguage() {
   language.changeDataSet();
   language.changeLanguage(murcup);
 
+  createSelectMarkup();
+
+
   const data = filmsMarcup.createMarkup(serviceApi.arrayForFilms, language.language);
   // console.log(serviceApi.arrayForFilms);
   refs.ulItem.innerHTML = data;
@@ -487,6 +496,7 @@ async function sleepFilm() {
   return await serviceApi.fetchTrending({ page: 1, period: 'day' });
 }
 
+
 async function setLanguageForDefault() {
   const currentCountry = await serviceApi.getGeoInfo();
   if (currentCountry !== 'Ukraine') {
@@ -498,9 +508,9 @@ async function setLanguageForDefault() {
 }
 
 async function logIn() {
-  console.log();
-  await setLanguageForDefault();
 
+  await setLanguageForDefault();
+  refs.pagination.classList.add('display-none');
   loaderCat.show();
   const films = await sleep(sleepFilm);
 
@@ -508,6 +518,11 @@ async function logIn() {
 
   const data = filmsMarcup.createMarkup(films.films, language.language);
   loaderCat.hidden();
+  createSelectMarkup();
+
+  const data = filmsMarcup.createMarkup(films.films, 'en');
+  loaderCat.hidden();
+  refs.pagination.classList.remove('display-none');
   refs.ulItem.innerHTML = data;
 
   titlMove();
@@ -581,11 +596,25 @@ function enabledBodyScroll() {
 }
 
 function checkButtonData() {
-  if (modalFilm.objFilm.watched) btnWatched.classList.add('selected');
-  else btnWatched.classList.remove('selected');
+  if (modalFilm.objFilm.watched) {
+    btnWatched.classList.add('selected');
+    document.querySelector('.btn-add-to-watched .modal-btn_text').textContent =
+      language.language === 'en' ? 'Delete from watched' : 'Видалити з переглянутого';
+  } else {
+    btnWatched.classList.remove('selected');
+    document.querySelector('.btn-add-to-watched .modal-btn_text').textContent =
+      language.language === 'en' ? 'Add to watched' : 'Додати до переглянутого';
+  }
 
-  if (modalFilm.objFilm.queue) btnQueue.classList.add('selected');
-  else btnQueue.classList.remove('selected');
+  if (modalFilm.objFilm.queue) {
+    btnQueue.classList.add('selected');
+    document.querySelector('.btn-add-to-queue .modal-btn_text').textContent =
+      language.language === 'en' ? 'Delete from queue' : 'Видалити з черги';
+  } else {
+    btnQueue.classList.remove('selected');
+    document.querySelector('.btn-add-to-queue .modal-btn_text').textContent =
+      language.language === 'en' ? 'Add to queue' : 'Додати до черги';
+  }
 }
 
 function checkUserLog(serviceData, filmId) {
@@ -676,8 +705,17 @@ function openInfoModal(e) {
 
 async function addToWatched() {
   const loaderWatched = new Loader({ selector: '.btn-add-to-watched' });
+  // const textSpinner = language.language === 'en' ? 'Add to watched' : 'Додати до переглянутого';
+  const textInButton = document.querySelector('.btn-add-to-watched .modal-btn_text');
 
-  const textSpinner = language.language === 'en' ? 'Add to watched' : 'Додати до переглянутого';
+  const textSpinner = textInButton.textContent;
+  console.log(textSpinner);
+  // textSpinner = language.language = 'en'
+  //   ? (textSpinner.textContent = 'Add to watched')
+  //   : (textSpinner.textContent = 'Додати до переглянутого');
+  //   textSpinner = language.language = 'en'
+  //     ? (textSpinner.textContent = 'Delete from watched')
+  //     : (textSpinner.textContent = 'Видалити з переглянутого');
 
   if (modalFilm.objFilm.watched) {
     modalFilm.objFilmWatched = false;
@@ -689,6 +727,13 @@ async function addToWatched() {
     loaderWatched.enabled(textSpinner);
     loaderWatched.resetLoaderColor();
 
+    textInButton.textContent =
+      language.language === 'en' ? 'Add to watched' : 'Додати до переглянутого';
+
+    // language.language = 'en'
+    //   ? (btnWatched.textContent = 'Added to watched')
+    //   : (btnWatched.textContent = 'Вже переглянуто');
+
     btnWatched.classList.remove('selected');
   } else {
     modalFilm.objFilmWatched = true;
@@ -698,13 +743,20 @@ async function addToWatched() {
     await sleep(sendObj);
     loaderWatched.enabled(textSpinner);
 
+    textInButton.textContent =
+      language.language === 'en' ? 'Delete from watched' : 'Видалити з переглянутого';
+
     btnWatched.classList.add('selected');
   }
 }
 
 async function addToQueue() {
   const loaderQueue = new Loader({ selector: '.btn-add-to-queue' });
-  const textSpinner = language.language === 'en' ? 'Add to queue' : 'Додати до черги';
+  // const textSpinner = language.language === 'en' ? 'Add to queue' : 'Додати до черги';
+
+  const textInButton = document.querySelector('.btn-add-to-queue .modal-btn_text');
+
+  const textSpinner = textInButton.textContent;
 
   if (modalFilm.objFilm.queue) {
     modalFilm.objFilmQueue = false;
@@ -716,6 +768,8 @@ async function addToQueue() {
     loaderQueue.enabled(textSpinner);
     loaderQueue.resetLoaderColor();
 
+    textInButton.textContent = language.language === 'en' ? 'Add to queue' : 'Додати до черги';
+
     btnQueue.classList.remove('selected');
   } else {
     modalFilm.objFilmQueue = true;
@@ -725,6 +779,8 @@ async function addToQueue() {
     await sleep(sendObj);
     loaderQueue.enabled(textSpinner);
 
+    textInButton.textContent =
+      language.language === 'en' ? 'Delete from queue' : 'Выдалити з черги';
     btnQueue.classList.add('selected');
   }
 }
@@ -772,15 +828,11 @@ function onQueueWatchBtnClick() {
 
   if (pageLang === 'en') {
     if (selectedBtnValue === 'queue') {
-      console.log('posmotret');
-      console.log(selectedBtnValue);
       const dataQ = filmsMarcup.createMarkup(dataBaseAPI.user.queue, 'en');
       refs.ulItem.innerHTML = dataQ;
       titlMove();
     }
     if (selectedBtnValue === 'watched') {
-      console.log('videli');
-      console.log(selectedBtnValue);
       const dataW = filmsMarcup.createMarkup(dataBaseAPI.user.watched, 'en');
       refs.ulItem.innerHTML = dataW;
       titlMove();
@@ -789,18 +841,127 @@ function onQueueWatchBtnClick() {
 
   if (pageLang === 'ua') {
     if (selectedBtnValue === 'queue') {
-      console.log('posmotret');
-      // console.log(dataBaseAPI.user.queue);
       const dataQ = filmsMarcup.createMarkup(dataBaseAPI.user.queue, 'ua');
       refs.ulItem.innerHTML = dataQ;
       titlMove();
     }
     if (selectedBtnValue === 'watched') {
-      console.log('videli');
-      // console.log(dataBaseAPI.user.watched);
       const dataW = filmsMarcup.createMarkup(dataBaseAPI.user.watched, 'ua');
       refs.ulItem.innerHTML = dataW;
       titlMove();
     }
   }
 }
+
+// ------------------- SELECT-for-GENRES----------
+function createSelectMarkup() {
+const genresEn = serviceApi.arrayForGenresEn;
+  const genresUa = serviceApi.arrayForGenresUk;
+
+  console.log(genresEn);
+
+  const lang = language.language;
+
+  if (lang === "en") {
+    makeGenresSelecrorMarkup(genresEn);
+  }
+
+  if (lang === "ua") {
+    makeGenresSelecrorMarkup(genresUa);
+}
+}
+
+
+
+function makeGenresSelecrorMarkup(genres) {
+  const genresSelectorMarkup = genres.map(genre => genresSelect(genre)).join('');
+  if (language.language === "en") {
+    genresSelectEl.innerHTML = `<option name="All genres">All genres</option> ${genresSelectorMarkup}`;
+  }
+  if (language.language === "ua") {
+    genresSelectEl.innerHTML = `<option name="Всі жанри">Всі жанри</option> ${genresSelectorMarkup}`;
+  }
+  NiceSelect.bind(document.getElementById("#a-select"));
+
+}
+
+
+
+function makeFilterPerGenre(event) {
+  let selectedBtnValue = '';
+  if (refs.libraryButton.classList.contains('side-nav__link--current')) {
+   
+    if (refs.radioWatched.checked) {
+      selectedBtnValue = 'watched';
+      
+    } else {
+      selectedBtnValue = 'queue';
+    }
+  }
+  else {
+    genresSelectEl.classList.add('is-hidden');
+  }
+
+  const selectValue = event.target.value;
+  const pageLang = language.language;
+  const userFilmsWatched = dataBaseAPI.user.watched;
+  const userFilmsQueue = dataBaseAPI.user.queue;
+  console.log(selectValue);
+  
+  if (selectValue === 'All genres' || selectValue === 'Всі жанри') {
+    onQueueWatchBtnClick();
+    console.log(selectValue);
+    return;
+  }
+
+    if (pageLang === 'en') {
+      if (selectedBtnValue === 'queue') {
+        const filteredQueueFilmsEn = userFilmsQueue.filter(film => film.genreEn.includes(selectValue));
+        console.log(filteredQueueFilmsEn);
+
+        const dataQueueEn = filmsMarcup.createMarkup(filteredQueueFilmsEn, 'en');
+        refs.ulItem.innerHTML = dataQueueEn;
+      }
+
+      if (selectedBtnValue === 'watched') {
+        const filteredWatchedFilmsEn = userFilmsWatched.filter(film => film.genreEn.includes(selectValue));
+        console.log(filteredWatchedFilmsEn);
+    
+        const dataWatchedEn = filmsMarcup.createMarkup(filteredWatchedFilmsEn, 'en');
+        refs.ulItem.innerHTML = dataWatchedEn;
+      }
+    }
+
+    if (pageLang === 'ua') {
+      if (selectedBtnValue === 'queue') {
+        const filteredQueueFilmsUa = userFilmsQueue.filter(film => film.genreUk.includes(selectValue));
+        console.log(filteredQueueFilmsUa);
+
+        const dataQueueUa = filmsMarcup.createMarkup(filteredQueueFilmsUa, 'ua');
+        refs.ulItem.innerHTML = dataQueueUa;
+      }
+
+      if (selectedBtnValue === 'watched') {
+        const filteredWatchedFilmsUa = userFilmsWatched.filter(film => film.genreUk.includes(selectValue));
+        console.log(filteredWatchedFilmsUa);
+
+        const dataWatchedUa = filmsMarcup.createMarkup(filteredWatchedFilmsUa, 'ua');
+        refs.ulItem.innerHTML = dataWatchedUa;
+      }
+    }
+}
+ 
+  
+  
+    
+   
+  
+     
+   
+
+
+
+  
+    
+
+
