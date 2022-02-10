@@ -104,17 +104,6 @@ const switchCheckbox = document.querySelector('.switch__checkbox');
 const switchToggle = document.querySelector('.darkmode-toggle');
 const genresSelectEl = document.querySelector('.select__genres');
 
-// VanillaTilt.init(refs.week, {
-//   max: 25,
-//   speed: 400,
-//   scale: 1.2,
-// });
-// refs.week.addEventListener('tiltChange', callback);
-
-// refs.week.tilt({
-//   scale: 12,
-// });
-
 let filmId = null;
 let btnWatched = null;
 let btnQueue = null;
@@ -180,7 +169,6 @@ function periodPer() {
     period = 'day';
   }
   serviceApi.fetchTrending({ page: 1, period: period }).then(data => {
-    console.log(data.films);
     searchStatus = false;
     query = '';
     pagination.reset(serviceApi.totalPages);
@@ -212,9 +200,6 @@ function activeHomePage() {
   refs.pagination.classList.remove('display-none');
   genresSelectEl.classList.add('display-none');
 
-  //console.log(serviceApi.fetchTrending({ page: 1, period: 'week' }));
-
-  // const currentPage = pagination.getCurrentPage();
   periodPer();
 }
 
@@ -270,9 +255,7 @@ async function onPage(e) {
 
   window.scrollTo(0, 240);
 
-  console.log(lol.films);
   const data = filmsMarcup.createMarkup(lol.films, language.language);
-  console.log(data);
   refs.ulItem.innerHTML = data;
   titlMove();
 }
@@ -288,7 +271,6 @@ async function onMmodalRegistrationFormSubmit(e) {
   loaderRegistr.enabled(language.language === 'en' ? 'Create Account' : 'СТВОРИТИ АКАУНТ');
   switch (status) {
     case 'User error':
-      console.log('User error');
       const erorLogin = document.querySelector('.form-registration__error--login');
       erorLogin.classList.remove('is-hidden');
       e.target.login.classList.add('modal-form__placeholder--error');
@@ -302,14 +284,12 @@ async function onMmodalRegistrationFormSubmit(e) {
       break;
 
     default:
-      console.log('Reg - OK');
       refs.loginButton.dataset.action = 'true';
       loginStatus = true;
       refs.liberyItem.classList.remove('display-none');
       resetLoginStatus();
       onModalRegistrationCloseClick();
       onModalAuthorizationCloseClick();
-      console.log(dataBaseAPI.user);
       //------------------------------
       dataBaseAPI.onСhangeUserData();
       //------------------------------
@@ -322,7 +302,6 @@ function onEscapeClickReg(e) {
     document.removeEventListener('keydown', onEscapeClickReg);
     onModalRegistrationCloseClick();
   }
-  console.log(e.code);
 }
 function onModalRegistrationCloseClick() {
   refs.modalRegistration.classList.add('is-hidden');
@@ -353,7 +332,7 @@ async function onModalAuthorizationFormSubmit(e) {
 
   const login = e.target.login.value;
   const pasword = e.target.password.value;
-  // console.log(Boolean(login));
+
   if (!login || !pasword) {
     erorLogin.classList.remove('is-hidden');
     e.target.login.classList.add('modal-form__placeholder--error');
@@ -376,8 +355,10 @@ async function onModalAuthorizationFormSubmit(e) {
   loaderSignIn.disabled();
   const status = await dataBaseAPI.logIn({ email: login, pasword: pasword });
   loaderSignIn.enabled(language.language === 'en' ? 'Sign in' : 'ВХІД');
+
   // скрыть спинер
   //Разренить нажатие на кнопки
+
   switch (status) {
     case 'login error':
       const erorLogin = document.querySelector('.form-authorization__error--login');
@@ -402,7 +383,6 @@ async function onModalAuthorizationFormSubmit(e) {
     case 'server eror':
 
     default:
-      console.log('logIn - OK');
       refs.loginButton.dataset.action = 'true';
       loginStatus = true;
       resetLoginStatus();
@@ -430,7 +410,6 @@ function onEscapeClickLogin(e) {
     document.removeEventListener('keydown', onEscapeClickLogin);
     onModalAuthorizationCloseClick();
   }
-  console.log(e.code);
 }
 
 function onSideNavClick(e) {
@@ -438,7 +417,6 @@ function onSideNavClick(e) {
     return;
   }
 
-  console.log(dataBaseAPI);
   if (e.target.dataset.action === 'true') {
     dataBaseAPI.logOut();
     refs.liberyItem.classList.add('display-none');
@@ -455,16 +433,8 @@ function onSideNavClick(e) {
     disabledBodyScroll();
     document.addEventListener('keydown', onEscapeClickLogin);
 
-    // document.querySelector('.backdrop').addEventListener('click');
-    console.log('Нажли на login');
   }
 
-  if (e.target.classList.contains('home')) {
-    console.log('Нажли на home');
-  }
-  if (e.target.classList.contains('library')) {
-    console.log('Нажли на library');
-  }
 }
 
 // --------------------Меняем язык ввода-----------
@@ -476,7 +446,7 @@ function changeLanguage() {
   createSelectMarkup();
 
   const data = filmsMarcup.createMarkup(serviceApi.arrayForFilms, language.language);
-  // console.log(serviceApi.arrayForFilms);
+  
   refs.ulItem.innerHTML = data;
   onQueueWatchBtnClick();
 }
@@ -501,7 +471,9 @@ async function storageCheck() {
   resetLoginStatus();
 }
 storageDackMoodCheck();
+
 //-----------------Проверяем наичие темы в localStorage-----------------
+
 function storageDackMoodCheck() {
   const darkmode = JSON.parse(localStorage.getItem('darkmode'));
 
@@ -577,7 +549,6 @@ async function onFormSearchSubmit(e) {
     pagination.reset(serviceApi.totalPages);
     refs.searchForm.query.value = '';
   } catch (error) {
-    console.log(error);
     return;
   }
 }
@@ -591,11 +562,11 @@ function onChangeBg() {
 }
 
 //============Pavel modal-film
+
 function disabledBodyScroll() {
   let pagePosition = window.scrollY;
   document.body.classList.add('disable-scroll');
   document.body.dataset.position = pagePosition;
-  console.log(pagePosition);
   window.scrollTo({ top: pagePosition });
   document.body.style.top = `${-pagePosition}px`;
   document.body.style.position = 'fixed';
@@ -635,7 +606,6 @@ function checkButtonData() {
 function checkUserLog(serviceData, filmId) {
   if (loginStatus) {
     const databaseData = dataBaseAPI.getLiberuStatus(filmId);
-    console.log(serviceData, databaseData);
     modalFilm.setFilm = Object.assign(serviceData, databaseData);
     return;
   }
@@ -644,7 +614,6 @@ function checkUserLog(serviceData, filmId) {
       watched: false,
       queue: false,
     };
-    console.log('serviceData:', serviceData, 'databaseData:', statusDefault);
     modalFilm.setFilm = Object.assign(serviceData, statusDefault);
     return;
   }
@@ -652,34 +621,26 @@ function checkUserLog(serviceData, filmId) {
 
 function openInfoModal(e) {
   e.preventDefault();
-
   const filmCard = e.target.closest('.film__item');
 
   filmId = +filmCard.dataset.id;
-  console.log('filmId', filmId);
+  
   //============
 
   console.log('in lib', refs.libraryButton.classList.contains('.side-nav__link--current'));
   if (refs.libraryButton.classList.contains('side-nav__link--current')) {
     if (refs.radioWatched.checked) {
-      console.log('watched');
       modalFilm.setFilm = dataBaseAPI.getFilmByid({
         category: dataBaseAPI.user.watched,
         id: filmId,
       });
     } else {
-      console.log('queue');
       modalFilm.setFilm = dataBaseAPI.getFilmByid({ category: dataBaseAPI.user.queue, id: filmId });
     }
   } else {
     const serviceData = serviceApi.getFilmById(filmId);
-    console.log('serviceData', serviceData);
-
     checkUserLog(serviceData, filmId);
   }
-
-  //dataBaseAPI.getFilmByid({ category: dataBaseAPI.user.watched, id: filmId });
-  // modalFilm.joinGenre();
 
   refs.modalContent.innerHTML = modalFilm.createMarkup(language.language);
   //Находим кнопки по data-att:
@@ -696,6 +657,7 @@ function openInfoModal(e) {
     infoText.classList.add('is-hidden');
 
     //Вешаем события по кликам на кнопки:
+
     btnWatched.addEventListener('click', addToWatched);
     btnQueue.addEventListener('click', addToQueue);
   } else {
@@ -720,18 +682,9 @@ function openInfoModal(e) {
 
 async function addToWatched() {
   const loaderWatched = new Loader({ selector: '.btn-add-to-watched' });
-  // const textSpinner = language.language === 'en' ? 'Add to watched' : 'Додати до переглянутого';
   const textInButton = document.querySelector('.btn-add-to-watched .modal-btn_text');
-
   const textSpinner = textInButton.textContent;
-  console.log(textSpinner);
-  // textSpinner = language.language = 'en'
-  //   ? (textSpinner.textContent = 'Add to watched')
-  //   : (textSpinner.textContent = 'Додати до переглянутого');
-  //   textSpinner = language.language = 'en'
-  //     ? (textSpinner.textContent = 'Delete from watched')
-  //     : (textSpinner.textContent = 'Видалити з переглянутого');
-
+  
   if (modalFilm.objFilm.watched) {
     modalFilm.objFilmWatched = false;
     btnWatched.setAttribute('data-watched', modalFilm.objFilm.watched);
@@ -745,9 +698,7 @@ async function addToWatched() {
     textInButton.textContent =
       language.language === 'en' ? 'Add to watched' : 'Додати до переглянутого';
 
-    // language.language = 'en'
-    //   ? (btnWatched.textContent = 'Added to watched')
-    //   : (btnWatched.textContent = 'Вже переглянуто');
+    
 
     btnWatched.classList.remove('selected');
   } else {
@@ -767,10 +718,7 @@ async function addToWatched() {
 
 async function addToQueue() {
   const loaderQueue = new Loader({ selector: '.btn-add-to-queue' });
-  // const textSpinner = language.language === 'en' ? 'Add to queue' : 'Додати до черги';
-
   const textInButton = document.querySelector('.btn-add-to-queue .modal-btn_text');
-
   const textSpinner = textInButton.textContent;
 
   if (modalFilm.objFilm.queue) {
@@ -805,7 +753,7 @@ function onEscapeClickInfoModal(e) {
     document.removeEventListener('keydown', onEscapeClickInfoModal);
     closeInfoModal();
   }
-  console.log(e.code);
+
 }
 
 function closeInfoModal() {
@@ -905,19 +853,15 @@ function makeFilterPerGenre(event) {
     } else {
       selectedBtnValue = 'queue';
     }
-  } else {
-    genresSelectEl.classList.add('is-hidden');
-  }
+  } 
 
   const selectValue = event.target.value;
   const pageLang = language.language;
   const userFilmsWatched = dataBaseAPI.user.watched;
   const userFilmsQueue = dataBaseAPI.user.queue;
-  console.log(selectValue);
 
   if (selectValue === 'All genres' || selectValue === 'Всі жанри') {
     onQueueWatchBtnClick();
-    console.log(selectValue);
     return;
   }
 
@@ -926,20 +870,18 @@ function makeFilterPerGenre(event) {
       const filteredQueueFilmsEn = userFilmsQueue.filter(film =>
         film.genreEn.includes(selectValue),
       );
-      console.log(filteredQueueFilmsEn);
-
       const dataQueueEn = filmsMarcup.createMarkup(filteredQueueFilmsEn, 'en');
       refs.ulItem.innerHTML = dataQueueEn;
+      titlMove();
     }
 
     if (selectedBtnValue === 'watched') {
       const filteredWatchedFilmsEn = userFilmsWatched.filter(film =>
         film.genreEn.includes(selectValue),
       );
-      console.log(filteredWatchedFilmsEn);
-
       const dataWatchedEn = filmsMarcup.createMarkup(filteredWatchedFilmsEn, 'en');
       refs.ulItem.innerHTML = dataWatchedEn;
+      titlMove();
     }
   }
 
@@ -948,20 +890,18 @@ function makeFilterPerGenre(event) {
       const filteredQueueFilmsUa = userFilmsQueue.filter(film =>
         film.genreUk.includes(selectValue),
       );
-      console.log(filteredQueueFilmsUa);
-
       const dataQueueUa = filmsMarcup.createMarkup(filteredQueueFilmsUa, 'ua');
       refs.ulItem.innerHTML = dataQueueUa;
+      titlMove();
     }
 
     if (selectedBtnValue === 'watched') {
       const filteredWatchedFilmsUa = userFilmsWatched.filter(film =>
         film.genreUk.includes(selectValue),
       );
-      console.log(filteredWatchedFilmsUa);
-
       const dataWatchedUa = filmsMarcup.createMarkup(filteredWatchedFilmsUa, 'ua');
       refs.ulItem.innerHTML = dataWatchedUa;
+      titlMove();
     }
   }
 }
