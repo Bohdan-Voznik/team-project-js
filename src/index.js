@@ -210,7 +210,7 @@ function activeHomePage() {
   refs.periodLabelDay.classList.remove('display-none');
   refs.periodLabelWeek.classList.remove('display-none');
   refs.pagination.classList.remove('display-none');
-  genresSelectEl.classList.add('is-hidden');
+  genresSelectEl.classList.add('display-none');
 
   //console.log(serviceApi.fetchTrending({ page: 1, period: 'week' }));
 
@@ -231,7 +231,7 @@ function activeLibraryPage() {
   refs.pagination.classList.add('display-none');
   refs.bgImg.classList.remove('header-bg');
   refs.bgImg.classList.add('header-bg-lib');
-  genresSelectEl.classList.remove('is-hidden');
+  genresSelectEl.classList.remove('display-none');
 
   const pageLang = language.language;
 
