@@ -1,0 +1,23 @@
+.select__genres {
+  margin-left: auto;
+  margin-right: auto;
+  width: 136px;
+  height: 44px;
+  border-color: #ff6b01;
+  border-radius: 5px;
+  border-width: 1px;
+  text-transform: uppercase;
+  text-align: center;
+  font-family: Roboto;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 1.33;
+  color: #ff6b01;
+  outline: none;
+}
+
+.select__option {
+  color: #6e6c6b;
+  text-transform: none;
+  font-size: 16px;
+}
