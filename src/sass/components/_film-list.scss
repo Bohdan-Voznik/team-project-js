@@ -74,18 +74,18 @@
 }
 
 .film__img {
-  min-width: 100%;
-  width: 280px;
-  height: 402px;
+  // min-width: 100%;
+  // width: 280px;
+  // height: 402px;
   border-radius: 5px;
   object-fit: cover;
   @media screen and (min-width: 768px) {
-    width: 293px;
-    height: 398px;
+    // width: 293px;
+    // height: 398px;
   }
   @media screen and (min-width: 1024px) {
-    width: 290px;
-    height: 398px;
+    // width: 290px;
+    // height: 398px;
   }
 }
 

@@ -478,6 +478,7 @@ function changeLanguage() {
   const data = filmsMarcup.createMarkup(serviceApi.arrayForFilms, language.language);
   // console.log(serviceApi.arrayForFilms);
   refs.ulItem.innerHTML = data;
+  titlMove ();
   onQueueWatchBtnClick();
 }
 function murcup(key, lang) {
