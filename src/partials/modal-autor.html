@@ -6,13 +6,12 @@
         <use href="./img/sprite.svg#icon-modal-close"></use>
       </svg>
     </div>
-    <form action="" class="form-authorization">
+    <form class="form-authorization">
       <span class="modal-form modal-text">
         <label class="position">
           <input
             type="text"
-            id="input-login"
-            class="modal-form__placeholder adds"
+            class="modal-form__placeholder input-login adds"
             name="login"
             placeholder="login"
             value="lol@gmail.com"
@@ -24,8 +23,7 @@
         <label class="position">
           <input
             type="text"
-            id="input-parol"
-            class="modal-form__placeholder form_password"
+            class="modal-form__placeholder input-parol form_password"
             name="password"
             placeholder="password"
             value="11"
@@ -38,10 +36,14 @@
 
       <div class="modal__buttons modal-text">
         <button type="submit" class="modal-btn auth-sign-in">
-          <p class="modal-btn_text lng-sing">Sign in</p>
-          <span class="loader is-hidden"></span> 
+          <span class="modal-btn_text lng-sing">Sign in</span>
+          <span class="loader is-hidden"></span>
         </button>
-        <button type="button" name="registration" class="modal-btn queue modal-registration lng-acc">
+        <button
+          type="button"
+          name="registration"
+          class="modal-btn queue modal-registration lng-acc"
+        >
           Create Account
         </button>
       </div>
