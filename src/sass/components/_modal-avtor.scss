@@ -9,7 +9,7 @@
 .modal-avtoris {
   display: flex;
   flex-direction: column;
-  outline: 1px solid red;
+  // outline: 1px solid red;
 
   position: fixed;
   top: 50%;
@@ -129,7 +129,6 @@
 }
 
 .modal-btn {
-  
   width: 100px;
   height: 45px;
 
@@ -137,12 +136,11 @@
   position: relative;
 
   // &.auth-sign-in{
-    //  display: flex;
-    //  justify-content: center;
-    //  align-items: center;
-    //  
+  //  display: flex;
+  //  justify-content: center;
+  //  align-items: center;
+  //
   // }
- 
 
   text-transform: uppercase;
 
