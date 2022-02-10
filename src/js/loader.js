@@ -42,12 +42,9 @@ export default class Loader {
 
   showCat() {
     this.refs.loadMoreButton.classList.remove('display-none');
-
-    console.log('show');
   }
 
   hiddenCat() {
     this.refs.loadMoreButton.classList.add('display-none');
-    console.log('hidden');
   }
 }

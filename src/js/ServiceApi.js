@@ -1,3 +1,4 @@
+
 import axios from 'axios';
 
 export default class ServiceApi {
@@ -92,7 +93,7 @@ export default class ServiceApi {
       this.arrayForFilms = [...data];
       return { films: this.arrayForFilms, totalPages: this.totalPages };
     } catch (error) {
-      console.log(`Here is ${error}`);
+      
       return error;
     }
   }
@@ -104,7 +105,7 @@ export default class ServiceApi {
         params: { query, page: this.page },
       });
       this.totalPages = responseEn.data.total_results;
-      console.log(responseEn.data.results);
+     
       if (responseEn.data.results.length === 0) {
         return false;
       }
@@ -165,12 +166,12 @@ export default class ServiceApi {
       this.arrayForFilms = [...data];
       return { films: this.arrayForFilms, totalPages: this.totalPages };
     } catch (error) {
-      console.log(`Here is ${error}`);
+     
       return error;
     }
   }
   getFilmById(id = null) {
-    console.log(id);
+  
     if (!id) {
       return 'Error';
     }
@@ -179,10 +180,10 @@ export default class ServiceApi {
     });
 
     if (filmIndex === -1) {
-      console.log('no film');
+     
       return 'Error';
     }
-    console.log(filmIndex.indexOf(+id));
+ 
     return this.arrayForFilms[filmIndex.indexOf(+id)];
   }
   get pageNumber() {
@@ -194,7 +195,6 @@ export default class ServiceApi {
 
   async getGeoInfo() {
     const res = await axios.get('https://ipapi.co/json/');
-    // let response = response.data;
     this.country = res.data.country_name;
     return this.country;
   }

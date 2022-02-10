@@ -24,9 +24,6 @@ export default class ModalFilm {
         ? this.objFilm.genreEn.join(', ')
         : this.objFilm.genreEn;
 
-    console.log(lang);
-    console.log(this.objFilm);
-
     if (lang == 'en') {
       return modalTplEn(this.objFilm);
     }
