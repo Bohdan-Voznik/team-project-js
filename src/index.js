@@ -102,7 +102,7 @@ const refs = {
 
 const switchCheckbox = document.querySelector('.switch__checkbox');
 const switchToggle = document.querySelector('.darkmode-toggle');
-const genresSelectEl = document.querySelector('.select-genres');
+const genresSelectEl = document.querySelector('.select__genres');
 
 // VanillaTilt.init(refs.week, {
 //   max: 25,
@@ -210,6 +210,7 @@ function activeHomePage() {
   refs.periodLabelDay.classList.remove('display-none');
   refs.periodLabelWeek.classList.remove('display-none');
   refs.pagination.classList.remove('display-none');
+  genresSelectEl.classList.add('display-none');
 
   //console.log(serviceApi.fetchTrending({ page: 1, period: 'week' }));
 
@@ -230,6 +231,7 @@ function activeLibraryPage() {
   refs.pagination.classList.add('display-none');
   refs.bgImg.classList.remove('header-bg');
   refs.bgImg.classList.add('header-bg-lib');
+  genresSelectEl.classList.remove('display-none');
 
   const pageLang = language.language;
 
@@ -326,6 +328,7 @@ function onEscapeClickReg(e) {
 }
 function onModalRegistrationCloseClick() {
   refs.modalRegistration.classList.add('is-hidden');
+  disabledBodyScroll();
 }
 
 function oModalRegistrationButtonClick(e) {
@@ -335,6 +338,7 @@ function oModalRegistrationButtonClick(e) {
   refs.modalRegistration.classList.remove('is-hidden');
   document.addEventListener('keydown', onEscapeClickLogin);
   document.addEventListener('keydown', onEscapeClickReg);
+  disabledBodyScroll();
   //кнопка
 }
 //============LOGIN============
@@ -420,6 +424,7 @@ function onСhangeUserData() {
 function onModalAuthorizationCloseClick() {
   refs.loginButton.classList.remove('side-nav__link--current');
   refs.modalAuthorization.classList.add('is-hidden');
+  enabledBodyScroll();
 }
 function onEscapeClickLogin(e) {
   if (e.code === 'Escape') {
@@ -448,6 +453,7 @@ function onSideNavClick(e) {
   if (e.target.classList.contains('login')) {
     refs.loginButton.classList.add('side-nav__link--current');
     refs.modalAuthorization.classList.remove('is-hidden');
+    disabledBodyScroll();
     document.addEventListener('keydown', onEscapeClickLogin);
 
     // document.querySelector('.backdrop').addEventListener('click');
@@ -884,10 +890,10 @@ function createSelectMarkup() {
 function makeGenresSelecrorMarkup(genres) {
   const genresSelectorMarkup = genres.map(genre => genresSelect(genre)).join('');
   if (language.language === 'en') {
-    genresSelectEl.innerHTML = `<option name="All genres">All genres</option> ${genresSelectorMarkup}`;
+    genresSelectEl.innerHTML = `<option class="select__option" name="All genres">All genres</option> ${genresSelectorMarkup}`;
   }
   if (language.language === 'ua') {
-    genresSelectEl.innerHTML = `<option name="Всі жанри">Всі жанри</option> ${genresSelectorMarkup}`;
+    genresSelectEl.innerHTML = `<option class="select__option" name="Всі жанри">Всі жанри</option> ${genresSelectorMarkup}`;
   }
   NiceSelect.bind(document.getElementById('#a-select'));
 }
