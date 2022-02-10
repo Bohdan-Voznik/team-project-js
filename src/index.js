@@ -447,7 +447,7 @@ function changeLanguage() {
 
   // const data = filmsMarcup.createMarkup(serviceApi.arrayForFilms, language.language);
   
-  refs.ulItem.innerHTML = data;
+  // refs.ulItem.innerHTML = data;
   titlMove ();
   onQueueWatchBtnClick();
 }
