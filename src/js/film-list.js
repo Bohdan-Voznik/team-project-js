@@ -4,8 +4,6 @@ export function createMarkup(films, lang) {
   const filmsList = films.map(film => {
     const genreEn = film.genreEn;
     const genreUk = film.genreUk;
-    console.log(genreEn);
-    console.log(genreUk);
 
     return filmInfo({
       image: lang === 'en' ? film.imageEn : film.imageUk,
