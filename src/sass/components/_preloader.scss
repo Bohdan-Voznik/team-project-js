@@ -1,19 +1,20 @@
 .preloader {
   position: absolute;
-  // left: 50%;
+  left: 50%;
   // top: 100%;
-  transform: translate(-50%, 0%);
+  transform: translate(-50%, 30%);
   height: 150px;
   width: 150px;
   @media screen and (min-width: 768px) {
     height: 250px;
     width: 250px;
-    transform: translate(-50%, -20%);
+    transform: translate(-50%, 0%);
   }
 }
 .preloader-wrapper {
-  display: block;
   position: relative;
   margin: 0 auto;
-  left: 50%;
+  // left: 50%;
+  max-width: 300px;
+  max-height: 300px;
 }
