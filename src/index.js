@@ -89,6 +89,7 @@ const refs = {
   bgImg: document.getElementById('header'),
   homePage: document.getElementById('home-page'),
   libraryPage: document.getElementById('library-page'),
+  liberyItem: document.querySelector('.side-nav__item--libery'),
 
   radioWatched: document.querySelector('.radio-watched'),
   radioQueue: document.querySelector('.radio-queue'),
@@ -142,13 +143,25 @@ refs.radioBtnWeek.addEventListener('click', periodPer);
 refs.radioBtnDay.addEventListener('click', periodPer);
 genresSelectEl.addEventListener('change', makeFilterPerGenre);
 
+const backdropReg = document.querySelector('.backdrop_registro');
+const backdropAuth = document.querySelector('.backdrop');
+const backdropFilmInfo = document.querySelector('.background');
 
-// const backdropReg = document.querySelector('.backdrop_registro');
-// const backdropAuth = document.querySelector('.backdrop');
-// const backdropFilmInfo = document.querySelector('.background');
-// backdropReg.addEventListener('click', onModalRegistrationCloseClick);
-// backdropAuth.addEventListener('click', onModalAuthorizationCloseClick);
-// backdropFilmInfo.addEventListener('click', closeInfoModal);
+backdropReg.addEventListener('click', e => {
+  if (e.target === e.currentTarget) {
+    onModalRegistrationCloseClick();
+  }
+});
+backdropAuth.addEventListener('click', e => {
+  if (e.target === e.currentTarget) {
+    onModalAuthorizationCloseClick();
+  }
+});
+backdropFilmInfo.addEventListener('click', e => {
+  if (e.target === e.currentTarget) {
+    closeInfoModal();
+  }
+});
 
 //================ЗАПУСК ПРИ СТАРТЕ================
 storageCheck();
@@ -290,6 +303,7 @@ async function onMmodalRegistrationFormSubmit(e) {
       console.log('Reg - OK');
       refs.loginButton.dataset.action = 'true';
       loginStatus = true;
+      refs.liberyItem.classList.remove('display-none');
       resetLoginStatus();
       onModalRegistrationCloseClick();
       onModalAuthorizationCloseClick();
@@ -335,6 +349,10 @@ async function onModalAuthorizationFormSubmit(e) {
 
   const login = e.target.login.value;
   const pasword = e.target.password.value;
+  // console.log(Boolean(login));
+  if (!login || !pasword) {
+    return;
+  }
   // показать спинер is-hidden
   //запретить нажатие на кнопки
 
@@ -372,6 +390,7 @@ async function onModalAuthorizationFormSubmit(e) {
       loginStatus = true;
       resetLoginStatus();
       onModalAuthorizationCloseClick();
+      refs.liberyItem.classList.remove('display-none');
       //------------------------------
       dataBaseAPI.onСhangeUserData(onСhangeUserData);
       // ------------------------------
@@ -404,6 +423,7 @@ function onSideNavClick(e) {
   console.log(dataBaseAPI);
   if (e.target.dataset.action === 'true') {
     dataBaseAPI.logOut();
+    refs.liberyItem.classList.add('display-none');
     refs.loginButton.dataset.action = 'false';
     loginStatus = false;
     resetLoginStatus();
@@ -443,7 +463,6 @@ function changeLanguage() {
 }
 function murcup(key, lang) {
   document.querySelector(`.lng-${key}`).innerHTML = language.tranclater[key][lang];
-
 }
 // --------------------Меняем язык ввода-----------
 
@@ -459,6 +478,7 @@ async function storageCheck() {
   await dataBaseAPI.logIn({ email: email, pasword: pasword });
   refs.loginButton.dataset.action = 'true';
   loginStatus = true;
+  refs.liberyItem.classList.remove('display-none');
   resetLoginStatus();
 }
 storageDackMoodCheck();
@@ -475,19 +495,34 @@ function storageDackMoodCheck() {
 async function sleepFilm() {
   return await serviceApi.fetchTrending({ page: 1, period: 'day' });
 }
+
+
+async function setLanguageForDefault() {
+  const currentCountry = await serviceApi.getGeoInfo();
+  if (currentCountry !== 'Ukraine') {
+    return;
+  }
+  refs.select.selectedIndex = 0;
+  const event = new Event('change');
+  refs.select.dispatchEvent(event);
+}
+
 async function logIn() {
+
+  await setLanguageForDefault();
   refs.pagination.classList.add('display-none');
   loaderCat.show();
   const films = await sleep(sleepFilm);
 
   pagination.reset(serviceApi.totalPages);
 
+  const data = filmsMarcup.createMarkup(films.films, language.language);
+  loaderCat.hidden();
   createSelectMarkup();
 
   const data = filmsMarcup.createMarkup(films.films, 'en');
   loaderCat.hidden();
   refs.pagination.classList.remove('display-none');
-
   refs.ulItem.innerHTML = data;
 
   titlMove();
@@ -759,7 +794,8 @@ function onEscapeClickInfoModal(e) {
 }
 
 function closeInfoModal() {
-  refs.modalInfo.classList.toggle('is-hidden'); //скрываем модалку, вешая класс
+  console.log('click');
+  refs.modalInfo.classList.add('is-hidden'); //скрываем модалку, вешая класс
   enabledBodyScroll(); //Разрешаем прокрутку body, пока модалка закрыта
 }
 

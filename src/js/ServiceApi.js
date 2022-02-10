@@ -10,6 +10,8 @@ export default class ServiceApi {
         api_key: this.API_KEY,
       },
     });
+
+    this.country = null;
     this.page = 1;
     this.arrayForGenresUk = [];
     this.arrayForGenresEn = [];
@@ -188,5 +190,12 @@ export default class ServiceApi {
   }
   set pageNumber(newPage) {
     this.page = newPage;
+  }
+
+  async getGeoInfo() {
+    const res = await axios.get('https://ipapi.co/json/');
+    // let response = response.data;
+    this.country = res.data.country_name;
+    return this.country;
   }
 }

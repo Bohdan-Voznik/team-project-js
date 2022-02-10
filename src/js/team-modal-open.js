@@ -2,7 +2,13 @@ const teamModalOpenLink = document.querySelector('[data-team-modal-open]');
 const teamModalCloseBtn = document.querySelector('[data-team-modal-close]');
 const teamModalWindow = document.querySelector('[data-team-modal]');
 const backdropTeamModal = document.querySelector('.team-modal-backdrop');
-// backdropTeamModal.addEventListener('click', teamModalClickToggle)
+
+backdropTeamModal.addEventListener('click', e => {
+  if (e.target === e.currentTarget) {
+    teamModalClickToggle();
+  }
+});
+
 teamModalOpenLink.addEventListener('click', teamModalClickToggle);
 teamModalCloseBtn.addEventListener('click', teamModalClickToggle);
 function onEscapeClickTeamModal(e) {
