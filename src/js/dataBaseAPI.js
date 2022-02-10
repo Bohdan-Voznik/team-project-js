@@ -36,8 +36,8 @@ export default class dataBaseApiServise {
     localStorage.setItem('user', JSON.stringify({ email: email, pasword: pasword }));
     this.user.email = email;
     this.user.pasword = pass;
-    this.user.queue = queue;
-    this.user.watched = watched;
+    this.user.queue = queue ? queue : [];
+    this.user.watched = watched ? watched : [];
     console.log(this.user);
     return 'true';
   }

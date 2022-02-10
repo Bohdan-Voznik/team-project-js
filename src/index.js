@@ -246,8 +246,6 @@ function activeLibraryPage() {
     const dataW = filmsMarcup.createMarkup(dataBaseAPI.user.watched, 'ua');
     refs.ulItem.innerHTML = dataW;
     titlMove();
-
-    
   }
 }
 
@@ -445,6 +443,7 @@ function onSideNavClick(e) {
     dataBaseAPI.logOut();
     refs.liberyItem.classList.add('display-none');
     refs.loginButton.dataset.action = 'false';
+    activeHomePage();
     loginStatus = false;
     resetLoginStatus();
     return;
