@@ -445,7 +445,7 @@ function changeLanguage() {
 
   createSelectMarkup();
 
-  const data = filmsMarcup.createMarkup(serviceApi.arrayForFilms, language.language);
+  // const data = filmsMarcup.createMarkup(serviceApi.arrayForFilms, language.language);
   
   refs.ulItem.innerHTML = data;
   titlMove ();
