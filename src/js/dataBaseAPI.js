@@ -24,11 +24,9 @@ export default class dataBaseApiServise {
     const data = await this.getDataByRef(this.formatEmail(email));
     const { pasword: pass, queue: queue, watched: watched } = data === null ? {} : data;
     if (!pass) {
-     
       return 'login error';
     }
     if (pasword !== String(pass)) {
-     
       return 'password error';
     }
 
@@ -38,7 +36,7 @@ export default class dataBaseApiServise {
     this.user.pasword = pass;
     this.user.queue = queue ? queue : [];
     this.user.watched = watched ? watched : [];
-   
+
     return 'true';
   }
 
@@ -46,7 +44,7 @@ export default class dataBaseApiServise {
   // Получает мавив с данными пользователя по email
   // Если не передать email получим все данные с базы данных
   async getDataByRef(user = '') {
-    const starCountRef = await ref(this.db, `users/${user}`);
+    const starCountRef = ref(this.db, `users/${user}`);
     return await (await get(starCountRef)).val();
   }
 
@@ -70,13 +68,11 @@ export default class dataBaseApiServise {
     }
     const isFilmChecked = this.getFilmIndexByID({ category: category, id: id });
 
-    
     if (isFilmChecked === -1) {
-     
       return;
     }
     category.splice(isFilmChecked, 1);
-   
+
     this.saveUserDataToDatabase();
     return 'removeMovieFromLibrary - OK';
   }
@@ -84,18 +80,16 @@ export default class dataBaseApiServise {
   //-------Готово
   addMovieToLibrary({ category = null, film = null }) {
     if (!category || !film) {
-  
       return 'Error';
     }
 
     const isFilmChecked = this.getFilmIndexByID({ category: category, id: film.id });
     if (isFilmChecked !== -1) {
-     
       return;
     }
 
     category.splice(0, 0, film);
-   
+
     this.saveUserDataToDatabase();
     return 'addMovieToLibrary - OK';
   }
@@ -104,7 +98,6 @@ export default class dataBaseApiServise {
   //записывает данные пользователя в БД
   saveUserDataToDatabase() {
     update(this.userRefInDatabase, this.user);
-   
   }
 
   //-------Готово
@@ -160,7 +153,7 @@ export default class dataBaseApiServise {
   //-------Готово
   getFilmIndexByID({ category = null, id = null }) {
     const cat = category ? category : [];
-    
+
     return cat
       .map(film => {
         return film.id;
@@ -171,7 +164,6 @@ export default class dataBaseApiServise {
   //-------Готово
   getLiberuStatus(id = null) {
     if (!id) {
-      
       return 'Error';
     }
 
@@ -184,7 +176,6 @@ export default class dataBaseApiServise {
         this.getFilmIndexByID({ category: this.user.queue, id: Number(id) }) === -1 ? false : true,
     };
 
-    
     return data;
   }
 
@@ -223,35 +214,27 @@ export default class dataBaseApiServise {
       reliseData,
     };
 
-    
-
     if (watched) {
-      
       this.addMovieToLibrary({ category: this.user.watched, film: data });
     } else {
       this.removeMovieFromLibrary({ category: this.user.watched, id: data.id });
     }
 
     if (queue) {
-      
       this.addMovieToLibrary({ category: this.user.queue, film: data });
     } else {
       this.removeMovieFromLibrary({ category: this.user.queue, id: data.id });
     }
-
-    
   }
 
   //-------Готово
   getFilmByid({ category = null, id = null }) {
-  
     if (!category || !id) {
       return 'Error';
     }
     const filmIndex = this.getFilmIndexByID({ category: category, id: Number(id) });
 
     if (filmIndex === -1) {
-     
       return;
     }
     const data = category[filmIndex];
