@@ -1,39 +1,37 @@
-
 export default class LanguageApi {
   constructor() {
-
     this.language = 'en';
     this.select = null;
     this.tranclater = {
-       search:{
+      search: {
         en: 'Search result not successful. Enter the correct movie name',
         ua: 'Результат пошуку невдалий. Введіть правильну назву фільму',
       },
-      reg:{
+      reg: {
         en: 'REGISTRATION',
         ua: 'РЕЄСТРАЦІЯ',
       },
-      registr:{
+      registr: {
         en: 'REGISTRATION',
         ua: 'РЕЄСТРАЦІЯ',
       },
-      avtor:{
+      avtor: {
         en: 'AUTHORIZATION',
         ua: 'АВТОРИЗАЦІЯ',
       },
-      sing:{
+      sing: {
         en: 'Sign in',
         ua: 'ВХІД',
       },
-      acc:{
+      acc: {
         en: 'Create Account',
         ua: 'СТВОРИТИ АКАУНТ',
       },
-      day:{
+      day: {
         en: 'TOP day',
         ua: 'ТОП дня',
       },
-      week:{
+      week: {
         en: 'TOP  week',
         ua: 'ТОП тижня',
       },
@@ -57,14 +55,14 @@ export default class LanguageApi {
         en: 'HOME',
         ua: 'ГОЛОВНА',
       },
-      
+
       right: {
-        en: '2022 | All Rights Reserved',
-        ua: '2022 | Усі права захищено',
+        en: '2022 | All Rights Reserved |',
+        ua: '2022 | Усі права захищено |',
       },
       developed: {
-        en: '| Developed with',
-        ua: '| Розроблено з',
+        en: 'Developed with ',
+        ua: 'Розроблено з',
       },
       by: {
         en: 'by',
@@ -80,7 +78,6 @@ export default class LanguageApi {
     let lang = this.select.value;
     this.select.dataset.language = lang;
     this.language = lang;
-    
   }
   changeLanguage(fn) {
     document.querySelector('.search-field').placeholder =
@@ -88,16 +85,16 @@ export default class LanguageApi {
     const lang = this.select.dataset.language;
 
     document.querySelector('.modal-form__placeholder').placeholder =
-    this.language === 'en' ? 'login' : 'логін';
-    
+      this.language === 'en' ? 'login' : 'логін';
+
     document.querySelector('.form_password').placeholder =
-    this.language === 'en' ? 'password' : 'пароль';
+      this.language === 'en' ? 'password' : 'пароль';
 
     document.querySelector('.form_email').placeholder =
-    this.language === 'en' ? 'email' : 'електронна пошта';
+      this.language === 'en' ? 'email' : 'електронна пошта';
 
     document.querySelector('.form_pas').placeholder =
-    this.language === 'en' ? 'password' : 'пароль';
+      this.language === 'en' ? 'password' : 'пароль';
 
     Object.keys(this.tranclater).map(key => {
       fn(key, lang);
