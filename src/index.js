@@ -432,9 +432,7 @@ function onSideNavClick(e) {
     refs.modalAuthorization.classList.remove('is-hidden');
     disabledBodyScroll();
     document.addEventListener('keydown', onEscapeClickLogin);
-
   }
-
 }
 
 // --------------------Меняем язык ввода-----------
@@ -445,10 +443,11 @@ function changeLanguage() {
 
   createSelectMarkup();
 
-  // const data = filmsMarcup.createMarkup(serviceApi.arrayForFilms, language.language);
-  
-  // refs.ulItem.innerHTML = data;
-  titlMove ();
+  const data = filmsMarcup.createMarkup(serviceApi.arrayForFilms, language.language);
+
+  refs.ulItem.innerHTML = data;
+
+  titlMove();
   onQueueWatchBtnClick();
 }
 function murcup(key, lang) {
@@ -554,8 +553,6 @@ async function onFormSearchSubmit(e) {
   }
 }
 
-
-
 switchToggle.addEventListener('click', onChangeBg);
 function onChangeBg() {
   if (switchCheckbox.checked) switchCheckbox.checked = false;
@@ -625,10 +622,9 @@ function openInfoModal(e) {
   const filmCard = e.target.closest('.film__item');
 
   filmId = +filmCard.dataset.id;
-  
+
   //============
 
- 
   if (refs.libraryButton.classList.contains('side-nav__link--current')) {
     if (refs.radioWatched.checked) {
       modalFilm.setFilm = dataBaseAPI.getFilmByid({
@@ -685,7 +681,7 @@ async function addToWatched() {
   const loaderWatched = new Loader({ selector: '.btn-add-to-watched' });
   const textInButton = document.querySelector('.btn-add-to-watched .modal-btn_text');
   const textSpinner = textInButton.textContent;
-  
+
   if (modalFilm.objFilm.watched) {
     modalFilm.objFilmWatched = false;
     btnWatched.setAttribute('data-watched', modalFilm.objFilm.watched);
@@ -698,8 +694,6 @@ async function addToWatched() {
 
     textInButton.textContent =
       language.language === 'en' ? 'Add to watched' : 'Додати до переглянутого';
-
-    
 
     btnWatched.classList.remove('selected');
   } else {
@@ -754,11 +748,9 @@ function onEscapeClickInfoModal(e) {
     document.removeEventListener('keydown', onEscapeClickInfoModal);
     closeInfoModal();
   }
-
 }
 
 function closeInfoModal() {
-
   refs.modalInfo.classList.add('is-hidden'); //скрываем модалку, вешая класс
   enabledBodyScroll(); //Разрешаем прокрутку body, пока модалка закрыта
 }
@@ -852,7 +844,7 @@ function makeFilterPerGenre(event) {
     } else {
       selectedBtnValue = 'queue';
     }
-  } 
+  }
 
   const selectValue = event.target.value;
   const pageLang = language.language;
